@@ -1,0 +1,110 @@
+{
+  "association": {
+    "j_lens": {
+      "pass@1": 0.0,
+      "pass@5": 0.0,
+      "pass@10": 0.0,
+      "pass@50": 0.0,
+      "n_items": 102,
+      "n_targets_skipped_multitoken": 3
+    },
+    "logit_lens": {
+      "pass@1": 0.0,
+      "pass@5": 0.0,
+      "pass@10": 0.0,
+      "pass@50": 0.020202020202020204,
+      "n_items": 102,
+      "n_targets_skipped_multitoken": 3
+    }
+  },
+  "multihop": {
+    "j_lens": {
+      "pass@1": 0.18253968253968256,
+      "pass@5": 0.3611111111111111,
+      "pass@10": 0.4503968253968254,
+      "pass@50": 0.740079365079365,
+      "n_items": 93,
+      "n_targets_skipped_multitoken": 9
+    },
+    "logit_lens": {
+      "pass@1": 0.1488095238095238,
+      "pass@5": 0.3253968253968254,
+      "pass@10": 0.4146825396825397,
+      "pass@50": 0.615079365079365,
+      "n_items": 93,
+      "n_targets_skipped_multitoken": 9
+    }
+  },
+  "multilingual": {
+    "j_lens": {
+      "pass@1": 0.15031152647975077,
+      "pass@5": 0.2842679127725857,
+      "pass@10": 0.35669781931464173,
+      "pass@50": 0.5521806853582555,
+      "n_items": 107,
+      "n_targets_skipped_multitoken": 14
+    },
+    "logit_lens": {
+      "pass@1": 0.059190031152647975,
+      "pass@5": 0.14641744548286603,
+      "pass@10": 0.22118380062305298,
+      "pass@50": 0.37538940809968846,
+      "n_items": 107,
+      "n_targets_skipped_multitoken": 14
+    }
+  },
+  "order-ops": {
+    "j_lens": {
+      "pass@1": 0.17272727272727273,
+      "pass@5": 0.2909090909090909,
+      "pass@10": 0.33636363636363636,
+      "pass@50": 0.6818181818181818,
+      "n_items": 55,
+      "n_targets_skipped_multitoken": 1
+    },
+    "logit_lens": {
+      "pass@1": 0.18181818181818182,
+      "pass@5": 0.3,
+      "pass@10": 0.37272727272727274,
+      "pass@50": 0.5636363636363636,
+      "n_items": 55,
+      "n_targets_skipped_multitoken": 1
+    }
+  },
+  "poetry": {
+    "j_lens": {
+      "pass@1": 0.0,
+      "pass@5": 0.0,
+      "pass@10": 0.0,
+      "pass@50": 0.04081632653061224,
+      "n_items": 98,
+      "n_targets_skipped_multitoken": 0
+    },
+    "logit_lens": {
+      "pass@1": 0.01020408163265306,
+      "pass@5": 0.030612244897959183,
+      "pass@10": 0.030612244897959183,
+      "pass@50": 0.14285714285714285,
+      "n_items": 98,
+      "n_targets_skipped_multitoken": 0
+    }
+  },
+  "typo": {
+    "j_lens": {
+      "pass@1": 0.4895833333333333,
+      "pass@5": 0.6354166666666666,
+      "pass@10": 0.7604166666666666,
+      "pass@50": 0.8958333333333334,
+      "n_items": 96,
+      "n_targets_skipped_multitoken": 0
+    },
+    "logit_lens": {
+      "pass@1": 0.15625,
+      "pass@5": 0.3645833333333333,
+      "pass@10": 0.4791666666666667,
+      "pass@50": 0.71875,
+      "n_items": 96,
+      "n_targets_skipped_multitoken": 0
+    }
+  }
+}

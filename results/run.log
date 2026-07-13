@@ -1,0 +1,80 @@
+
+============================================================
+trained
+============================================================
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:  25%|██▌       | 78/311 [00:00<00:00, 762.33it/s]Loading weights:  57%|█████▋    | 178/311 [00:00<00:00, 897.11it/s]Loading weights:  86%|████████▌ | 268/311 [00:00<00:00, 760.05it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 903.41it/s]
+/home/mhough/Workspace/jacobian-lens/.venv/lib/python3.12/site-packages/torch/autograd/graph.py:979: UserWarning: Attempting to run cuBLAS, but there was no current CUDA context! Attempting to set the primary context... (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CublasHandlePool.cpp:408.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+
+ layer   next_acc       echo
+     0     0.0000     0.2387
+     1     0.0005     0.2595
+     2     0.0008     0.2411
+     3     0.0016     0.2936
+     4     0.0011     0.2805
+     5     0.0008     0.2285
+     6     0.0013     0.2342
+     7     0.0008     0.2230
+     8     0.0013     0.2172
+     9     0.0024     0.2324
+    10     0.0024     0.1922
+    11     0.0034     0.2069
+    12     0.0024     0.2035
+    13     0.0039     0.1951
+    14     0.0032     0.1930
+    15     0.0039     0.1807
+    16     0.0076     0.1733
+    17     0.0160     0.1492
+    18     0.0302     0.1371
+    19     0.0546     0.1405
+    20     0.0751     0.1187
+    21     0.1384     0.0533
+    22     0.1762     0.0404
+    23     0.2040     0.0454
+    24     0.2319     0.0360
+    25     0.2749     0.0236
+    26     0.3414     0.0102
+
+============================================================
+random_blocks
+============================================================
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 13000.73it/s]
+
+ layer   next_acc       echo
+     0     0.0000     0.0005
+     1     0.0003     0.0016
+     2     0.0000     0.0003
+     3     0.0000     0.0005
+     4     0.0000     0.0000
+     5     0.0000     0.0000
+     6     0.0000     0.0008
+     7     0.0000     0.0003
+     8     0.0000     0.0005
+     9     0.0000     0.0000
+    10     0.0000     0.0000
+    11     0.0000     0.0000
+    12     0.0000     0.0003
+    13     0.0000     0.0003
+    14     0.0000     0.0003
+    15     0.0000     0.0000
+    16     0.0000     0.0003
+    17     0.0000     0.0000
+    18     0.0000     0.0000
+    19     0.0000     0.0000
+    20     0.0000     0.0000
+    21     0.0000     0.0000
+    22     0.0000     0.0000
+    23     0.0000     0.0000
+    24     0.0000     0.0000
+    25     0.0000     0.0000
+    26     0.0000     0.0000
+
+============================================================
+VERDICT
+============================================================
+peak next_acc  trained=0.3414  random=0.0003
+peak echo      trained=0.2936  random=0.0016
+
+Lens on random blocks is empty on both metrics.
+-> J-lens is sensitive to learned structure. It PASSES the
+   randomization sanity check. Trask's objection does not bite.

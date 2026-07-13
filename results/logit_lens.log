@@ -1,0 +1,11 @@
+j_lens: peak next_acc=0.3411 peak echo=0.2933
+logit_lens: peak next_acc=0.3561 peak echo=0.0846
+layer |   J next  LOGIT next    delta |   J echo  LOGIT echo
+----------------------------------------------------------------
+================================================================
+VERDICT
+================================================================
+peak next_acc   J-lens=0.3411   logit-lens=0.3561   ratio=0.96x
+J-lens ~= logit lens. `J_l` adds little over unembedding the raw
+residual. 'J-space' is then largely the logit-lens phenomenon, and
+Trask's residual-stream objection has force after all.
