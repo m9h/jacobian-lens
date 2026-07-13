@@ -28,11 +28,28 @@ import modal
 
 app = modal.App("jlens-nemotron")
 
+# CUDA *devel* base: mamba-ssm and causal-conv1d compile CUDA kernels at install.
+#
+# This is not optional. Without the fused kernels, Mamba-2 falls back to a naive scan
+# whose autograd graph is the fully unrolled recurrence, and jacobian_for_prompt calls
+# autograd.grad once per dim_batch chunk of d_model against that graph. Measured on
+# Nemotron-H-4B, A100-80GB: ONE layer at dim_batch=8, seq=64 peaks at 73.1 GB. Two
+# layers OOM. A 4B transformer needs a few GB for the same thing.
+#
+# jlens only needs a FIRST-order gradient, and the fused kernels ship a proper custom
+# backward -- so they work, and they are the only way this is tractable at all.
 image = (
-    modal.Image.debian_slim(python_version="3.12")
+    modal.Image.from_registry(
+        "nvidia/cuda:12.8.1-devel-ubuntu24.04", add_python="3.12"
+    )
     .apt_install("git")
+    .pip_install("torch", "packaging", "ninja", "wheel", "setuptools")
     .pip_install(
-        "torch",
+        "causal-conv1d>=1.4.0",
+        "mamba-ssm>=2.2.2",
+        extra_options="--no-build-isolation",
+    )
+    .pip_install(
         "transformers>=5.5",
         "numpy",
         "datasets",
@@ -74,6 +91,18 @@ def smoke():
 
     hf, tok, model = _load()
     n_layers = hf.config.num_hidden_layers
+
+    # If the fused kernels did not load, everything below is meaningless -- the naive
+    # scan needs 73GB for a single layer. Fail loudly rather than silently OOM.
+    try:
+        from mamba_ssm.ops.triton.selective_state_update import selective_state_update
+        from causal_conv1d import causal_conv1d_fn
+        print("  fused Mamba kernels: PRESENT (fast path active)", flush=True)
+    except ImportError as e:
+        raise RuntimeError(
+            f"fused Mamba kernels missing ({e}). The naive scan needs 73GB per layer "
+            "on a 4B model -- this run would OOM for a fixable reason."
+        )
 
     results = {}
     for dim_batch, max_seq_len in ((8, 64), (16, 128), (32, 128)):
