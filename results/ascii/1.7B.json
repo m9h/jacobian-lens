@@ -1,0 +1,43 @@
+{
+  "model": "Qwen/Qwen3-1.7B",
+  "d_model": 2048,
+  "n_layers": 27,
+  "n_prompts": 466,
+  "caret_pos": 28,
+  "j_lens": {
+    "best_rank_nose": 580,
+    "best_layer": 26,
+    "top5_at_best": [
+      "\u0120\u0120\u0120",
+      "\u0120\u0120",
+      "\u0120\u0120\u0120\u0120",
+      "\u0120\u0120\u0120\u0120\u0120",
+      "\u0120\u0120\u0120\u0120\u0120\u0120"
+    ],
+    "top5_midstack": [
+      "\u010a",
+      "\u0120^",
+      "\u0120^\u010a",
+      "\u010a\u010a",
+      "\u010d\u010a"
+    ]
+  },
+  "logit_lens": {
+    "best_rank_nose": 306,
+    "best_layer": 26,
+    "top5_at_best": [
+      "\u0120\u0120\u0120",
+      "\u0120\u0120",
+      "\u0120\u0120\u0120\u0120",
+      "\u0120\u0120\u0120\u0120\u0120",
+      "\u0120\u0120\u0120\u0120\u0120\u0120"
+    ],
+    "top5_midstack": [
+      "isc",
+      "escape",
+      "less",
+      "raised",
+      "lich"
+    ]
+  }
+}

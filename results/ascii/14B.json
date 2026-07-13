@@ -1,0 +1,43 @@
+{
+  "model": "Qwen/Qwen3-14B",
+  "d_model": 5120,
+  "n_layers": 39,
+  "n_prompts": 615,
+  "caret_pos": 28,
+  "j_lens": {
+    "best_rank_nose": 164,
+    "best_layer": 38,
+    "top5_at_best": [
+      "\u0120\u0120\u0120\u0120\u0120",
+      "\u0120\u0120\u0120\u0120",
+      "\u0120\u0120\u0120\u0120\u0120\u0120",
+      "\u0120\u0120\u0120",
+      "\u0120\u0120"
+    ],
+    "top5_midstack": [
+      "`\u010d\u010a",
+      "\u0120\\`",
+      "`\\",
+      "s",
+      "\u0120\\\u010d\u010a"
+    ]
+  },
+  "logit_lens": {
+    "best_rank_nose": 116,
+    "best_layer": 38,
+    "top5_at_best": [
+      "\u0120\u0120\u0120\u0120\u0120",
+      "\u0120\u0120\u0120\u0120",
+      "\u0120\u0120\u0120\u0120\u0120\u0120",
+      "\u0120\u0120\u0120",
+      "\u0120\u0120"
+    ],
+    "top5_midstack": [
+      ":variables",
+      "VICE",
+      "ICENSE",
+      "\u00e8\u00bf\u013f\u00e7\u00ab\u0142",
+      "l\u00c3\u0143"
+    ]
+  }
+}

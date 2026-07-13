@@ -1,0 +1,485 @@
+{
+  "1.7B": {
+    "model": "Qwen/Qwen3-1.7B",
+    "d_model": 2048,
+    "n_layers": 27,
+    "their_n_prompts": 466,
+    "gate_vs_our_underfit": {
+      "n_prompts_ours": 100,
+      "n_prompts_theirs": 466,
+      "mean_cosine": 0.9718580223895885,
+      "min_cosine": 0.9215725660324097
+    },
+    "evals": {
+      "association": {
+        "j_lens": {
+          "pass@1": 0.0,
+          "pass@5": 0.0,
+          "pass@10": 0.020202020202020204,
+          "pass@50": 0.050505050505050504,
+          "n_items": 102,
+          "n_targets_skipped_multitoken": 3
+        },
+        "logit_lens": {
+          "pass@1": 0.0,
+          "pass@5": 0.0,
+          "pass@10": 0.0,
+          "pass@50": 0.020202020202020204,
+          "n_items": 102,
+          "n_targets_skipped_multitoken": 3
+        }
+      },
+      "multihop": {
+        "j_lens": {
+          "pass@1": 0.17857142857142858,
+          "pass@5": 0.3333333333333333,
+          "pass@10": 0.4523809523809524,
+          "pass@50": 0.7063492063492064,
+          "n_items": 93,
+          "n_targets_skipped_multitoken": 9
+        },
+        "logit_lens": {
+          "pass@1": 0.19047619047619047,
+          "pass@5": 0.3392857142857143,
+          "pass@10": 0.42857142857142855,
+          "pass@50": 0.6706349206349207,
+          "n_items": 93,
+          "n_targets_skipped_multitoken": 9
+        }
+      },
+      "multilingual": {
+        "j_lens": {
+          "pass@1": 0.21728971962616822,
+          "pass@5": 0.36760124610591904,
+          "pass@10": 0.4400311526479751,
+          "pass@50": 0.6238317757009346,
+          "n_items": 107,
+          "n_targets_skipped_multitoken": 14
+        },
+        "logit_lens": {
+          "pass@1": 0.220404984423676,
+          "pass@5": 0.3707165109034268,
+          "pass@10": 0.4501557632398754,
+          "pass@50": 0.633177570093458,
+          "n_items": 107,
+          "n_targets_skipped_multitoken": 14
+        }
+      },
+      "order-ops": {
+        "j_lens": {
+          "pass@1": 0.1,
+          "pass@5": 0.17272727272727273,
+          "pass@10": 0.35454545454545455,
+          "pass@50": 0.5727272727272728,
+          "n_items": 55,
+          "n_targets_skipped_multitoken": 1
+        },
+        "logit_lens": {
+          "pass@1": 0.12727272727272726,
+          "pass@5": 0.20909090909090908,
+          "pass@10": 0.2636363636363636,
+          "pass@50": 0.5727272727272728,
+          "n_items": 55,
+          "n_targets_skipped_multitoken": 1
+        }
+      },
+      "poetry": {
+        "j_lens": {
+          "pass@1": 0.0,
+          "pass@5": 0.0,
+          "pass@10": 0.02040816326530612,
+          "pass@50": 0.12244897959183673,
+          "n_items": 98,
+          "n_targets_skipped_multitoken": 0
+        },
+        "logit_lens": {
+          "pass@1": 0.0,
+          "pass@5": 0.0,
+          "pass@10": 0.02040816326530612,
+          "pass@50": 0.1326530612244898,
+          "n_items": 98,
+          "n_targets_skipped_multitoken": 0
+        }
+      },
+      "typo": {
+        "j_lens": {
+          "pass@1": 0.20833333333333334,
+          "pass@5": 0.5104166666666666,
+          "pass@10": 0.5625,
+          "pass@50": 0.7291666666666666,
+          "n_items": 96,
+          "n_targets_skipped_multitoken": 0
+        },
+        "logit_lens": {
+          "pass@1": 0.23958333333333334,
+          "pass@5": 0.5104166666666666,
+          "pass@10": 0.59375,
+          "pass@50": 0.8020833333333334,
+          "n_items": 96,
+          "n_targets_skipped_multitoken": 0
+        }
+      }
+    }
+  },
+  "4B": {
+    "model": "Qwen/Qwen3-4B",
+    "d_model": 2560,
+    "n_layers": 35,
+    "their_n_prompts": 479,
+    "gate_vs_our_underfit": {
+      "n_prompts_ours": 100,
+      "n_prompts_theirs": 479,
+      "mean_cosine": 0.9594035182680403,
+      "min_cosine": 0.9007189869880676
+    },
+    "evals": {
+      "association": {
+        "j_lens": {
+          "pass@1": 0.0,
+          "pass@5": 0.0,
+          "pass@10": 0.020202020202020204,
+          "pass@50": 0.06060606060606061,
+          "n_items": 102,
+          "n_targets_skipped_multitoken": 3
+        },
+        "logit_lens": {
+          "pass@1": 0.010101010101010102,
+          "pass@5": 0.020202020202020204,
+          "pass@10": 0.030303030303030304,
+          "pass@50": 0.09090909090909091,
+          "n_items": 102,
+          "n_targets_skipped_multitoken": 3
+        }
+      },
+      "multihop": {
+        "j_lens": {
+          "pass@1": 0.23214285714285715,
+          "pass@5": 0.47023809523809523,
+          "pass@10": 0.5416666666666666,
+          "pass@50": 0.8293650793650794,
+          "n_items": 93,
+          "n_targets_skipped_multitoken": 9
+        },
+        "logit_lens": {
+          "pass@1": 0.22023809523809523,
+          "pass@5": 0.4087301587301588,
+          "pass@10": 0.4801587301587302,
+          "pass@50": 0.7380952380952381,
+          "n_items": 93,
+          "n_targets_skipped_multitoken": 9
+        }
+      },
+      "multilingual": {
+        "j_lens": {
+          "pass@1": 0.20327102803738317,
+          "pass@5": 0.3403426791277258,
+          "pass@10": 0.39953271028037385,
+          "pass@50": 0.5350467289719626,
+          "n_items": 107,
+          "n_targets_skipped_multitoken": 14
+        },
+        "logit_lens": {
+          "pass@1": 0.22429906542056074,
+          "pass@5": 0.3886292834890966,
+          "pass@10": 0.48442367601246106,
+          "pass@50": 0.6222741433021807,
+          "n_items": 107,
+          "n_targets_skipped_multitoken": 14
+        }
+      },
+      "order-ops": {
+        "j_lens": {
+          "pass@1": 0.12727272727272726,
+          "pass@5": 0.42727272727272725,
+          "pass@10": 0.509090909090909,
+          "pass@50": 0.7181818181818181,
+          "n_items": 55,
+          "n_targets_skipped_multitoken": 1
+        },
+        "logit_lens": {
+          "pass@1": 0.20909090909090908,
+          "pass@5": 0.39090909090909093,
+          "pass@10": 0.4818181818181818,
+          "pass@50": 0.7363636363636363,
+          "n_items": 55,
+          "n_targets_skipped_multitoken": 1
+        }
+      },
+      "poetry": {
+        "j_lens": {
+          "pass@1": 0.0,
+          "pass@5": 0.01020408163265306,
+          "pass@10": 0.02040816326530612,
+          "pass@50": 0.09183673469387756,
+          "n_items": 98,
+          "n_targets_skipped_multitoken": 0
+        },
+        "logit_lens": {
+          "pass@1": 0.0,
+          "pass@5": 0.01020408163265306,
+          "pass@10": 0.02040816326530612,
+          "pass@50": 0.08163265306122448,
+          "n_items": 98,
+          "n_targets_skipped_multitoken": 0
+        }
+      },
+      "typo": {
+        "j_lens": {
+          "pass@1": 0.03125,
+          "pass@5": 0.25,
+          "pass@10": 0.3229166666666667,
+          "pass@50": 0.5520833333333334,
+          "n_items": 96,
+          "n_targets_skipped_multitoken": 0
+        },
+        "logit_lens": {
+          "pass@1": 0.3229166666666667,
+          "pass@5": 0.59375,
+          "pass@10": 0.75,
+          "pass@50": 0.90625,
+          "n_items": 96,
+          "n_targets_skipped_multitoken": 0
+        }
+      }
+    }
+  },
+  "8B": {
+    "model": "Qwen/Qwen3-8B",
+    "d_model": 4096,
+    "n_layers": 35,
+    "their_n_prompts": 461,
+    "gate_vs_our_underfit": {
+      "n_prompts_ours": 100,
+      "n_prompts_theirs": 461,
+      "mean_cosine": 0.9566757832254682,
+      "min_cosine": 0.8888362050056458
+    },
+    "evals": {
+      "association": {
+        "j_lens": {
+          "pass@1": 0.0,
+          "pass@5": 0.0,
+          "pass@10": 0.0,
+          "pass@50": 0.08080808080808081,
+          "n_items": 102,
+          "n_targets_skipped_multitoken": 3
+        },
+        "logit_lens": {
+          "pass@1": 0.0,
+          "pass@5": 0.0,
+          "pass@10": 0.020202020202020204,
+          "pass@50": 0.13131313131313133,
+          "n_items": 102,
+          "n_targets_skipped_multitoken": 3
+        }
+      },
+      "multihop": {
+        "j_lens": {
+          "pass@1": 0.18452380952380953,
+          "pass@5": 0.4523809523809524,
+          "pass@10": 0.5119047619047619,
+          "pass@50": 0.7361111111111112,
+          "n_items": 93,
+          "n_targets_skipped_multitoken": 9
+        },
+        "logit_lens": {
+          "pass@1": 0.2261904761904762,
+          "pass@5": 0.44047619047619047,
+          "pass@10": 0.5218253968253969,
+          "pass@50": 0.7420634920634921,
+          "n_items": 93,
+          "n_targets_skipped_multitoken": 9
+        }
+      },
+      "multilingual": {
+        "j_lens": {
+          "pass@1": 0.1923676012461059,
+          "pass@5": 0.3325545171339564,
+          "pass@10": 0.4135514018691589,
+          "pass@50": 0.5420560747663551,
+          "n_items": 107,
+          "n_targets_skipped_multitoken": 14
+        },
+        "logit_lens": {
+          "pass@1": 0.19781931464174457,
+          "pass@5": 0.3364485981308411,
+          "pass@10": 0.42679127725856697,
+          "pass@50": 0.6113707165109035,
+          "n_items": 107,
+          "n_targets_skipped_multitoken": 14
+        }
+      },
+      "order-ops": {
+        "j_lens": {
+          "pass@1": 0.03636363636363636,
+          "pass@5": 0.19090909090909092,
+          "pass@10": 0.3090909090909091,
+          "pass@50": 0.7545454545454545,
+          "n_items": 55,
+          "n_targets_skipped_multitoken": 1
+        },
+        "logit_lens": {
+          "pass@1": 0.17272727272727273,
+          "pass@5": 0.34545454545454546,
+          "pass@10": 0.4636363636363636,
+          "pass@50": 0.7090909090909091,
+          "n_items": 55,
+          "n_targets_skipped_multitoken": 1
+        }
+      },
+      "poetry": {
+        "j_lens": {
+          "pass@1": 0.0,
+          "pass@5": 0.01020408163265306,
+          "pass@10": 0.02040816326530612,
+          "pass@50": 0.12244897959183673,
+          "n_items": 98,
+          "n_targets_skipped_multitoken": 0
+        },
+        "logit_lens": {
+          "pass@1": 0.0,
+          "pass@5": 0.0,
+          "pass@10": 0.01020408163265306,
+          "pass@50": 0.09183673469387756,
+          "n_items": 98,
+          "n_targets_skipped_multitoken": 0
+        }
+      },
+      "typo": {
+        "j_lens": {
+          "pass@1": 0.052083333333333336,
+          "pass@5": 0.15625,
+          "pass@10": 0.20833333333333334,
+          "pass@50": 0.4166666666666667,
+          "n_items": 96,
+          "n_targets_skipped_multitoken": 0
+        },
+        "logit_lens": {
+          "pass@1": 0.1875,
+          "pass@5": 0.5104166666666666,
+          "pass@10": 0.59375,
+          "pass@50": 0.75,
+          "n_items": 96,
+          "n_targets_skipped_multitoken": 0
+        }
+      }
+    }
+  },
+  "14B": {
+    "model": "Qwen/Qwen3-14B",
+    "d_model": 5120,
+    "n_layers": 39,
+    "their_n_prompts": 615,
+    "gate_vs_our_underfit": null,
+    "evals": {
+      "association": {
+        "j_lens": {
+          "pass@1": 0.04040404040404041,
+          "pass@5": 0.0707070707070707,
+          "pass@10": 0.09090909090909091,
+          "pass@50": 0.2222222222222222,
+          "n_items": 102,
+          "n_targets_skipped_multitoken": 3
+        },
+        "logit_lens": {
+          "pass@1": 0.010101010101010102,
+          "pass@5": 0.08080808080808081,
+          "pass@10": 0.09090909090909091,
+          "pass@50": 0.20202020202020202,
+          "n_items": 102,
+          "n_targets_skipped_multitoken": 3
+        }
+      },
+      "multihop": {
+        "j_lens": {
+          "pass@1": 0.16666666666666666,
+          "pass@5": 0.4107142857142857,
+          "pass@10": 0.628968253968254,
+          "pass@50": 0.7936507936507937,
+          "n_items": 93,
+          "n_targets_skipped_multitoken": 9
+        },
+        "logit_lens": {
+          "pass@1": 0.16071428571428573,
+          "pass@5": 0.40476190476190477,
+          "pass@10": 0.5218253968253969,
+          "pass@50": 0.7341269841269841,
+          "n_items": 93,
+          "n_targets_skipped_multitoken": 9
+        }
+      },
+      "multilingual": {
+        "j_lens": {
+          "pass@1": 0.21573208722741433,
+          "pass@5": 0.3816199376947041,
+          "pass@10": 0.45482866043613707,
+          "pass@50": 0.5848909657320872,
+          "n_items": 107,
+          "n_targets_skipped_multitoken": 14
+        },
+        "logit_lens": {
+          "pass@1": 0.15498442367601245,
+          "pass@5": 0.3559190031152648,
+          "pass@10": 0.41043613707165105,
+          "pass@50": 0.5459501557632399,
+          "n_items": 107,
+          "n_targets_skipped_multitoken": 14
+        }
+      },
+      "order-ops": {
+        "j_lens": {
+          "pass@1": 0.07272727272727272,
+          "pass@5": 0.23636363636363636,
+          "pass@10": 0.35454545454545455,
+          "pass@50": 0.7090909090909091,
+          "n_items": 55,
+          "n_targets_skipped_multitoken": 1
+        },
+        "logit_lens": {
+          "pass@1": 0.02727272727272727,
+          "pass@5": 0.19090909090909092,
+          "pass@10": 0.2909090909090909,
+          "pass@50": 0.5636363636363636,
+          "n_items": 55,
+          "n_targets_skipped_multitoken": 1
+        }
+      },
+      "poetry": {
+        "j_lens": {
+          "pass@1": 0.02040816326530612,
+          "pass@5": 0.04081632653061224,
+          "pass@10": 0.04081632653061224,
+          "pass@50": 0.09183673469387756,
+          "n_items": 98,
+          "n_targets_skipped_multitoken": 0
+        },
+        "logit_lens": {
+          "pass@1": 0.0,
+          "pass@5": 0.030612244897959183,
+          "pass@10": 0.04081632653061224,
+          "pass@50": 0.11224489795918367,
+          "n_items": 98,
+          "n_targets_skipped_multitoken": 0
+        }
+      },
+      "typo": {
+        "j_lens": {
+          "pass@1": 0.020833333333333332,
+          "pass@5": 0.16666666666666666,
+          "pass@10": 0.23958333333333334,
+          "pass@50": 0.5,
+          "n_items": 96,
+          "n_targets_skipped_multitoken": 0
+        },
+        "logit_lens": {
+          "pass@1": 0.16666666666666666,
+          "pass@5": 0.3645833333333333,
+          "pass@10": 0.4375,
+          "pass@50": 0.7083333333333334,
+          "n_items": 96,
+          "n_targets_skipped_multitoken": 0
+        }
+      }
+    }
+  }
+}

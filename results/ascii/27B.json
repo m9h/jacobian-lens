@@ -1,0 +1,43 @@
+{
+  "model": "Qwen/Qwen3.5-27B",
+  "d_model": 5120,
+  "n_layers": 63,
+  "n_prompts": 672,
+  "caret_pos": 28,
+  "j_lens": {
+    "best_rank_nose": 2,
+    "best_layer": 46,
+    "top5_at_best": [
+      "\u0120smile",
+      "\u0120nose",
+      "\u0120'^",
+      "\u0120noses",
+      "\u0120grin"
+    ],
+    "top5_midstack": [
+      "\u0120^",
+      "^",
+      "\u0120'^",
+      "^^",
+      "\u0120(^"
+    ]
+  },
+  "logit_lens": {
+    "best_rank_nose": 5,
+    "best_layer": 20,
+    "top5_at_best": [
+      "\u010a",
+      "\u00c2\u0142",
+      "..",
+      "-",
+      "N"
+    ],
+    "top5_midstack": [
+      "/",
+      "-",
+      "[",
+      "\u010a",
+      "+"
+    ]
+  }
+}
