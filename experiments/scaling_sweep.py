@@ -35,7 +35,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import jlens
 
-from randomization_control import corpus
+from randomization_control import corpus, DEV
 from lens_eval_comparison import evaluate, KS
 
 MODELS = {
@@ -85,9 +85,11 @@ def run_model(tag, n_fit, purge=False):
     name = MODELS[tag]
     print(f"\n[{tag}] {name}", flush=True)
     tok = AutoTokenizer.from_pretrained(name)
-    hf = AutoModelForCausalLM.from_pretrained(
-        name, dtype=torch.bfloat16, device_map="auto"
-    ).eval()
+    # NB: do NOT use device_map="auto". Accelerate offloads to CPU/meta and its
+    # offload hooks are incompatible with the backward hooks jlens.fit() installs
+    # ("Cannot copy out of meta tensor"). The GB10 has 119GB unified memory; every
+    # model in this sweep fits whole. Load it whole.
+    hf = AutoModelForCausalLM.from_pretrained(name, dtype=torch.bfloat16).to(DEV).eval()
     cfg = hf.config
     model = jlens.from_hf(hf, tok)
     lens = fit_or_load(model, tok, tag, n_fit)
