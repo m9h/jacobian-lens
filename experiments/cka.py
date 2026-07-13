@@ -58,6 +58,11 @@ MODELS = {
     "llama3.1-8b": ("meta-llama/Llama-3.1-8B", "llama3.1-8b", "llama3.1-8b_jacobian_lens.pt"),
     "olmo-3-7b":   ("allenai/Olmo-3-1025-7B", "olmo-3-1025-7b", "Olmo-3-1025-7B_jacobian_lens.pt"),
     "gpt-oss-20b": ("openai/gpt-oss-20b", "gpt-oss-20b", "gpt-oss-20b_jacobian_lens.pt"),
+    # 27B is the one that matters: the ASCII-face "nose" readout EMERGES here
+    # (rank 2 at 27B vs 164 at 14B). If the tripartite geometry sharpens at the same
+    # place the behaviour appears, that is the whole result in one figure.
+    "qwen3.5-27b": ("Qwen/Qwen3.5-27B", "qwen3.5-27b", "Qwen3.5-27B_jacobian_lens.pt"),
+    "qwen3-32b":  ("Qwen/Qwen3-32B",  "qwen3-32b",  "Qwen3-32B_jacobian_lens.pt"),
 }
 OUT = pathlib.Path("results/cka")
 DEV, DTYPE = "cuda", torch.float32
