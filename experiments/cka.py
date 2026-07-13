@@ -85,13 +85,23 @@ def linear_cka(X, Y):
     return (xty / (xtx * yty)).item()
 
 
-def blockiness(C):
-    """Best contiguous 3-block segmentation: within-block mean minus between-block mean."""
+def blockiness(C, min_frac=0.15):
+    """Best contiguous 3-block segmentation: within-block mean minus between-block mean.
+
+    Each block must hold at least ``min_frac`` of the layers. Without that floor the
+    search cheats: it carves off a SINGLE layer as its own "block", which has CKA 1.0
+    with itself by construction, and the score is maximised by a degenerate split that
+    is not a sensory/workspace/motor structure at all. (Observed on qwen3-1.7b: the
+    unconstrained optimum was cuts (1, 26) on 27 layers -- i.e. {L0} {L1..25} {L26}.)
+    """
     L = C.shape[0]
-    if L < 6:
+    m = max(2, int(round(min_frac * L)))
+    if L < 3 * m:
         return float("nan"), None
     best, cuts = -1e9, None
-    for a, b in itertools.combinations(range(1, L), 2):
+    for a, b in itertools.combinations(range(m, L - m + 1), 2):
+        if a < m or b - a < m or L - b < m:
+            continue
         seg = [(0, a), (a, b), (b, L)]
         win, wn, bet, bn = 0.0, 0, 0.0, 0
         for i, (s0, e0) in enumerate(seg):
