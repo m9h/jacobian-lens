@@ -269,3 +269,70 @@ def fit(n_prompts: int = 1000, dim_batch: int = 32, max_seq_len: int = 128,
 @app.local_entrypoint()
 def main():
     print(smoke.remote())
+
+
+@app.function(image=image, gpu="H100", volumes={"/cache": cache, "/out": out},
+              timeout=60 * 60, env=ENV)
+def dense_control():
+    """THE CONFOUND. Is "nose" emerging with SCALE, or with ARCHITECTURE?
+
+    rank(nose) went 164 (Qwen3-14B) -> 2 (Qwen3.5-27B) and I called it a scale threshold.
+    But Qwen3-14B is DENSE and Qwen3.5-27B is a HYBRID (48 of 64 layers linear attention).
+    So the jump may be architectural, not scale.
+
+    Qwen3-32B is DENSE and has a published converged lens (615 prompts). It is the control:
+
+        "nose" surfaces at 32B-dense   -> it is SCALE. The emergence story holds.
+        it does not                    -> it is the HYBRID ARCHITECTURE, and the headline
+                                          is not "workspace emerges with scale" but
+                                          "workspace emerges with linear attention/SSM".
+
+    Either answer is a real result. No fitting needed -- their lens, their model.
+    """
+    import torch, jlens
+    from huggingface_hub import hf_hub_download
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    import jlens.examples as ex
+
+    M = "Qwen/Qwen3-32B"
+    lens = jlens.JacobianLens.load(hf_hub_download(
+        "neuronpedia/jacobian-lens",
+        "qwen3-32b/jlens/Salesforce-wikitext/Qwen3-32B_jacobian_lens.pt"))
+    layers = sorted(lens.jacobians)
+    tok = AutoTokenizer.from_pretrained(M)
+    hf = AutoModelForCausalLM.from_pretrained(M, dtype=torch.bfloat16).to("cuda").eval()
+    model = jlens.from_hf(hf, tok)
+    print(f"  Qwen3-32B (DENSE): {len(layers)} layers, d_model={lens.d_model}, "
+          f"lens n_prompts={lens.n_prompts}", flush=True)
+
+    lst = [v for v in vars(ex).values()
+           if isinstance(v, (list, tuple)) and v and isinstance(v[0], ex.Example)][0]
+    prompt = [e for e in lst if e.slug == "ascii-face"][0].prompt
+    ids = tok(prompt, add_special_tokens=False)["input_ids"]
+    pos = [i for i, t in enumerate(tok.convert_ids_to_tokens(ids)) if "^" in t][0]
+    nose = list({t[0] for t in (tok(w, add_special_tokens=False)["input_ids"]
+                                for w in ("nose", " nose", "Nose", " Nose"))})
+
+    res = {}
+    for use_j, key in ((True, "j_lens"), (False, "logit_lens")):
+        r, *_ = lens.apply(model, prompt, layers=layers,
+                           max_seq_len=len(ids), use_jacobian=use_j)
+        best, best_l, top = 10**9, None, None
+        for l in layers:
+            lg = r[l][pos]
+            rk = min(int((lg > lg[t]).sum().item()) + 1 for t in nose)
+            if rk < best:
+                best, best_l = rk, l
+                top = tok.convert_ids_to_tokens(lg.topk(5).indices.tolist())
+        res[key] = {"best_rank_nose": best, "best_layer": best_l, "top5": top}
+        print(f"  {key:11s} rank(nose)={best} @L{best_l}  top5={top}", flush=True)
+
+    print("\n" + "=" * 62)
+    if res["j_lens"]["best_rank_nose"] <= 10:
+        print("SCALE. 'nose' surfaces in a DENSE 32B. The emergence story holds.")
+    else:
+        print("ARCHITECTURE. 'nose' does NOT surface in a dense 32B, but does in the")
+        print("48/64-linear-attention 27B. The headline is not 'emerges with scale' --")
+        print("it is 'emerges with linear attention / SSM'. Rewrite everything.")
+    print("=" * 62, flush=True)
+    return res
