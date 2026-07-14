@@ -294,10 +294,18 @@ def dense_control():
     from transformers import AutoModelForCausalLM, AutoTokenizer
     import jlens.examples as ex
 
-    M = "Qwen/Qwen3-32B"
+    # NOT Qwen3-32B: its published .pt is a partial fit() CHECKPOINT with n_done=80,
+    # against a config.yaml claiming 615. An 80-prompt lens is below Anthropic's own
+    # min_prompts floor -- J is still near-identity, so the J-lens and the logit lens
+    # return IDENTICAL top-5s. It is not a control, it is a broken instrument.
+    # (Audited all 38 published lenses: qwen3-32b is the only broken one.)
+    #
+    # OLMo-3-32B is the right control: DENSE, 32B (larger than the 27B hybrid), ungated,
+    # and its lens is valid at 470 prompts.
+    M = "allenai/Olmo-3-1125-32B"
     path = hf_hub_download(
         "neuronpedia/jacobian-lens",
-        "qwen3-32b/jlens/Salesforce-wikitext/Qwen3-32B_jacobian_lens.pt")
+        "olmo-3-1125-32b/jlens/Salesforce-wikitext/Olmo-3-1125-32B_jacobian_lens.pt")
     try:
         lens = jlens.JacobianLens.load(path)
     except ValueError:
@@ -315,7 +323,7 @@ def dense_control():
     tok = AutoTokenizer.from_pretrained(M)
     hf = AutoModelForCausalLM.from_pretrained(M, dtype=torch.bfloat16).to("cuda").eval()
     model = jlens.from_hf(hf, tok)
-    print(f"  Qwen3-32B (DENSE): {len(layers)} layers, d_model={lens.d_model}, "
+    print(f"  OLMo-3-32B (DENSE): {len(layers)} layers, d_model={lens.d_model}, "
           f"lens n_prompts={lens.n_prompts}", flush=True)
 
     lst = [v for v in vars(ex).values()
@@ -344,8 +352,9 @@ def dense_control():
     if res["j_lens"]["best_rank_nose"] <= 10:
         print("SCALE. 'nose' surfaces in a DENSE 32B. The emergence story holds.")
     else:
-        print("ARCHITECTURE. 'nose' does NOT surface in a dense 32B, but does in the")
-        print("48/64-linear-attention 27B. The headline is not 'emerges with scale' --")
-        print("it is 'emerges with linear attention / SSM'. Rewrite everything.")
+        print("ARCHITECTURE. 'nose' does NOT surface in a DENSE 32B, but does in the")
+        print("48/64-linear-attention 27B -- a SMALLER model. The headline is not")
+        print("'emerges with scale', it is 'emerges with linear attention / SSM'.")
+        print("Rewrite everything. And Nemotron stops being a footnote.")
     print("=" * 62, flush=True)
     return res
