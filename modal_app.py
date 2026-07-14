@@ -146,8 +146,9 @@ def smoke():
 
 
 @app.function(image=image, gpu="A100-80GB", volumes={"/cache": cache, "/out": out},
-              timeout=6 * 60 * 60, env=ENV)
-def fit(n_prompts: int = 1000, dim_batch: int = 8, max_seq_len: int = 128):
+              timeout=24 * 60 * 60, env=ENV)
+def fit(n_prompts: int = 1000, dim_batch: int = 32, max_seq_len: int = 128,
+        layer_step: int = 3, ckpt_every: int = 25):
     """Fit a Nemotron-H lens TO CONVERGENCE, then run the flagship demo on it.
 
     Convergence, not a fixed count: Anthropic's published lenses used 454-775 prompts
@@ -161,7 +162,13 @@ def fit(n_prompts: int = 1000, dim_batch: int = 8, max_seq_len: int = 128):
     hf, tok, model = _load()
     # source_layers must EXCLUDE the target (the final layer): a Jacobian from the
     # target to itself is undefined and jacobian_for_prompt raises on every prompt.
-    layers = list(range(hf.config.num_hidden_layers - 1))
+    #
+    # Subsample every `layer_step`-th layer. Fitting all 41 costs ~0.6 min/prompt and a
+    # full run blew Modal's 6h function timeout at 650 prompts -- with NOTHING saved,
+    # because this loop hand-rolls the accumulation instead of using jlens.fit's
+    # checkpoint_path. Anthropic's own figures subsample layers; the ASCII-face readout
+    # does not need all 41 to show whether "nose" surfaces.
+    layers = list(range(0, hf.config.num_hidden_layers - 1, layer_step))
 
     ds = load_dataset("Salesforce/wikitext", "wikitext-103-raw-v1",
                       split="train", streaming=True)
@@ -172,8 +179,17 @@ def fit(n_prompts: int = 1000, dim_batch: int = 8, max_seq_len: int = 128):
            len(tok(t, add_special_tokens=False)["input_ids"]) >= max_seq_len:
             prompts.append(t)
 
+    ckpt = pathlib.Path("/out/nemotron_ckpt.pt")
     jac, n, under, trace, skipped = None, 0, 0, [], 0
-    for p in prompts:
+    start = 0
+    if ckpt.exists():
+        st = torch.load(ckpt, map_location="cuda")
+        jac, n, trace, start = st["jac"], st["n"], st["trace"], st["next_idx"]
+        print(f"  resuming from checkpoint: {n} prompts done", flush=True)
+
+    for idx, p in enumerate(prompts):
+        if idx < start:
+            continue
         try:
             J, seq, valid = jacobian_for_prompt(
                 model, p, layers, dim_batch=dim_batch,
@@ -207,6 +223,10 @@ def fit(n_prompts: int = 1000, dim_batch: int = 8, max_seq_len: int = 128):
             under = 0
         if n % 50 == 0:
             print(f"    {n:4d}  mean_rel_change={mrc:.6f}", flush=True)
+        if n % ckpt_every == 0:
+            torch.save({"jac": jac, "n": n, "trace": trace, "next_idx": idx + 1},
+                       "/out/nemotron_ckpt.pt")
+            out.commit()
 
     lens = jlens.JacobianLens(
         jacobians={l: jac[l] / n for l in layers},
