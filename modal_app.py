@@ -295,9 +295,22 @@ def dense_control():
     import jlens.examples as ex
 
     M = "Qwen/Qwen3-32B"
-    lens = jlens.JacobianLens.load(hf_hub_download(
+    path = hf_hub_download(
         "neuronpedia/jacobian-lens",
-        "qwen3-32b/jlens/Salesforce-wikitext/Qwen3-32B_jacobian_lens.pt"))
+        "qwen3-32b/jlens/Salesforce-wikitext/Qwen3-32B_jacobian_lens.pt")
+    try:
+        lens = jlens.JacobianLens.load(path)
+    except ValueError:
+        # UPSTREAM BUG: Anthropic uploaded a raw fit() CHECKPOINT for qwen3-32b, not a
+        # saved lens -- keys are (jacobian_sum, n_done, next_idx, source_layers). The
+        # lens is just the running sum divided by the count. (qwen3.6-27b's upload is
+        # also broken: only .DS_Store, no .pt at all.)
+        st = torch.load(path, map_location="cpu")
+        n = st["n_done"]
+        jac = {int(l): v / n for l, v in st["jacobian_sum"].items()}
+        d = next(iter(jac.values())).shape[-1]
+        lens = jlens.JacobianLens(jacobians=jac, n_prompts=n, d_model=d)
+        print(f"  recovered lens from a fit() checkpoint ({n} prompts)", flush=True)
     layers = sorted(lens.jacobians)
     tok = AutoTokenizer.from_pretrained(M)
     hf = AutoModelForCausalLM.from_pretrained(M, dtype=torch.bfloat16).to("cuda").eval()
