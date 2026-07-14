@@ -38,12 +38,19 @@ app = modal.App("jlens-nemotron")
 #
 # jlens only needs a FIRST-order gradient, and the fused kernels ship a proper custom
 # backward -- so they work, and they are the only way this is tractable at all.
+# NB: mamba-ssm compiles against torch.version.cuda, so the base image CUDA and the
+# torch wheel's CUDA must MATCH exactly. Default `pip install torch` pulls a cu130 wheel;
+# against a 12.8 base that dies with "detected CUDA version (12.8) mismatches the version
+# used to compile PyTorch (13.0)". Pin torch to cu128. It also needs g++ (the image ships
+# clang++, which torch's cpp_extension refuses).
 image = (
     modal.Image.from_registry(
         "nvidia/cuda:12.8.1-devel-ubuntu24.04", add_python="3.12"
     )
-    .apt_install("git")
-    .pip_install("torch", "packaging", "ninja", "wheel", "setuptools")
+    .apt_install("git", "build-essential", "g++")
+    .env({"CC": "gcc", "CXX": "g++", "TORCH_CUDA_ARCH_LIST": "8.0"})  # 8.0 = A100
+    .pip_install("torch", index_url="https://download.pytorch.org/whl/cu128")
+    .pip_install("packaging", "ninja", "wheel", "setuptools")
     .pip_install(
         "causal-conv1d>=1.4.0",
         "mamba-ssm>=2.2.2",
