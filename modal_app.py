@@ -159,7 +159,9 @@ def fit(n_prompts: int = 1000, dim_batch: int = 8, max_seq_len: int = 128):
     from datasets import load_dataset
 
     hf, tok, model = _load()
-    layers = list(range(hf.config.num_hidden_layers))
+    # source_layers must EXCLUDE the target (the final layer): a Jacobian from the
+    # target to itself is undefined and jacobian_for_prompt raises on every prompt.
+    layers = list(range(hf.config.num_hidden_layers - 1))
 
     ds = load_dataset("Salesforce/wikitext", "wikitext-103-raw-v1",
                       split="train", streaming=True)
@@ -170,13 +172,22 @@ def fit(n_prompts: int = 1000, dim_batch: int = 8, max_seq_len: int = 128):
            len(tok(t, add_special_tokens=False)["input_ids"]) >= max_seq_len:
             prompts.append(t)
 
-    jac, n, under, trace = None, 0, 0, []
+    jac, n, under, trace, skipped = None, 0, 0, [], 0
     for p in prompts:
         try:
             J, seq, valid = jacobian_for_prompt(
                 model, p, layers, dim_batch=dim_batch,
                 max_seq_len=max_seq_len, skip_first=16)
-        except Exception:
+        except Exception as e:
+            # NEVER swallow this silently. A bare `except: continue` here hid a
+            # source_layers bug behind 600 useless iterations and surfaced it as a
+            # meaningless TypeError at the end. Fail fast on the first prompt.
+            skipped += 1
+            if n == 0 and skipped == 1:
+                raise RuntimeError(
+                    f"jacobian_for_prompt failed on the FIRST prompt: "
+                    f"{type(e).__name__}: {e}"
+                ) from e
             continue
         if jac is None:
             jac = {l: torch.zeros_like(J[l]) for l in layers}
