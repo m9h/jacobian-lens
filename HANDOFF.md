@@ -75,10 +75,27 @@ Comparable ranks. One understands the face; one emits punctuation. **This is a g
 measurement problem in the paper's own evaluation** and, as far as I know, nobody has
 found it.
 
-### 3. The flagship demo reproduces, and emerges sharply
-ASCII-art face, lens read at the `^`. `rank(nose)`: **580 → 215 → 290 → 164 → 2** across
-Qwen3 1.7B → 27B. Absent below 27B. Turns their anecdote into an emergence threshold.
-**This validated the harness** — everything downstream is interpretable because of it.
+### 3. The flagship demo reproduces at ONE model — and it is n=1, NOT a clean threshold
+ASCII-art face, lens read at the `^`. `rank(nose)` surfaces (rank 2, `['smile','nose',
+'noses','grin']`) at **Qwen3.5-27B and nowhere else**. Full picture, added 2026-07-15:
+
+    Qwen3.5-27B   hybrid (48/64 linear attn)   rank   2   ✓
+    Qwen3-14B     dense                        rank 164   ✗
+    OLMo-3-32B    dense                        rank 210   ✗   <- dense control
+    Nemotron-H-4B Mamba hybrid                 rank 160   ✗   <- the SSM test
+
+**The emergence is a single positive, confounded every way** (largest, hybrid, multimodal,
+its own training run). It reproducing at all VALIDATED THE HARNESS — that stands. But you
+CANNOT attribute it to scale OR to architecture from n=1. My earlier "emerges with scale"
+was wrong; the "emerges with linear attention/SSM" correction was ALSO wrong (Nemotron is
+SSM and fails). Both scripted verdicts were hardcoded if/else prints that fired on a
+partial picture.
+
+Note: Nemotron's lens DOES work (smoke test read `['Paris','France','Marseille','Louvre']`
+for "The capital of France is"). It just doesn't surface an unnamed concept from ASCII
+art. So the ASCII-face task may simply be HARD, and Qwen3.5-27B may win on capability, not
+architecture. **The right next test is the `association` eval set (many prompts, many
+concepts), not one ASCII face.**
 
 ### 4. The randomization control PASSES — a point *for* Anthropic
 Randomize blocks, keep trained embed/unembed: the lens reads out **nothing**
@@ -86,18 +103,20 @@ Randomize blocks, keep trained embed/unembed: the lens reads out **nothing**
 ran this control.** It refutes the strong form of the popular "it's just backprop" critique
 (which is also about the wrong derivative — see `jlens-lab/docs/01`).
 
-### 5. The workspace is clearest in models that are barely transformers
-**Qwen3.5-27B is 48-of-64 linear attention** and is where the phenomenon emerges. This
-undercuts the architectural objection (Butlin & Long: "no obviously separable input
-processors"; Hoel: LLMs "flatly lack" modularity/reentrant dynamics) **for free**, with no
-extra experiment.
+### 5. The workspace is clearest in a model that is barely a transformer — but n=1
+**Qwen3.5-27B is 48-of-64 linear attention.** It is tempting to say this undercuts the
+architectural objection (Butlin & Long; Hoel) for free. BE CAREFUL: it is the only
+positive, and Nemotron (also non-transformer) fails, so "clearest in non-transformers" is
+not supported — "clearest in the single most capable model, which happens to be a hybrid"
+is the honest statement. Do not lead with this.
 
-### 6. (footnote) Nemotron-H — I oversold this
-Running now on Modal. **It is less important than I claimed.** It cannot show "attention is
-unnecessary" (it still has 4 attention layers), it's incremental over the Qwen3.5
-observation, and — fatally — it does **not** address the strongest deflationary objection
-(*the J-space is a property of the residual stream*), because Mamba hybrids have residual
-streams too. That objection was already answered by finding #4.
+### 6. Nemotron-H result (done 2026-07-15): the lens WORKS, the ASCII task FAILS
+Fit converged (mean_rel_change 0.00176 at 1000 prompts — it actually converged, unlike
+the timeout). ASCII-face rank(nose)=160 — does NOT surface. But the lens reads factual
+prompts fine (`['Paris','France','Marseille','Louvre']`). So: a J-lens is fittable and
+readable on a Mamba-2 hybrid (a real methods result — see jlens-lab layouts + the
+73GB→9GB fused-kernel finding), but the unnamed-concept phenomenon does not appear at 4B.
+This KILLS the "emerges with architecture" story and returns finding #3 to n=1.
 
 ## Critical technical gotchas (all cost real time)
 
