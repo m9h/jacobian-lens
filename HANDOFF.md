@@ -75,27 +75,36 @@ Comparable ranks. One understands the face; one emits punctuation. **This is a g
 measurement problem in the paper's own evaluation** and, as far as I know, nobody has
 found it.
 
-### 3. The flagship demo reproduces at ONE model — and it is n=1, NOT a clean threshold
-ASCII-art face, lens read at the `^`. `rank(nose)` surfaces (rank 2, `['smile','nose',
-'noses','grin']`) at **Qwen3.5-27B and nowhere else**. Full picture, added 2026-07-15:
+### 3. ★ RESOLVED 2026-07-17: the emergence is GRADUAL and SCALE-driven, not architectural
+The one-prompt ASCII-face test was an ARTIFACT. The robust version -- the `association`
+eval, 102 vignettes each evoking a concept that is NEVER named -- gives a smooth monotone
+rise, and a DENSE model beats the hybrid:
 
-    Qwen3.5-27B   hybrid (48/64 linear attn)   rank   2   ✓
-    Qwen3-14B     dense                        rank 164   ✗
-    OLMo-3-32B    dense                        rank 210   ✗   <- dense control
-    Nemotron-H-4B Mamba hybrid                 rank 160   ✗   <- the SSM test
+```
+ model            J@1     J@10    J@50      (J-lens, Anthropic's published lenses)
+  0.6B          0.000    0.000   0.000
+  1.7B          0.000    0.020   0.051
+    4B          0.000    0.020   0.061
+    8B          0.000    0.000   0.081
+   14B          0.040    0.091   0.222
+   27B hybrid   0.049    0.167   0.343
+   32B DENSE    0.062    0.208   0.438   <- BEATS the hybrid at every k
+```
 
-**The emergence is a single positive, confounded every way** (largest, hybrid, multimodal,
-its own training run). It reproducing at all VALIDATED THE HARNESS — that stands. But you
-CANNOT attribute it to scale OR to architecture from n=1. My earlier "emerges with scale"
-was wrong; the "emerges with linear attention/SSM" correction was ALSO wrong (Nemotron is
-SSM and fails). Both scripted verdicts were hardcoded if/else prints that fired on a
-partial picture.
+**Both of my earlier stories were wrong.** "Sharp emergence at 27B" (from rank 164->2 on
+the ASCII face) and the correction "emerges with linear attention/SSM" are both refuted:
+on 102 prompts the effect is gradual, and the dense 32B is BEST. The ASCII face was one
+lucky prompt.
 
-Note: Nemotron's lens DOES work (smoke test read `['Paris','France','Marseille','Louvre']`
-for "The capital of France is"). It just doesn't surface an unnamed concept from ASCII
-art. So the ASCII-face task may simply be HARD, and Qwen3.5-27B may win on capability, not
-architecture. **The right next test is the `association` eval set (many prompts, many
-concepts), not one ASCII face.**
+**Consequence: do NOT fund QwQ-32B or Kimi-Linear-48B fits.** Their whole justification
+was breaking the architecture confound, and the confound dissolved for free using lenses
+we already had. (Kimi-K2-Thinking is infeasible anyway: 594GB. Kimi-Linear-48B is 98GB /
+74% linear attention -- a near-perfect ratio match to Qwen3.5's 75% -- so it WOULD have
+been the right independent replication had the hypothesis survived.)
+
+**Also: the J-lens advantage SHRINKS with scale.** On association, 27B is 0.167 vs 0.098
+logit (1.7x) but 32B is 0.208 vs 0.198 -- essentially tied. This echoes Anthropic's own
+admission that the logit lens "captures much of the workspace-like structure."
 
 ### 4. The randomization control PASSES — a point *for* Anthropic
 Randomize blocks, keep trained embed/unembed: the lens reads out **nothing**
