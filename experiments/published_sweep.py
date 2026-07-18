@@ -43,6 +43,13 @@ PUBLISHED = {
     "4B":   ("Qwen/Qwen3-4B",   "qwen3-4b",   "Qwen3-4B_jacobian_lens.pt",   479),
     "8B":   ("Qwen/Qwen3-8B",   "qwen3-8b",   "Qwen3-8B_jacobian_lens.pt",   461),
     "14B":  ("Qwen/Qwen3-14B",  "qwen3-14b",  "Qwen3-14B_jacobian_lens.pt",  615),
+    # The decisive pair for the association eval (102 vignettes, concept never named),
+    # which is the ROBUST version of the one-prompt ASCII-face test:
+    #   27B  = HYBRID (48/64 linear attention) -- the only model where "nose" surfaced
+    #   32B  = DENSE, and LARGER -- the capability-vs-architecture control
+    "27B":  ("Qwen/Qwen3.5-27B", "qwen3.5-27b", "Qwen3.5-27B_jacobian_lens.pt", 672),
+    "32B":  ("allenai/Olmo-3-1125-32B", "olmo-3-1125-32b",
+             "Olmo-3-1125-32B_jacobian_lens.pt", 470),
 }
 HEADLINE = ("association", "poetry")
 DEV, DTYPE = "cuda", torch.bfloat16
