@@ -95,7 +95,7 @@ rests on one MIT-licensed platform maintained by a single person, hosting Anthro
 lenses alongside DeepMind's and OpenMOSS's sparse autoencoders. It is where researchers
 already look. I would offer three things: the convergence-fitting wrapper missing from the
 public chain (Anthropic released the estimator; the production fitter was never published,
-and that seam is what silently under-fits lenses); repairs to the two defective artifacts
+and that seam is what silently under-fits lenses); repair of the defective artifact
 found in my audit of all 38 published lenses; and the controls, so a null ships with a
 measurement by default. Acceptance is the maintainer's call — but strengthening shared
 infrastructure is more leveraged than another repository nobody finds.

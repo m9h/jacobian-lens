@@ -154,10 +154,11 @@ lens, is what J-space inherits from the manifolds paper.
      (`--stop_at_delta 0.002 --min_prompts 100 --stop_window 10`). That logic lives in
      Neuronpedia's unreleased wrapper. The gap `jlens-lab` fills is not a withheld
      component — it is a seam between two owners, only one of whom published.
-   - **The broken artifacts are the third party's.** `qwen3-32b`'s "lens" is a raw fit
-     checkpoint at `n_done=80` against a config claiming 615; `qwen3.6-27b` contains only
-     `.DS_Store` files. Pipeline errors from a small operation, not from the paper's
-     authors. (We audited all 38: exactly one is broken.)
+   - **The broken artifact is the third party's.** `qwen3-32b`'s "lens" is a raw fit
+     checkpoint at `n_done=80` against a config claiming 615 — a pipeline error from a
+     small operation, not a defect in the paper's method. We audited all 38: **exactly one
+     is broken.** (`qwen3.6-27b` initially looked broken from a directory listing showing
+     only `.DS_Store` files; its `.pt` is present and valid at 1000 prompts. Corrected.)
    - **Independent scrutiny of this literature currently rests on one person's side
      project.** That is a fragile foundation for a field making consciousness-adjacent
      claims, and it is an argument for funding measurement infrastructure directly rather
