@@ -85,10 +85,20 @@ in AI systems**, over twelve months.
 **(a) Harden and release the tooling.** I have a working companion library
 (`jlens-lab`): convergence-based lens fitting, architecture layouts for state-space and
 linear-attention hybrids that the reference implementation cannot load, and the three
-controls above. It exists because each piece corresponds to a failure that silently
-produces plausible output — including one that consumed ten GPU-hours before I caught it.
+controls above. Each piece corresponds to a failure that silently produces plausible output — one cost
+ten GPU-hours before I caught it.
 Package properly, document, distribute (I maintain scientific-software packaging for
 Fedora and can ship this through standard channels).
+
+**And contribute it upstream to Neuronpedia.** External scrutiny of this literature
+rests on one MIT-licensed platform maintained by a single person, hosting Anthropic's
+lenses alongside DeepMind's and OpenMOSS's sparse autoencoders. It is where researchers
+already look. I would offer three things: the convergence-fitting wrapper missing from the
+public chain (Anthropic released the estimator; the production fitter was never published,
+and that seam is what silently under-fits lenses); repairs to the two defective artifacts
+found in my audit of all 38 published lenses; and the controls, so a null ships with a
+measurement by default. Acceptance is the maintainer's call — but strengthening shared
+infrastructure is more leveraged than another repository nobody finds.
 
 **(b) Operationalise the standard scorecard.** Butlin, Long et al. (2023) converted
 Global Workspace Theory into four checkable indicator properties — parallel modules, a
@@ -99,8 +109,8 @@ for each, so that "this system satisfies GWT-2" becomes a number with a control 
 than a judgement call.
 
 **(c) Publish a public scorecard across open models and architectures**, spanning scale
-(0.6B–70B) and mechanism (dense transformer, linear-attention hybrid, Mamba-2/SSM). Every
-claim reported against its null, with negative results published on equal footing.
+(0.6B–70B) and mechanism (dense, linear-attention hybrid, Mamba-2/SSM). Every claim
+reported against its null, negative results on equal footing.
 
 **(d) Teach it.** Hands-on tutorials in which the reader runs each control themselves.
 The most consequential of them — the distance-only null that dissolves most of a
