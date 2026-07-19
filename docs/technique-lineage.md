@@ -113,11 +113,24 @@ lens, is what J-space inherits from the manifolds paper.
 
 ## What this implies
 
-1. **The techniques are mature; the controls are not.** Activation patching, steering
-   vectors and probes all predate these papers by years, with a literature on their failure
-   modes (Jain & Wallace 2019; Bolukbasi et al. 2021; Makelov, Lange & Nanda, ICLR 2024 on
-   subspace-patching illusions). The consciousness-adjacent papers do not generally cite
-   that failure literature.
+1. **The techniques are mature, and so is the literature on how they fail.** Activation
+   patching, steering vectors and probes predate these papers by years, and each has a
+   documented failure mode: attention weights that look explanatory and are not (Jain &
+   Wallace); interpretability illusions in BERT (Bolukbasi et al.); subspace patching that
+   yields clean, causal-looking, *wrong* results by exploiting dormant pathways (Makelov,
+   Lange & Nanda); and saliency maps that survive scrutiny until you randomize the model
+   (Adebayo et al.). Full references below.
+
+   **I cannot verify whether these papers cite that literature** — the J-space
+   bibliography is JS-loaded and did not survive text extraction, so a zero keyword count
+   proves nothing. An earlier draft of this document asserted they do not. That claim is
+   withdrawn.
+
+   What *is* verifiable is more interesting: **Adam Pearce co-authored "An
+   Interpretability Illusion for BERT" (2021) and is an author on both the manifolds paper
+   and the J-space paper.** The relevant expertise is on the team. So the missing
+   model-randomization control is not an awareness gap — which makes it a more interesting
+   fact about the field's incentives, not a less damning one.
 
 2. **Two independent groups converged on the same gap.** Anthropic and the Chicago/Google/SFI
    group share no authors and do not cite each other, yet both steer a direction, observe an
@@ -137,3 +150,52 @@ lens, is what J-space inherits from the manifolds paper.
    Llama-3.1-8B/70B, Qwen-2.5-72B and Gemma-3-27B. No code release found.
    **Note:** their models go to 70–72B, so a "small-model artifact" objection does *not*
    apply to their negative result — we checked, and dropped that line of attack.
+
+
+---
+
+## References
+
+Verified against arXiv on 2026-07-18.
+
+**Failure modes of interpretability methods**
+- Adebayo, J., Gilmer, J., Muelly, M., et al. (2018). *Sanity Checks for Saliency Maps.*
+  NeurIPS 2018. [arXiv:1810.03292](https://arxiv.org/abs/1810.03292)
+- Jain, S. & Wallace, B. C. (2019). *Attention is not Explanation.* NAACL 2019.
+  [arXiv:1902.10186](https://arxiv.org/abs/1902.10186)
+- Bolukbasi, T., **Pearce, A.**, Yuan, A., Coenen, A., et al. (2021). *An Interpretability
+  Illusion for BERT.* [arXiv:2104.07143](https://arxiv.org/abs/2104.07143)
+  — note the second author is also on the manifolds and J-space papers.
+- Makelov, A., Lange, G. & Nanda, N. (2023). *Is This the Subspace You Are Looking For? An
+  Interpretability Illusion for Subspace Activation Patching.* ICLR 2024.
+  [arXiv:2311.17030](https://arxiv.org/abs/2311.17030)
+
+**Lenses**
+- nostalgebraist (2020). *interpreting GPT: the logit lens.* LessWrong. *(not on arXiv)*
+- Belrose, N., Ostrovsky, I., McKinney, L., Furman, Z., et al. (2023). *Eliciting Latent
+  Predictions from Transformers with the Tuned Lens.*
+  [arXiv:2303.08112](https://arxiv.org/abs/2303.08112)
+
+**The four papers analysed**
+- Gurnee, W., Ameisen, E., Kauvar, I., Tarng, J., Pearce, A., Olah, C. & Batson, J. (2025).
+  *When Models Manipulate Manifolds: The Geometry of a Counting Task.* 21 Oct 2025.
+  https://transformer-circuits.pub/2025/linebreaks/index.html
+- Lindsey, J. (2025). *Emergent Introspective Awareness in Large Language Models.*
+  29 Oct 2025. https://transformer-circuits.pub/2025/introspection/index.html ·
+  [arXiv:2601.01828](https://arxiv.org/abs/2601.01828)
+- Kim, J., Lai, S., Scherrer, N., Agüera y Arcas, B. & Evans, J. (2026). *Reasoning Models
+  Generate Societies of Thought.* [arXiv:2601.10825](https://arxiv.org/abs/2601.10825)
+- Gurnee, W., Sofroniew, N., Pearce, A., et al. & Lindsey, J. (2026). *Verbalizable
+  Representations Form a Global Workspace in Language Models.* 6 Jul 2026.
+  https://transformer-circuits.pub/2026/workspace/index.html
+
+**The controlled replication**
+- Singh, S., Linzen, T. & Ravfogel, S. (2026). *Can LLMs Introspect? A Reality Check.*
+  25 May 2026. [arXiv:2605.26242](https://arxiv.org/abs/2605.26242)
+  — tests Llama-3.1-8B/70B, Qwen-2.5-72B, Gemma-3-27B-it.
+
+**Cited from memory, NOT verified in this pass** — check before reuse: Alain & Bengio
+(2016) probing classifiers; Zou et al. (2023) representation engineering; Turner et al.
+(2023) activation addition; Rimsky et al. (2024) contrastive activation addition; Bricken
+et al. (2023) and Cunningham et al. (2023) on SAEs; Vig et al. (2020) and Meng et al.
+(2022, ROME) on causal tracing/patching.
