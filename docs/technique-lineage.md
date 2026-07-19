@@ -138,12 +138,37 @@ lens, is what J-space inherits from the manifolds paper.
    control (SoT's effect is a Countdown artifact; J-space's "emergence" was one lucky
    prompt).
 
-3. **Only one of the four is independently checkable.** Manifolds, Introspection and SoT
+3. **The one checkable paper borrows its checkability from a volunteer.** Neuronpedia
+   (`hijohnnylin/neuronpedia`, MIT, created **June 2023** — three years before the J-space
+   paper) is an independent open-source platform owned by an individual, not by Anthropic.
+   It also hosts Gemma Scope (DeepMind), Llama Scope (OpenMOSS) and circuit-tracer graphs.
+   Every published lens's `config.yaml` states the division of labour verbatim: *"Jacobian
+   lens ('jlens') by Anthropic PBC... Apache-2.0. **Fit via Neuronpedia
+   run-all-fit-lens.py**."* Anthropic wrote the estimator; a third party ran the fits and
+   hosts them. Anthropic's own HuggingFace org publishes **zero models**.
+
+   Three things follow:
+
+   - **The convergence criterion is Neuronpedia's code, not Anthropic's.** `jlens.fit()`
+     ships with no stopping rule, yet every published lens was fit to one
+     (`--stop_at_delta 0.002 --min_prompts 100 --stop_window 10`). That logic lives in
+     Neuronpedia's unreleased wrapper. The gap `jlens-lab` fills is not a withheld
+     component — it is a seam between two owners, only one of whom published.
+   - **The broken artifacts are the third party's.** `qwen3-32b`'s "lens" is a raw fit
+     checkpoint at `n_done=80` against a config claiming 615; `qwen3.6-27b` contains only
+     `.DS_Store` files. Pipeline errors from a small operation, not from the paper's
+     authors. (We audited all 38: exactly one is broken.)
+   - **Independent scrutiny of this literature currently rests on one person's side
+     project.** That is a fragile foundation for a field making consciousness-adjacent
+     claims, and it is an argument for funding measurement infrastructure directly rather
+     than assuming the labs will supply it.
+
+4. **Only one of the four is independently checkable at all.** Manifolds, Introspection and SoT
    released no code, no vectors, no data. Every headline claim in all four rests on models
    the public cannot access — Claude 3.5 Haiku, Opus 4.1, Sonnet 4.5, Opus 4.6. The J-space
    paper's 38 published lenses are for *other* models than the ones it makes claims about.
 
-4. **The rebuttal has the same problem.** Singh, Linzen & Ravfogel's *"Can LLMs Introspect?
+5. **The rebuttal has the same problem.** Singh, Linzen & Ravfogel's *"Can LLMs Introspect?
    A Reality Check"* (arXiv:2605.26242) is the properly-controlled replication — three-way
    discrimination (input-level vs activation-level vs no intervention), an input-only
    classifier baseline, and a relabeled control that drops accuracy to chance. It tests
@@ -188,6 +213,11 @@ Verified against arXiv on 2026-07-18.
 - Gurnee, W., Sofroniew, N., Pearce, A., et al. & Lindsey, J. (2026). *Verbalizable
   Representations Form a Global Workspace in Language Models.* 6 Jul 2026.
   https://transformer-circuits.pub/2026/workspace/index.html
+
+**Infrastructure**
+- Lin, J. *Neuronpedia — open source interpretability platform.* MIT, created 21 Jun 2023.
+  https://github.com/hijohnnylin/neuronpedia · https://www.neuronpedia.org ·
+  lenses at https://huggingface.co/neuronpedia/jacobian-lens
 
 **The controlled replication**
 - Singh, S., Linzen, T. & Ravfogel, S. (2026). *Can LLMs Introspect? A Reality Check.*
