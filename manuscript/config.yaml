@@ -1,0 +1,30 @@
+project:
+  name: jacobian-lens-controls
+  title: "Controls for Consciousness-Indicator Claims in Language Models"
+  short_title: "Controls for the Jacobian Lens"
+authors:
+  - name: Morgan Hough
+    affiliation: Independent
+    email: morgan.hough@gmail.com
+date: "2026-07-19"
+version: "0.1.0"
+keywords:
+  - mechanistic interpretability
+  - global workspace theory
+  - Jacobian lens
+  - replication
+beamer_theme: metropolis
+scan_paths:
+  - slides
+exclude_paths:
+  - .git
+  - .venv
+  - node_modules
+  - __pycache__
+  - manuscript/output
+  - .github
+  - results
+  - experiments
+  - docs
+  - proposal
+output_dir: manuscript/output
