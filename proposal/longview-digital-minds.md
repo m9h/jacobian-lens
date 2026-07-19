@@ -26,6 +26,17 @@ The gap is not conceptual. Anthropic open-sourced the method under Apache-2.0 an
 published fitted lenses for 38 open models. The gap is that **nobody is running the
 controls** — and the controls are what separate a measurement from a metaphor.
 
+Nor is this one laboratory's habit. In January 2026 a group at Chicago, Google and the
+Santa Fe Institute — no authors in common with Anthropic, and neither group citing the
+other — published *"Reasoning Models Generate Societies of Thought,"* which steers a
+single sparse-autoencoder feature, observes a large accuracy gain, and reads it as
+evidence that reasoning models simulate interacting internal voices. Structurally it is
+the same move: write a direction into the residual stream, observe an effect, name it
+after a construct from cognitive science. I have now shown, in a second repository, that
+this effect too disappears under a matched control — it is an artifact of the one
+benchmark it was measured on. Two independent groups, two borrowed constructs, the same
+missing control. That is a field-level methodological gap, not an isolated error.
+
 ## What I have already established, unfunded
 
 Over the past two weeks, working alone on personal hardware plus roughly $30 of rented
