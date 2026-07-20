@@ -1,0 +1,10 @@
+cos(base, post-trained) on Anthropic's published lenses; refit baseline 0.957-0.972
+  gemma-3-270m   d=  640 cos=0.8781 min=0.6229 idD 81.817->68.307
+  gemma-3-1b     d= 1152 cos=0.3064 min=0.0622 idD 4.308->3.555
+  gemma-2-2b     d= 2304 cos=0.8918 min=0.7939 idD 1.027->1.009
+  gemma-3-4b     d= 2560 cos=0.7146 min=0.4175 idD 4.318->6.663
+  gemma-2-9b     d= 3584 cos=0.8871 min=0.7377 idD 0.902->0.887
+  llama3.1-8b    d= 4096 cos=0.9116 min=0.6779 idD 1.264->1.250
+  gemma-3-12b    d= 3840 cos=0.7854 min=0.5819 idD 3.907->5.100
+  gemma-3-27b    d= 5376 cos=0.7192 min=0.3562 idD 3.844->3.937
+  MEAN cos = 0.7618
