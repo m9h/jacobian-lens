@@ -37,6 +37,32 @@ I self-corrected five times. A fresh set of eyes should assume there is a sixth.
 **Every one of these produced plausible output.** That is the theme. Assume the current
 conclusions have the same problem until you have tried to break them.
 
+## What the PAPER claims (not what we found)
+
+A parallel session pointed out a structural gap in this document: it inventoried *our
+findings* and never inventoried *the paper's assertions*. Those are different documents,
+and only the second existed — so a claim we never tested was invisible here, because it
+had no row.
+
+The canonical inventory now lives in
+`~/Workspace/societies-of-thought/docs/anthropic_claims_scorecard.md` — nine claims with
+status. Do not duplicate it here; read it. Its provenance warning matters: most rows were
+reconstructed from our own responses, not transcribed from the paper.
+
+Two rows verified against the source text on 2026-07-19:
+
+- **Capacity/bottleneck is stated with numbers.** The J-space component is *"never more
+  than 10%"* of total activation variance and *"holds on the order of tens of concepts at
+  a time."* Untested by us, and checkable from published lens files plus a forward pass.
+- **Broadcast-back is NOT claimed — the paper concedes the opposite:** *"there are no
+  obviously separable input processors, and the broadcast we document occurs within a
+  single feedforward pass rather than through recurrent loops."* Nothing to refute. Do
+  not spend on it.
+
+The open one is **Claim 6** — post-training shaped the J-space toward a point of view
+rather than pure prediction. Untestable from outside until AI2 published twelve OLMo-3
+arms on one base. Design and confound analysis are in the scorecard.
+
 ## Findings, ranked by how much they matter
 
 ### 1. The tripartite CKA structure is mostly smooth drift — but real excess appears at ≥20B
