@@ -80,8 +80,14 @@ image = (
     modal.Image.debian_slim(python_version="3.11")
     .apt_install("git")
     .pip_install(
-        "torch==2.5.1",
-        "transformers>=4.57,<5",   # 5.x removed the Flax classes and moved rope config
+        "torch>=2.6",
+        # OLMo-3 (Olmo3ForCausalLM, YaRN RoPE) and Ministral-3
+        # (Mistral3ForConditionalGeneration) only exist in transformers 5.x -- 4.57
+        # predates the OLMo-3 release. This app is pure torch (no Flax), so the old
+        # "<5 keeps the Flax classes" rationale does not apply. Verified locally on
+        # transformers 5.9.0 / torch 2.12: both classes import. The anchor gate is what
+        # confirms the weights (and YaRN RoPE) actually load correctly under this pin.
+        "transformers>=5.5,<6",
         "accelerate", "safetensors", "datasets", "numpy", "huggingface_hub",
     )
     .run_commands(
@@ -148,35 +154,37 @@ def _slug(arm: str) -> str:
 
 
 def _load_lm(arm: str, torch):
-    """Load a model's causal-LM backbone, handling multimodal wrappers.
+    """Load an arm and wrap it as a jlens ``LensModel``, ready for jacobian_for_prompt.
 
-    OLMo-3 is a plain Olmo3ForCausalLM. Ministral-3 is
-    Mistral3ForConditionalGeneration -- a vision-language wrapper whose text model
-    is a submodule (.language_model / .model.language_model). jlens needs a module
-    that exposes the LM forward with hidden states, so unwrap to the text backbone
-    when a vision_config is present.
+    jacobian_for_prompt does NOT take a raw HF model -- it drives a LensModel
+    (``.encode / .forward / .n_layers / .d_model / .layers``). ``jlens.from_hf`` builds
+    that wrapper AND locates the text decoder itself: its layout registry already covers
+    both the plain ``Olmo3ForCausalLM`` (``model``) and the multimodal
+    ``Mistral3ForConditionalGeneration`` (``model.language_model`` / ``language_model``),
+    so we do NOT hand-unwrap ``.language_model`` -- that gave jlens a bare nn.Module with
+    none of the LensModel interface. We only choose the right AutoModel class for loading;
+    from_hf does the rest and raises a clear error if a layout is genuinely unknown.
 
-    Returns (model_for_jlens, tokenizer). The wrapper case is UNTESTED end to end;
-    the submodule path is inferred from the config and may need adjusting on the
-    first real run -- which is exactly why the anchor gate runs OLMo first.
+    Returns (lens_model, tokenizer).
     """
+    import jlens
     from transformers import AutoConfig, AutoTokenizer
 
     tok = AutoTokenizer.from_pretrained(arm)
     cfg = AutoConfig.from_pretrained(arm)
     if getattr(cfg, "vision_config", None) is not None:
-        # Multimodal wrapper: load the full model, then hand jlens the text tower.
+        # Multimodal wrapper: load the whole ForConditionalGeneration; from_hf finds the
+        # text tower via its layout registry. UNTESTED path -- the anchor runs OLMo first.
         from transformers import AutoModelForImageTextToText
 
         full = AutoModelForImageTextToText.from_pretrained(
             arm, dtype=torch.bfloat16, device_map="cuda").eval()
-        lm = getattr(full, "language_model", None) or getattr(full.model, "language_model")
-        return lm, tok
-    from transformers import AutoModelForCausalLM
+    else:
+        from transformers import AutoModelForCausalLM
 
-    lm = AutoModelForCausalLM.from_pretrained(
-        arm, dtype=torch.bfloat16, device_map="cuda").eval()
-    return lm, tok
+        full = AutoModelForCausalLM.from_pretrained(
+            arm, dtype=torch.bfloat16, device_map="cuda").eval()
+    return jlens.from_hf(full, tok), tok
 
 
 def _prompts(tok, n: int) -> list[str]:
@@ -208,7 +216,7 @@ def fit_shard(arm: str, shard: int) -> dict:
 
     model, tok = _load_lm(arm, torch)
 
-    n_layers = model.config.num_hidden_layers
+    n_layers = model.n_layers          # LensModel exposes n_layers; it has no .config
     # EXCLUDE the target (final) layer: a Jacobian from the target to itself is
     # undefined and jacobian_for_prompt raises on every prompt.
     layers = list(range(0, n_layers - 1, LAYER_STEP))
@@ -350,7 +358,7 @@ def seed_split_consistency(arm: str) -> dict:
     Ministral rides alongside OLMo rather than standing alone -- OLMo proves the
     pipeline against a real anchor, this proves Ministral's fit is not noise.
     """
-    import jlens, torch
+    import pathlib, jlens, torch
     import torch.nn.functional as F
 
     d = pathlib.Path(f"/out/olmo_ladder/{_slug(arm)}")
