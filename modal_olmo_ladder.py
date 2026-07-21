@@ -113,6 +113,28 @@ ARMS = [
     "allenai/Olmo-3-7B-RL-Zero-Mix",
 ]
 
+# SECOND-FAMILY REPLICATION -- Ministral-3, a DIFFERENT base with a base->reasoning
+# ladder. Tests whether the ladder's main effect reproduces outside OLMo. It is a
+# replication, not a second copy of the study, and it comes with two hard caveats
+# (see docs/anthropic_claims_scorecard.md, "Second-family replication"):
+#
+#   NO ANCHOR   Neuronpedia publishes no lens for any Mistral/Ministral, so
+#               validate_fit cannot gate the base fit. Ministral lenses are
+#               UNANCHORED; validation is (a) the pipeline proven on OLMo + (b)
+#               the seed-split self-consistency check below.
+#   NO CONTROL  base + instruct + reasoning only; no RL-Zero-by-domain arms, so
+#               the capability confound is uncontrolled. Ministral answers "does
+#               the shift reproduce", not "is it viewpoint vs capability".
+#   MULTIMODAL  Mistral3ForConditionalGeneration wraps a vision encoder; the text
+#               backbone is a submodule. _load_lm() below extracts it. UNTESTED
+#               -- this is the one integration risk.
+MINISTRAL_BASE = "mistralai/Ministral-3-8B-Base-2512"
+MINISTRAL_ARMS = [
+    MINISTRAL_BASE,
+    "mistralai/Ministral-3-8B-Instruct-2512",
+    "mistralai/Ministral-3-8B-Reasoning-2512",
+]
+
 N_PROMPTS = 616          # matches the published anchor lens
 N_SHARDS = 8
 LAYER_STEP = 3           # 11 of 32 layers; Anthropic's own figures subsample
@@ -123,6 +145,38 @@ SKIP_FIRST = 16
 
 def _slug(arm: str) -> str:
     return arm.split("/")[-1].lower()
+
+
+def _load_lm(arm: str, torch):
+    """Load a model's causal-LM backbone, handling multimodal wrappers.
+
+    OLMo-3 is a plain Olmo3ForCausalLM. Ministral-3 is
+    Mistral3ForConditionalGeneration -- a vision-language wrapper whose text model
+    is a submodule (.language_model / .model.language_model). jlens needs a module
+    that exposes the LM forward with hidden states, so unwrap to the text backbone
+    when a vision_config is present.
+
+    Returns (model_for_jlens, tokenizer). The wrapper case is UNTESTED end to end;
+    the submodule path is inferred from the config and may need adjusting on the
+    first real run -- which is exactly why the anchor gate runs OLMo first.
+    """
+    from transformers import AutoConfig, AutoTokenizer
+
+    tok = AutoTokenizer.from_pretrained(arm)
+    cfg = AutoConfig.from_pretrained(arm)
+    if getattr(cfg, "vision_config", None) is not None:
+        # Multimodal wrapper: load the full model, then hand jlens the text tower.
+        from transformers import AutoModelForImageTextToText
+
+        full = AutoModelForImageTextToText.from_pretrained(
+            arm, dtype=torch.bfloat16, device_map="cuda").eval()
+        lm = getattr(full, "language_model", None) or getattr(full.model, "language_model")
+        return lm, tok
+    from transformers import AutoModelForCausalLM
+
+    lm = AutoModelForCausalLM.from_pretrained(
+        arm, dtype=torch.bfloat16, device_map="cuda").eval()
+    return lm, tok
 
 
 def _prompts(tok, n: int) -> list[str]:
@@ -151,11 +205,8 @@ def fit_shard(arm: str, shard: int) -> dict:
     """
     import pathlib, torch, jlens
     from jlens.fitting import jacobian_for_prompt
-    from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    tok = AutoTokenizer.from_pretrained(arm)
-    model = AutoModelForCausalLM.from_pretrained(
-        arm, dtype=torch.bfloat16, device_map="cuda").eval()
+    model, tok = _load_lm(arm, torch)
 
     n_layers = model.config.num_hidden_layers
     # EXCLUDE the target (final) layer: a Jacobian from the target to itself is
@@ -197,14 +248,27 @@ def fit_shard(arm: str, shard: int) -> dict:
 
 
 @app.function(image=image, volumes={"/out": out}, timeout=30 * 60, env=ENV)
-def combine(arm: str) -> dict:
-    """sum(partials) / sum(counts) -- exact, because the fit is a plain mean."""
+def combine(arm: str, half: int | None = None) -> dict:
+    """sum(partials) / sum(counts) -- exact, because the fit is a plain mean.
+
+    half=None (default): combine ALL shards into lens.pt -- the OLMo path.
+    half in {0,1}: combine only that half's shards into lens_half{h}.pt, for the
+    Ministral seed-split self-consistency check. In the half case shards are NOT
+    deleted, since the other half is combined in a separate call.
+    """
     import pathlib, torch, jlens
 
     d = pathlib.Path(f"/out/olmo_ladder/{_slug(arm)}")
-    shards = sorted(d.glob("shard_*.pt"))
-    if len(shards) != N_SHARDS:
-        raise RuntimeError(f"{arm}: expected {N_SHARDS} shards, found {len(shards)}. "
+    if half is None:
+        shards = sorted(d.glob("shard_*.pt"))
+        expected, out_name, delete = N_SHARDS, "lens.pt", True
+    else:
+        want = set(range(half, N_SHARDS, 2))
+        shards = sorted(s for s in d.glob("shard_*.pt")
+                        if int(s.stem.split("_")[1]) in want)
+        expected, out_name, delete = len(want), f"lens_half{half}.pt", False
+    if len(shards) != expected:
+        raise RuntimeError(f"{arm}: expected {expected} shards, found {len(shards)}. "
                            "Refusing to build a lens from a partial fan-out.")
 
     total, n_total, layers = None, 0, None
@@ -220,11 +284,12 @@ def combine(arm: str) -> dict:
     lens = jlens.JacobianLens(
         jacobians={l: total[l] / n_total for l in layers},
         n_prompts=n_total, d_model=next(iter(total.values())).shape[-1])
-    lens.save(str(d / "lens.pt"))
-    for s in shards:      # partials are transient and large
-        s.unlink()
+    lens.save(str(d / out_name))
+    if delete:
+        for s in shards:      # partials are transient and large
+            s.unlink()
     out.commit()
-    return {"arm": arm, "n_prompts": n_total, "layers": len(layers)}
+    return {"arm": arm, "n_prompts": n_total, "layers": len(layers), "half": half}
 
 
 @app.function(image=image, volumes={"/out": out}, timeout=30 * 60, env=ENV)
@@ -272,3 +337,48 @@ def ladder():
               f"arms will differ in n_prompts: {[(r['arm'], r['skipped']) for r in bad]}")
     for r in combine.map(rest):
         print("  ", r)
+
+
+@app.function(image=image, volumes={"/out": out}, timeout=30 * 60, env=ENV)
+def seed_split_consistency(arm: str) -> dict:
+    """The anchor SUBSTITUTE for a family with no published lens.
+
+    Ministral has no reference lens, so we cannot check the fit against ground
+    truth. What we CAN check is that the fit is stable: two lenses built from
+    disjoint halves of the prompt set must agree. A high self-similarity does not
+    prove correctness (a consistently-wrong fit would also pass), which is why
+    Ministral rides alongside OLMo rather than standing alone -- OLMo proves the
+    pipeline against a real anchor, this proves Ministral's fit is not noise.
+    """
+    import jlens, torch
+    import torch.nn.functional as F
+
+    d = pathlib.Path(f"/out/olmo_ladder/{_slug(arm)}")
+    a = jlens.JacobianLens.load(str(d / "lens_half0.pt"))
+    b = jlens.JacobianLens.load(str(d / "lens_half1.pt"))
+    per_layer = {}
+    for l in a.jacobians:
+        va, vb = a.jacobians[l].flatten().float(), b.jacobians[l].flatten().float()
+        per_layer[l] = float(F.cosine_similarity(va, vb, dim=0))
+    mean_cos = sum(per_layer.values()) / len(per_layer)
+    return {"arm": arm, "mean_self_cosine": mean_cos,
+            "pass": mean_cos >= 0.95, "per_layer": per_layer}
+
+
+@app.local_entrypoint()
+def ministral():
+    """Second-family replication. UNANCHORED -- run OLMo `anchor` first so the
+    pipeline is proven against a real reference before trusting this.
+
+    Each arm is fit twice, on disjoint prompt halves, and the two lenses must
+    agree (seed_split_consistency) -- the substitute for the missing anchor.
+    """
+    print("  Ministral-3 second-family replication (UNANCHORED -- see scorecard)")
+    for arm in MINISTRAL_ARMS:
+        # fit two half-lenses per arm using the even/odd shards as the split
+        for half, shard_set in ((0, range(0, N_SHARDS, 2)), (1, range(1, N_SHARDS, 2))):
+            list(fit_shard.starmap([(arm, s) for s in shard_set]))
+            combine.remote(arm, half=half)
+        check = seed_split_consistency.remote(arm)
+        flag = "OK" if check["pass"] else "INCONSISTENT -- fit is unstable, do not trust"
+        print(f"  {arm}: self-cosine {check['mean_self_cosine']:.3f}  [{flag}]")
