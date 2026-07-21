@@ -1,5 +1,5 @@
 ---
-title: "Controls for Consciousness-Indicator Claims in Language Models"
+title: "Controls for the Jacobian Lens"
 author:
   - Morgan Hough
 institute: "Independent"
