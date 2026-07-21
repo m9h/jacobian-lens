@@ -145,7 +145,15 @@ N_PROMPTS = 616          # matches the published anchor lens
 N_SHARDS = 8
 LAYER_STEP = 3           # 11 of 32 layers; Anthropic's own figures subsample
 MAX_SEQ_LEN = 128
-DIM_BATCH = 32
+# dim_batch is memory-only for a SINGLE fit but NOT throughput-neutral in practice:
+# n_passes = ceil(d_model/dim_batch), and each pass carries fixed per-launch overhead.
+# The first anchor attempt ran dim_batch=32 (128 backward passes/prompt) on an A100 and
+# measured ~55 s/prompt -- ~4x Anthropic's published ~11.5 s/prompt (dim_batch=128 on a
+# B200), which would blow both the 60-min shard timeout and the ~27 GPU-hr budget. 64
+# halves the passes and fits an 80 GB card comfortably for an 11-layer 7B fit; paired
+# with H100 (below) this restores published-class throughput. (128 fits memory too but
+# has OOM'd before on larger configs, so 64 is the safe step.)
+DIM_BATCH = 64
 SKIP_FIRST = 16
 
 
@@ -353,8 +361,8 @@ def capability_all():
           "as an assumed-away constant.")
 
 
-@app.function(image=image, gpu="A100-80GB", volumes={"/cache": cache, "/out": out},
-              timeout=60 * 60, env=ENV, retries=1)
+@app.function(image=image, gpu="H100", volumes={"/cache": cache, "/out": out},
+              timeout=90 * 60, env=ENV, retries=1)
 def fit_shard(arm: str, shard: int) -> dict:
     """Accumulate a PARTIAL Jacobian sum over this shard's prompts.
 
