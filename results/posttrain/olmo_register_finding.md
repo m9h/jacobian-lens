@@ -43,3 +43,10 @@ inspectable AND the only one showing the effect:
 
 Recommendation: run the FREE infini-gram attribution FIRST; it is now the central test.
 Hold the paid checkpoint sweep until attribution supports the data-register story.
+
+## Frequency control (the flagged gap) — PASSES
+- corr(workspace/output ratio, Zipf frequency) = -0.148. The ratio is not a frequency
+  proxy (would be strongly + if it were).
+- Register words beat frequency-matched neutral words in 5/5 Zipf bins. Within every
+  frequency band, the workspace holds register over neutral. **Effect is register, not
+  frequency.** All three controls now pass: real, OLMo-specific, not frequency.
