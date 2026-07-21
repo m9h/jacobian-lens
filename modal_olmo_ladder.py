@@ -356,11 +356,11 @@ def capability_all():
                if v["mmlu_by_domain"].get(dom) is not None}
         if not col:
             continue
-        best = max(col, key=col.get)
+        best = max(col, key=col.get)      # best is the arm KEY, not a value
         own = col.get(arm_key)
         flag = "DIAGONAL (own-domain best -> capability is domain-shaped)" if best == arm_key \
-            else f"off-diagonal (best={best})"
-        print(f"    {dom:8s}: RL-Zero-{arm_key} = {own:.3f}, argmax = {best:.3f}? {flag}")
+            else f"off-diagonal (best={best}={col[best]:.3f})"
+        print(f"    {dom:8s}: RL-Zero-{arm_key} = {own:.3f}, argmax = {col[best]:.3f}  {flag}")
 
     # Confound check 2: capability spread along the method ladder.
     order = ["7B", "Instruct-SFT", "Instruct-DPO", "Instruct",
