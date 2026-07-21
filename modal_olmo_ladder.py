@@ -203,6 +203,156 @@ def _prompts(tok, n: int) -> list[str]:
     return prompts
 
 
+# =====================================================================================
+# CAPABILITY PROBE -- run BEFORE the ladder (agreed 2026-07-19; the user's chosen flow)
+# =====================================================================================
+# The ladder's whole logic is that geometry moving across the RL-Zero DOMAIN arms
+# (Math/Code/IF/General/Mix, matched method) is viewpoint, not capability -- because
+# capability is "held roughly constant". That premise is an assumption until measured.
+# This probe measures capability per arm with FORWARD PASSES ONLY (no Jacobian), so if
+# capability turns out to be collinear with the domain axis we learn it for ~one cheap
+# pass instead of after ~27 GPU-hours of fitting.
+#
+# Two axes, both generation-free:
+#   ppl  -- mean token NLL on the SAME neutral wikitext prompts the lens is fit on.
+#           A domain-neutral scalar. (Instruction/Think arms shift the text distribution,
+#           so read ppl RELATIVELY, not as a clean capability number -- hence also:)
+#   mmlu -- length-normalised answer-logprob accuracy on a domain-balanced MMLU battery,
+#           bucketed into math / code / general. The KEY output is the arm x domain
+#           matrix: if each RL-Zero-{Math,Code,General} arm is best at ITS OWN domain
+#           (a dominant diagonal), capability is domain-shaped and the RL-Zero control
+#           is confounded -- exactly the finding worth having before the ladder.
+MMLU_DOMAINS = {
+    "math": ["abstract_algebra", "college_mathematics",
+             "high_school_mathematics", "elementary_mathematics"],
+    "code": ["college_computer_science", "high_school_computer_science",
+             "machine_learning", "computer_security"],
+    "general": ["miscellaneous", "philosophy", "world_religions", "prehistory"],
+}
+N_PER_SUBJECT = 25          # 25 x 4 subjects x 3 domains = 300 MC items, generation-free
+N_PPL_PROMPTS = 50
+
+
+@app.function(image=image, gpu="A100-80GB", volumes={"/cache": cache, "/out": out},
+              timeout=40 * 60, env=ENV, retries=1)
+def capability(arm: str) -> dict:
+    """Forward-pass capability for one arm: neutral perplexity + MMLU-by-domain accuracy.
+
+    No Jacobian, no LensModel -- a plain HF model. MC items are scored by the
+    length-normalised log-probability of each choice's text (the standard base-model
+    protocol; letter-scoring is unreliable for base checkpoints).
+    """
+    import json, math, pathlib, torch
+    from transformers import AutoConfig, AutoTokenizer
+    from datasets import load_dataset
+
+    tok = AutoTokenizer.from_pretrained(arm)
+    cfg = AutoConfig.from_pretrained(arm)
+    if getattr(cfg, "vision_config", None) is not None:
+        from transformers import AutoModelForImageTextToText as _Cls
+    else:
+        from transformers import AutoModelForCausalLM as _Cls
+    model = _Cls.from_pretrained(arm, dtype=torch.bfloat16, device_map="cuda").eval()
+
+    # --- neutral perplexity (same wikitext the lens is fit on) ---
+    tot_nll, tot_tok = 0.0, 0
+    with torch.no_grad():
+        for p in _prompts(tok, N_PPL_PROMPTS):
+            ids = tok(p, return_tensors="pt", truncation=True,
+                      max_length=MAX_SEQ_LEN).input_ids.to("cuda")
+            if ids.shape[1] < 2:
+                continue
+            nll = model(ids, labels=ids).loss.item()
+            tot_nll += nll * (ids.shape[1] - 1)
+            tot_tok += ids.shape[1] - 1
+    ppl = math.exp(tot_nll / tot_tok) if tot_tok else float("nan")
+
+    # --- MMLU by domain, length-normalised answer logprob ---
+    def score(ctx_ids, choice_text):
+        cids = tok(choice_text, return_tensors="pt",
+                   add_special_tokens=False).input_ids.to("cuda")
+        full = torch.cat([ctx_ids, cids], dim=1)
+        with torch.no_grad():
+            logits = model(full).logits[0]
+        lp = torch.log_softmax(logits[ctx_ids.shape[1] - 1: full.shape[1] - 1], dim=-1)
+        return lp.gather(1, cids[0, :, None]).mean().item()   # mean = length-normalised
+
+    dom_acc, dom_n = {}, {}
+    for dom, subjects in MMLU_DOMAINS.items():
+        correct = total = 0
+        for subj in subjects:
+            try:
+                ds = load_dataset("cais/mmlu", subj, split=f"test[:{N_PER_SUBJECT}]")
+            except Exception:
+                continue
+            for q in ds:
+                ctx = tok(f"{q['question'].strip()}\nAnswer:",
+                          return_tensors="pt").input_ids.to("cuda")
+                scores = [score(ctx, " " + c) for c in q["choices"]]
+                correct += int(scores.index(max(scores)) == int(q["answer"]))
+                total += 1
+        dom_acc[dom] = (correct / total) if total else None
+        dom_n[dom] = total
+
+    accs = [a for a in dom_acc.values() if a is not None]
+    res = {"arm": arm, "ppl": ppl,
+           "mmlu_overall": (sum(accs) / len(accs)) if accs else None,
+           "mmlu_by_domain": dom_acc, "n_by_domain": dom_n}
+    d = pathlib.Path(f"/out/olmo_ladder/{_slug(arm)}")
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "capability.json").write_text(json.dumps(res, indent=2))
+    out.commit()
+    return res
+
+
+@app.local_entrypoint()
+def capability_all():
+    """Measure capability across all twelve OLMo arms, then flag the confound directly.
+
+    The decision this informs: if capability is collinear with the domain axis (each
+    RL-Zero domain arm best at its own domain, or capability monotone along the method
+    ladder), the ladder geometry cannot be read as viewpoint-vs-capability and the design
+    must change BEFORE ~27 GPU-hours are spent.
+    """
+    rows = [r for r in capability.map(ARMS) if r]
+    rows.sort(key=lambda r: r["arm"])
+    print(f"\n  {'arm':38s} {'ppl':>7s} {'mmlu':>6s}  {'math':>6s} {'code':>6s} {'genl':>6s}")
+    for r in rows:
+        d = r["mmlu_by_domain"]
+        def f(x): return f"{x:.3f}" if isinstance(x, float) else "  -  "
+        print(f"  {_slug(r['arm']):38s} {r['ppl']:7.2f} {f(r['mmlu_overall']):>6s}  "
+              f"{f(d['math']):>6s} {f(d['code']):>6s} {f(d['general']):>6s}")
+
+    # Confound check 1: does each RL-Zero domain arm top its OWN domain column?
+    rl = {r["arm"].split("RL-Zero-")[-1]: r for r in rows if "RL-Zero-" in r["arm"]}
+    print("\n  RL-Zero domain-diagonal check (is each arm best at its own domain?):")
+    for dom, arm_key in (("math", "Math"), ("code", "Code"), ("general", "General")):
+        if arm_key not in rl:
+            continue
+        col = {k: v["mmlu_by_domain"].get(dom) for k, v in rl.items()
+               if v["mmlu_by_domain"].get(dom) is not None}
+        if not col:
+            continue
+        best = max(col, key=col.get)
+        own = col.get(arm_key)
+        flag = "DIAGONAL (own-domain best -> capability is domain-shaped)" if best == arm_key \
+            else f"off-diagonal (best={best})"
+        print(f"    {dom:8s}: RL-Zero-{arm_key} = {own:.3f}, argmax = {best:.3f}? {flag}")
+
+    # Confound check 2: capability spread along the method ladder.
+    order = ["7B", "Instruct-SFT", "Instruct-DPO", "Instruct",
+             "Think-SFT", "Think-DPO", "Think"]
+    print("\n  Method-ladder capability (mmlu_overall along base -> post-trained):")
+    for name in order:
+        m = next((r for r in rows if r["arm"].endswith(name)
+                  or r["arm"].endswith("Olmo-3-1025-7B") and name == "7B"), None)
+        if m and m["mmlu_overall"] is not None:
+            print(f"    {name:16s} {m['mmlu_overall']:.3f}")
+    print("\n  Read: a dominant diagonal or a steep monotone ladder = capability is "
+          "collinear with the axis; the ladder needs capability AS A COVARIATE, not "
+          "as an assumed-away constant.")
+
+
 @app.function(image=image, gpu="A100-80GB", volumes={"/cache": cache, "/out": out},
               timeout=60 * 60, env=ENV, retries=1)
 def fit_shard(arm: str, shard: int) -> dict:
