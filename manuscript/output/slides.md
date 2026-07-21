@@ -1,10 +1,12 @@
 ---
-title: "Controls for the Jacobian Lens"
+title: "Controls for Consciousness-Indicator Claims in Language Models"
 author:
   - Morgan Hough
 institute: "Independent"
 date: "2026-07-19"
 theme: metropolis
+header-includes:
+  - \usepackage{booktabs}
 ---
 
 
@@ -243,6 +245,87 @@ cleverness --- it is running the control that kills your own result, and saying 
 
 
 
+## Result 5 --- post-training moves the J-space, but the tidy reading is confounded
+
+\textbf{Claim 6:} post-training shaped the J-space \emph{``toward a point of view''}
+rather than pure prediction. Untestable from outside --- until OLMo-3. It is the only
+open family shipping a base model, its post-trained variants, the \textbf{public training
+data} (Dolma), and ${\sim}1{,}486$ checkpoints.
+
+\medskip
+\textbf{Magnitude --- holds.} $\mathrm{mean}\,\cos(J_{\text{base}}, J_{\text{instruct}})
+= 0.76$ over 8 pairs, against a ${\sim}0.96$ same-model refit-noise floor. Post-training
+\emph{does} move the workspace, well beyond fitting noise. First outside quantification of
+the claim.
+
+\medskip
+\textbf{Structure --- confounded.} The tempting next step: $dJ = J_{\text{instruct}} -
+J_{\text{base}}$ looks strongly low-rank (rank fraction $0.003$--$0.02$ vs $0.50$ for iid
+drift) --- a ``structured viewpoint shift.'' But $J$ is \emph{already} low-rank, and the
+change inherits it:
+
+\medskip
+\scriptsize
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{model} & \textbf{rank}$(J_{\text{base}})$ & \textbf{rank}$(dJ)$ & \textbf{ratio} \\
+\midrule
+gemma-3-270m & 0.048 & 0.022 & 0.45x \\
+gemma-3-1b & 0.019 & 0.019 & \textbf{0.98x} \\
+gemma-2-2b & 0.119 & 0.003 & 0.02x \\
+\bottomrule
+\end{tabular}
+
+\normalsize
+\medskip
+For 2 of 3 pairs $\mathrm{rank}(dJ) \approx \mathrm{rank}(J)$: the low rank is inherited,
+not evidence of concentration. \textbf{The effective-rank result must not be reported
+alone} --- the third self-correction, and the confound is free to see.
+
+
+
+## Result 6 --- one model's workspace holds a suppressed register
+
+A cheap, no-GPU content probe (divide the embedding norm out through the motor band)
+suggested OLMo-3-7B's workspace holds discourse markers over literal next-tokens. $n{=}1$,
+hand-picked layers. \textbf{So I pre-registered a gate} and ran it band-wide, with a
+1000-permutation null, across 7 cross-family models.
+
+\medskip
+\textbf{As a general claim it fails: significant in 1 of 7.} I had over-generalised an
+OLMo-specific result by calling it ``the workspace.'' The general line is dropped.
+
+\medskip
+But OLMo was an $11.6\times$ outlier among $\sim\!1\times$, and it is real and broader than
+discourse. Its workspace band preferentially expresses an informal / negative / profane /
+connective register its \emph{output} layers suppress:
+
+\medskip
+\scriptsize
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{lexicon} & \textbf{OLMo-3-7B} & \textbf{Qwen3-8B (same tokens+measure)} \\
+\midrule
+discourse & 11.5x \; $p{=}0$ & 1.3x \; n.s. \\
+negative & 12.1x \; $p{=}0$ & 0.0x \; n.s. \\
+profanity & 8.6x \; $p{=}0$ & 4.1x \; marg. \\
+informal & 11.0x \; $p{=}0$ & 0.0x \; n.s. \\
+\bottomrule
+\end{tabular}
+
+\normalsize
+\medskip
+\textbf{Survives all three free controls:} permutation null; \emph{cross-model flatness}
+(a broken measure would flag Qwen too --- it is flat); and \emph{frequency} (register beats
+frequency-matched neutral words in 5/5 Zipf bins; $\mathrm{corr}$ with Zipf $=-0.15$).
+
+\medskip
+\textbf{Still $n{=}1$ model.} The open test is the one OLMo uniquely permits: do these
+tokens trace to a distinct slice of Dolma (raw-web / toxic register)? Runnable \emph{free}
+on infini-gram --- a direct test of Hoel's ``just an output transformation.'' Not yet run.
+
+
+
 # Discussion
 
 
@@ -284,9 +367,15 @@ and recall spared, multi-step reasoning destroyed --- is a genuine finding.
 
 \medskip
 \textbf{What does not.} The sharp tripartite geometry is mostly smooth drift. The
-lens-quality metric rewards noise. The emergence story was one prompt. And the paper
+lens-quality metric rewards noise. The emergence story was one prompt. The ``structured
+point-of-view shift'' from post-training is a low rank $dJ$ inherits from $J$. And the paper
 itself concedes the architecture: \emph{“no obviously separable input processors”};
 broadcast “within a single feedforward pass rather than through recurrent loops.”
+
+\medskip
+\textbf{One positive result to chase.} Post-training \emph{does} move the J-space
+($\cos 0.76$), and OLMo-3-7B's workspace holds a suppressed informal/charged register that
+survives three controls --- the one claim whose data (Dolma) is open enough to trace.
 
 \medskip
 On Butlin \& Long's scorecard that is \textbf{GWT-1 and GWT-3 given away}. What remains

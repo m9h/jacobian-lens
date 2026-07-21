@@ -10,9 +10,15 @@ slide_summary: |
 
   \medskip
   \textbf{What does not.} The sharp tripartite geometry is mostly smooth drift. The
-  lens-quality metric rewards noise. The emergence story was one prompt. And the paper
+  lens-quality metric rewards noise. The emergence story was one prompt. The ``structured
+  point-of-view shift'' from post-training is a low rank $dJ$ inherits from $J$. And the paper
   itself concedes the architecture: \emph{“no obviously separable input processors”};
   broadcast “within a single feedforward pass rather than through recurrent loops.”
+
+  \medskip
+  \textbf{One positive result to chase.} Post-training \emph{does} move the J-space
+  ($\cos 0.76$), and OLMo-3-7B's workspace holds a suppressed informal/charged register that
+  survives three controls --- the one claim whose data (Dolma) is open enough to trace.
 
   \medskip
   On Butlin \& Long's scorecard that is \textbf{GWT-1 and GWT-3 given away}. What remains
