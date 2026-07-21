@@ -116,7 +116,13 @@ ARMS = [
     "allenai/Olmo-3-7B-RL-Zero-Code",
     "allenai/Olmo-3-7B-RL-Zero-IF",
     "allenai/Olmo-3-7B-RL-Zero-General",
-    "allenai/Olmo-3-7B-RL-Zero-Mix",
+    # RL-Zero-Mix is DELIBERATELY EXCLUDED. Its config is model_type "olmo2-retrofit"
+    # (Olmo2RetrofitForCausalLM), NOT olmo3 like every other arm -- a different base
+    # architecture. Including it would confound the RL-Zero control (whose entire purpose
+    # is to hold architecture + method constant and vary only DOMAIN) with an architecture
+    # change, and cross-architecture J-space geometry is not comparable anyway. The four
+    # olmo3 domain arms (Math/Code/IF/General) remain a valid domain-varied control.
+    # Caught by the capability probe before the ladder spent on it.
 ]
 
 # SECOND-FAMILY REPLICATION -- Ministral-3, a DIFFERENT base with a base->reasoning
@@ -254,13 +260,18 @@ def capability(arm: str) -> dict:
     from transformers import AutoConfig, AutoTokenizer
     from datasets import load_dataset
 
-    tok = AutoTokenizer.from_pretrained(arm)
-    cfg = AutoConfig.from_pretrained(arm)
-    if getattr(cfg, "vision_config", None) is not None:
-        from transformers import AutoModelForImageTextToText as _Cls
-    else:
-        from transformers import AutoModelForCausalLM as _Cls
-    model = _Cls.from_pretrained(arm, dtype=torch.bfloat16, device_map="cuda").eval()
+    # Degrade gracefully: a single unloadable arm (e.g. a non-standard model_type) must
+    # not crash the whole .map -- return an error marker so the others still report.
+    try:
+        tok = AutoTokenizer.from_pretrained(arm)
+        cfg = AutoConfig.from_pretrained(arm)
+        if getattr(cfg, "vision_config", None) is not None:
+            from transformers import AutoModelForImageTextToText as _Cls
+        else:
+            from transformers import AutoModelForCausalLM as _Cls
+        model = _Cls.from_pretrained(arm, dtype=torch.bfloat16, device_map="cuda").eval()
+    except Exception as e:
+        return {"arm": arm, "error": f"{type(e).__name__}: {str(e)[:120]}"}
 
     # --- neutral perplexity (same wikitext the lens is fit on) ---
     tot_nll, tot_tok = 0.0, 0
@@ -322,8 +333,12 @@ def capability_all():
     ladder), the ladder geometry cannot be read as viewpoint-vs-capability and the design
     must change BEFORE ~27 GPU-hours are spent.
     """
-    rows = [r for r in capability.map(ARMS) if r]
+    allrows = [r for r in capability.map(ARMS) if r]
+    failed = [r for r in allrows if r.get("error")]
+    rows = [r for r in allrows if not r.get("error")]
     rows.sort(key=lambda r: r["arm"])
+    for r in failed:
+        print(f"  SKIPPED {_slug(r['arm']):38s} {r['error']}")
     print(f"\n  {'arm':38s} {'ppl':>7s} {'mmlu':>6s}  {'math':>6s} {'code':>6s} {'genl':>6s}")
     for r in rows:
         d = r["mmlu_by_domain"]
