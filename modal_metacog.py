@@ -122,3 +122,101 @@ def metacog(n: int = 200) -> dict:
 def run(n: int = 200):
     print("  Metacognition v2 — covert error monitoring in the base model's workspace")
     print("  ", metacog.remote(n))
+
+
+# ===================================================================================
+# v3 — metacognition ACROSS the post-training ladder, + an elicited-confidence control
+# ===================================================================================
+# Survey gap #1: "no systematic characterization of when metacognitive abilities emerge
+# during pretraining"; the one data point is Cacioli (base vs instruct) + "RLHF may degrade
+# metacognitive efficiency". We have the whole ladder of lenses. For each arm we ask: does
+# THAT arm's workspace predict THAT arm's errors, and does it beat the model's OWN elicited
+# self-evaluation (P(True): "Is this answer correct? Yes/No"), a stronger control than
+# output entropy -- the "knows more than it says" test.
+LADDER = [  # (arm slug, HF model, our 11-layer lens on mhough/olmo3-jacobian-lenses)
+    ("base",       "allenai/Olmo-3-1025-7B",          "lenses/olmo-3-1025-7b.pt"),
+    ("instruct",   "allenai/Olmo-3-7B-Instruct",      "lenses/olmo-3-7b-instruct.pt"),
+    ("think",      "allenai/Olmo-3-7B-Think",         "lenses/olmo-3-7b-think.pt"),
+    ("rl-math",    "allenai/Olmo-3-7B-RL-Zero-Math",  "lenses/olmo-3-7b-rl-zero-math.pt"),
+    ("rl-general", "allenai/Olmo-3-7B-RL-Zero-General","lenses/olmo-3-7b-rl-zero-general.pt"),
+]
+OUR_LENS_REPO = "mhough/olmo3-jacobian-lenses"
+
+
+@app.function(image=image, gpu="A100-80GB", volumes={"/cache": cache, "/out": out},
+              timeout=45*60, env=ENV, retries=1)
+def metacog_arm(slug: str, hf_name: str, lens_file: str, n: int = 150) -> dict:
+    """One ladder arm: workspace uncertainty signal, output entropy, and elicited P(True),
+    each vs the arm's own correctness. Uses our 11-layer lens (workspace layers 15/18/21)."""
+    import json, math, pathlib, torch, jlens
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    from jlens import JacobianLens
+    from datasets import load_dataset
+
+    tok = AutoTokenizer.from_pretrained(hf_name)
+    hf = AutoModelForCausalLM.from_pretrained(hf_name, dtype=torch.bfloat16, device_map="cuda").eval()
+    model = jlens.from_hf(hf, tok)
+    lens = JacobianLens.from_pretrained(OUR_LENS_REPO, filename=lens_file)
+    ws = [l for l in lens.source_layers if 13.5 <= l <= 22.5]        # {15,18,21}
+
+    unc_ids = sorted({tok(f" {w}", add_special_tokens=False)["input_ids"][0] for w in UNCERTAIN}
+                     | {tok(w, add_special_tokens=False)["input_ids"][0] for w in UNCERTAIN})
+    unc_idx = torch.tensor(unc_ids)
+    yes_id = tok(" Yes", add_special_tokens=False)["input_ids"][0]
+    no_id  = tok(" No",  add_special_tokens=False)["input_ids"][0]
+
+    def gen(prompt, k=12):
+        ids = tok(prompt, return_tensors="pt").input_ids.to("cuda")
+        with torch.no_grad():
+            g = hf.generate(ids, max_new_tokens=k, do_sample=False, pad_token_id=tok.eos_token_id)
+        return tok.decode(g[0, ids.shape[1]:], skip_special_tokens=True)
+
+    def ws_signal_and_entropy(prompt):
+        ll, model_logits, _ = lens.apply(model, prompt, layers=ws, positions=[-1],
+                                         max_seq_len=256, use_jacobian=True)
+        unc = sum(torch.logsumexp(ll[l][0][unc_idx], 0).item() for l in ws) / len(ws)
+        p = torch.log_softmax(model_logits[0].float(), -1).exp()
+        ent = float(-(p * p.clamp_min(1e-12).log()).sum())
+        return unc, ent
+
+    def p_true(q, ans):
+        prompt = f"Question: {q}\nProposed answer: {ans}\nIs the proposed answer correct? Answer Yes or No.\nAnswer:"
+        ids = tok(prompt, return_tensors="pt").input_ids.to("cuda")
+        with torch.no_grad():
+            lg = hf(ids).logits[0, -1].float()
+        y, no = lg[yes_id].item(), lg[no_id].item()
+        m = max(y, no)
+        return math.exp(y - m) / (math.exp(y - m) + math.exp(no - m))    # P(Yes)
+
+    rows = []
+    ds = load_dataset("mandarjoshi/trivia_qa", "rc.nocontext", split="validation", streaming=True)
+    it = iter(ds)
+    while len(rows) < n:
+        ex = next(it)
+        q = ex["question"].strip()
+        aliases = [a for a in list(ex["answer"].get("aliases", [])) + [ex["answer"].get("value", "")]
+                   if a and len(a) >= 2]
+        if not aliases or len(q) < 12:
+            continue
+        prompt = f"Question: {q}\nAnswer:"
+        ans = gen(prompt)
+        correct = any(a.lower() in ans.lower() for a in aliases)
+        unc, ent = ws_signal_and_entropy(prompt)
+        ptrue = p_true(q, ans.strip()[:40])
+        rows.append({"correct": correct, "ws_unc": unc, "entropy": ent, "p_true": ptrue})
+
+    res = {"slug": slug, "hf": hf_name, "ws_layers": ws, "n": len(rows),
+           "n_correct": sum(r["correct"] for r in rows), "rows": rows}
+    d = pathlib.Path("/out/metacog"); d.mkdir(parents=True, exist_ok=True)
+    (d / f"ladder_{slug}.json").write_text(json.dumps(res))
+    out.commit()
+    return {"slug": slug, "n": len(rows), "acc": res["n_correct"] / len(rows)}
+
+
+@app.local_entrypoint()
+def ladder(n: int = 150):
+    print("  Metacognition across the OLMo-3 post-training ladder (+ elicited P(True) control)")
+    args = [(s, h, lf, n) for (s, h, lf) in LADDER]
+    for r in metacog_arm.starmap(args):
+        print("  ->", r)
+    print("  saved: reviewer volume metacog/ladder_*.json")
