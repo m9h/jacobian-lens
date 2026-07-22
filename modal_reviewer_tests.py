@@ -78,10 +78,11 @@ def _ablation_dirs(lens, W_U, token_ids, layers, torch):
     """Residual direction that increases the lens logit of `token_ids` at each layer:
     d_l = normalize(J_l^T @ mean_t W_U[t]). Projecting it out ablates the concept's
     J-space presence at that layer."""
-    tgt = W_U[torch.tensor(token_ids)].mean(0)                    # [d_model]
+    tgt = W_U[torch.tensor(token_ids, device=W_U.device)].mean(0)   # [d_model]
     dirs = {}
     for l in layers:
-        d = lens.jacobians[l].float().T @ tgt                    # J_l^T W_U[c]
+        J = lens.jacobians[l].float().to(tgt.device)             # lens is CPU; match W_U
+        d = J.T @ tgt                                            # J_l^T W_U[c]
         dirs[l] = (d / d.norm().clamp_min(1e-6))
     return dirs
 
@@ -387,6 +388,10 @@ def _save(name, obj):
 
 @app.local_entrypoint()
 def run_all():
+    # Fault-tolerant: one test failing must not sink the other five.
     for fn in (ignition, trace_cond, avoidance, local_global, metacognition, dual_task):
-        print("  ->", fn.remote())
-    print("  all saved to jlens-out volume: reviewer_tests/*.json")
+        try:
+            print("  ->", fn.remote())
+        except Exception as e:
+            print(f"  FAILED {fn.info.function_name}: {type(e).__name__}: {e}")
+    print("  saved to jlens-out volume: reviewer_tests/*.json")
