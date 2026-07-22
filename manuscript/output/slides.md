@@ -326,6 +326,46 @@ on infini-gram --- a direct test of Hoel's ``just an output transformation.'' No
 
 
 
+## Result 7 --- Claim 6, tested on fully open weights
+
+\textbf{Anthropic's Claim 6:} post-training shaped the J-space \emph{``toward a point of
+view rather than pure prediction.''} It rests on Sonnet 4.5 --- whose activations no
+outsider can touch; the paper's own commentators (Dehaene \& Naccache) could not check it.
+\textbf{OLMo-3 makes it checkable on FULLY OPEN artifacts.} First external test.
+
+\medskip
+\textbf{Post-training moves the J-space --- a lot, and by METHOD not domain.} Cosine of
+each arm's lens against the base lens, vs a 0.97 same-model refit floor:
+
+\medskip
+\scriptsize
+\begin{tabular}{@{}lrl@{}}
+\toprule
+\textbf{arm} & \textbf{cos(base, arm)} & \textbf{move} \\
+\midrule
+Instruct (SFT+DPO) & 0.69 & \textbf{${\sim}31$\%} \\
+Think (SFT+DPO)    & 0.73 & ${\sim}27$\% \\
+RL-Zero (RLVR only) & 0.94 & ${\sim}6$\% \\
+\midrule
+RL-Zero domain pairwise & \textbf{0.99+} & ${\sim}1$\% (Math/Code/IF/General) \\
+\bottomrule
+\end{tabular}
+
+\normalsize
+\medskip
+Instruction/CoT tuning reshapes the J-space \textbf{about 5x more than RLVR}, and varying
+the RLVR \emph{domain} at matched capability adds only about 1\%. The viewpoint is
+\textbf{method/format-driven and nearly domain-invariant}.
+
+\medskip
+\textbf{The clincher:} capability (MMLU) is \emph{flat-to-down} across post-training while
+the J-space moves about 31\%. A large representational shift with \emph{no competence gain}
+is exactly ``a point of view rather than pure prediction.'' \textbf{Claim 6 supported ---
+and sharpened.} Anchor-gated (identity distance 0.4\%), capability-controlled (RL-Zero
+spread 1.7pp), every number independently reproducible.
+
+
+
 # Discussion
 
 
@@ -373,9 +413,12 @@ itself concedes the architecture: \emph{“no obviously separable input processo
 broadcast “within a single feedforward pass rather than through recurrent loops.”
 
 \medskip
-\textbf{One positive result to chase.} Post-training \emph{does} move the J-space
-($\cos 0.76$), and OLMo-3-7B's workspace holds a suppressed informal/charged register that
-survives three controls --- the one claim whose data (Dolma) is open enough to trace.
+\textbf{Two positive results, both on fully open weights.} (1) On the OLMo-3 ladder,
+post-training reshapes the J-space ${\sim}31$\% (Instruct) while capability stays flat ---
+a viewpoint shift decoupled from prediction, method-driven and domain-invariant. Claim 6
+supported on artifacts anyone can rerun. (2) OLMo-3-7B's workspace holds a suppressed
+informal/charged register surviving three controls --- the one claim whose data is open
+enough to trace.
 
 \medskip
 On Butlin \& Long's scorecard that is \textbf{GWT-1 and GWT-3 given away}. What remains

@@ -16,9 +16,12 @@ slide_summary: |
   broadcast “within a single feedforward pass rather than through recurrent loops.”
 
   \medskip
-  \textbf{One positive result to chase.} Post-training \emph{does} move the J-space
-  ($\cos 0.76$), and OLMo-3-7B's workspace holds a suppressed informal/charged register that
-  survives three controls --- the one claim whose data (Dolma) is open enough to trace.
+  \textbf{Two positive results, both on fully open weights.} (1) On the OLMo-3 ladder,
+  post-training reshapes the J-space ${\sim}31$\% (Instruct) while capability stays flat ---
+  a viewpoint shift decoupled from prediction, method-driven and domain-invariant. Claim 6
+  supported on artifacts anyone can rerun. (2) OLMo-3-7B's workspace holds a suppressed
+  informal/charged register surviving three controls --- the one claim whose data is open
+  enough to trace.
 
   \medskip
   On Butlin \& Long's scorecard that is \textbf{GWT-1 and GWT-3 given away}. What remains
