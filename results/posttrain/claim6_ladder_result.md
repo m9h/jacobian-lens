@@ -1,14 +1,22 @@
-# Claim 6 — post-training reshapes the J-space toward a viewpoint, decoupled from capability
+# Post-training reshapes the J-space toward a viewpoint, decoupled from capability
 
 **Run 2026-07-21. OLMo-3-7B, full base→post-trained ladder, Jacobian lenses fit on Modal.**
 
-Anthropic's Claim 6 (see `societies-of-thought/docs/anthropic_claims_scorecard.md`):
-post-training shaped the J-space *"toward a point of view rather than pure prediction."*
-Untestable from outside a frontier lab until AI2 released OLMo-3 — the only open family
-shipping a base model, its post-trained variants, public training data, and (for the RL
-arms) a clean method-vs-domain factorial. This is the first external test of Claim 6.
+What Anthropic actually report (qualitatively, no numbers): the J-space is already present
+in the pretrained model, but "during post-training, the J-space develops some signatures of
+adopting 'Claude's point of view'" — where "in the base model, the J-space mostly tracks
+what's needed to predict upcoming text; in the post-trained model, it starts holding
+Claude's own reactions."
 
-**Fully open, fully reproducible, fully shareable.** Anthropic's own Claim 6 rests on
+**In plain terms.** Before post-training, the model's internal "workspace" is mostly busy
+with *what word comes next*. After post-training it also carries the model's *own stance* as
+the Assistant — its reactions, caveats, and values. Read as a consciousness indicator, that
+shift is taken to mean the model has acquired a stable point of view rather than only
+predicting text. Anthropic show it with examples, not measurements. **This is the first
+quantitative version, on fully open weights** — testable only since AI2 released OLMo-3
+(base model, post-trained variants, public data, and a clean method-vs-domain factorial).
+
+**Fully open, fully reproducible, fully shareable.** The Anthropic result rests on
 Sonnet 4.5, whose activations no external party can access — the paper's invited
 commentators could not check it (Dehaene & Naccache: *"We suggested to the Anthropic team
 that they could run exactly the same tests…"*). This test uses **only open artifacts**:
@@ -26,8 +34,8 @@ tuning moves the J-space ~5× more than RLVR-from-base, and varying the RLVR *do
 (math/code/instruction-following/general) at matched capability changes it by only ~1%.
 And the move is **decoupled from capability**: MMLU is flat-to-slightly-*down* across
 post-training while the J-space moves ~31%. A large representational shift with no
-competence gain is exactly *"a point of view rather than pure prediction."* **Claim 6 is
-supported, and sharpened: the viewpoint post-training installs is method/format-driven and
+competence gain is exactly the viewpoint-not-prediction shift Anthropic describe. **The
+claim is supported, and sharpened: the viewpoint post-training installs is method/format-driven and
 nearly domain-invariant.**
 
 ## Design
@@ -113,14 +121,14 @@ Post-training did **not** raise capability — MMLU is flat-to-slightly-down (pa
 format artifact: logprob-MC penalises chat/CoT-tuned models). Yet the same Instruct arms
 moved the J-space ~31%. **A large J-space move with no capability gain cannot be "it got
 better at predicting" — it is a change of objective/viewpoint.** This is the strongest
-support for Claim 6's specific framing ("a point of view rather than pure prediction").
+support for Anthropic's framing: the workspace shifts from tracking prediction to holding the model's own reactions.
 
 The capability probe also validated the RL-Zero control it gates: RL-Zero overall-MMLU
 spread is **1.7pp (0.490–0.507), within noise**, with **no domain diagonal** (the code arm
 is not best at code, etc.). So the ~1% RL-Zero *geometry* differences are not capability
 artifacts — capability is genuinely held constant across those domains.
 
-## What this says about Claim 6
+## What this says about the post-training claim
 
 - **Supported:** post-training reshapes the J-space far beyond fitting noise (~31% for
   Instruct), and the move is decoupled from capability — the signature of a viewpoint shift

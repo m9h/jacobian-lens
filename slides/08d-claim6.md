@@ -2,12 +2,14 @@
 category: research
 section: results
 weight: 86
-title: "Result 7 --- Claim 6, tested on fully open weights"
+title: "Result 7 --- post-training's point of view, on fully open weights"
 slide_summary: |
-  \textbf{Anthropic's Claim 6:} post-training shaped the J-space \emph{``toward a point of
-  view rather than pure prediction.''} It rests on Sonnet 4.5 --- whose activations no
-  outsider can touch; the paper's own commentators (Dehaene \& Naccache) could not check it.
-  \textbf{OLMo-3 makes it checkable on FULLY OPEN artifacts.} First external test.
+  \textbf{What Anthropic report} (qualitatively, no numbers): during post-training the
+  J-space ``develops some signatures of adopting `Claude's point of view' '' --- in the base
+  model it tracks prediction; post-trained, it holds the model's own reactions. It rests on
+  Sonnet 4.5 --- whose activations no outsider can touch; the paper's own commentators
+  (Dehaene \& Naccache) could not check it. \textbf{OLMo-3 makes it checkable, and gives the
+  first quantitative version.}
 
   \medskip
   \textbf{Post-training moves the J-space --- a lot, and by METHOD not domain.} Cosine of
@@ -36,7 +38,7 @@ slide_summary: |
   \medskip
   \textbf{The clincher:} capability (MMLU) is \emph{flat-to-down} across post-training while
   the J-space moves about 31\%. A large representational shift with \emph{no competence gain}
-  is exactly ``a point of view rather than pure prediction.'' \textbf{Claim 6 supported ---
-  and sharpened.} Anchor-gated (identity distance 0.4\%), capability-controlled (RL-Zero
-  spread 1.7pp), every number independently reproducible.
+  is exactly the viewpoint-not-prediction shift Anthropic describe. \textbf{Their qualitative
+  claim, supported and sharpened.} Anchor-gated (identity distance 0.4\%), capability-controlled
+  (RL-Zero spread 1.7pp), every number independently reproducible.
 ---

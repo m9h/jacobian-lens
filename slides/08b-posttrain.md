@@ -4,8 +4,8 @@ section: results
 weight: 82
 title: "Result 5 --- post-training moves the J-space, but the tidy reading is confounded"
 slide_summary: |
-  \textbf{Claim 6:} post-training shaped the J-space \emph{``toward a point of view''}
-  rather than pure prediction. Untestable from outside --- until OLMo-3. It is the only
+  \textbf{Anthropic's post-training finding} (qualitative): the J-space ``develops some
+  signatures of adopting `Claude's point of view' ''. Untestable from outside --- until OLMo-3. It is the only
   open family shipping a base model, its post-trained variants, the \textbf{public training
   data} (Dolma), and ${\sim}1{,}486$ checkpoints.
 

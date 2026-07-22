@@ -59,8 +59,9 @@ Two rows verified against the source text on 2026-07-19:
   single feedforward pass rather than through recurrent loops."* Nothing to refute. Do
   not spend on it.
 
-The open one is **Claim 6** — post-training shaped the J-space toward a point of view
-rather than pure prediction. Untestable from outside until AI2 published twelve OLMo-3
+The open one is the **post-training "point of view"** finding (scorecard #6) — Anthropic's
+qualitative report that the J-space "develops some signatures of adopting 'Claude's point of
+view'". Untestable from outside until AI2 published twelve OLMo-3
 arms on one base. Design and confound analysis are in the scorecard.
 
 ## Findings, ranked by how much they matter
