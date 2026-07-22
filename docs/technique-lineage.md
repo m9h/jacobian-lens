@@ -203,10 +203,16 @@ work is not only a response to the J-space/GWT paper; it engages the whole linea
   the concept: baseline −0.4 → inject +20.8 → negation −17.2 on base), and the **negation
   control is cleaner than Lindsey's** — injecting −concept produces the concept 0% of the time
   (his was "comparably effective"). **But at the strength used the injection forces the token
-  into the output** (`"France France France…"`) — that is *steering, not introspection*. The
-  proper introspection test — a strength sweep to the regime where the concept enters the
-  workspace but not a neutral continuation, then "asked to report" vs "neutral continuation" —
-  is the v2; the tooling is proven.
+  into the output** (`"France France France…"`) — that is *steering, not introspection*.
+  *v2 (the real test — strength sweep × "asked to report" vs "neutral continuation"):* **at
+  every strength that places the concept in the workspace, it appears equally in the asked and
+  neutral prompts (introspection-gap ≈ 0, both base and Instruct).** There is no regime where
+  the injected concept surfaces *only when the model is asked* — so on OLMo-3 this is steering,
+  not introspection, and the manipulation-check rules out a failed injection (readback ~20).
+  **A clean negative, on the Reality Check's side, on open weights.** Caveat: OLMo-7B is far
+  smaller than the frontier models where introspection was claimed, so this is "no introspection
+  in OLMo-7B," not "introspection is fake" — a scale/model-dependence question the open ladder
+  could pursue.
 
 - **vs the Reality Check (Singh, Linzen & Ravfogel).** They argue the field lacks "mechanistic
   evidence of a **dissociable second-order process**", the thing that would separate genuine
