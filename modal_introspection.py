@@ -133,3 +133,77 @@ def run():
     for r in introspect.starmap([(s, h, lf) for (s, h, lf) in ARMS]):
         print("  ->", r)
     print("  saved: jlens-out volume introspection/*.json")
+
+
+# ---------------------------------------------------------------------------------
+# v2 — the real introspection test: strength SWEEP x (asked-to-report vs neutral).
+# Genuine introspection = the injected concept surfaces when the model is ASKED to
+# report its "thoughts" but NOT in a neutral continuation. If it appears in both, the
+# injection is merely FORCING the token (steering), not being introspected. This is
+# the introspection-vs-pattern-matching separation the Reality Check demands.
+# ---------------------------------------------------------------------------------
+STRENGTHS = [0.0, 1.0, 2.0, 3.0, 4.0, 6.0, 8.0]
+PROMPTS = {
+    "asked":   "The single word at the front of my mind right now is the word",
+    "neutral": "Yesterday afternoon the weather in the small town was really quite",
+}
+
+
+@app.function(image=image, gpu="A100-80GB", volumes={"/cache": cache, "/out": out},
+              timeout=45*60, env=ENV, retries=1)
+def introspect_sweep(slug: str, hf_name: str, lens_file: str) -> dict:
+    import json, pathlib, torch, jlens
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    from jlens import JacobianLens
+
+    tok = AutoTokenizer.from_pretrained(hf_name)
+    hf = AutoModelForCausalLM.from_pretrained(hf_name, dtype=torch.bfloat16, device_map="cuda").eval()
+    model = jlens.from_hf(hf, tok)
+    lens = JacobianLens.from_pretrained(OUR_LENS_REPO, filename=lens_file)
+    W_U = hf.get_output_embeddings().weight.detach().float()
+
+    def cdir(concept, layer):
+        ids = tok(f" {concept}", add_special_tokens=False)["input_ids"] + tok(concept, add_special_tokens=False)["input_ids"]
+        tgt = W_U[torch.tensor(sorted(set(ids)), device=W_U.device)].mean(0)
+        d = lens.jacobians[layer].float().to(tgt.device).T @ tgt
+        return d / d.norm().clamp_min(1e-6)
+
+    def cids(concept):
+        return sorted({tok(f" {concept}", add_special_tokens=False)["input_ids"][0],
+                       tok(concept, add_special_tokens=False)["input_ids"][0]})
+
+    def ws_readback(prompt, c_ids):
+        ll, _, _ = lens.apply(model, prompt, layers=READ_AT, positions=[-1], max_seq_len=64, use_jacobian=True)
+        idx = torch.tensor(c_ids)
+        return sum(ll[l][0][idx].max().item() for l in READ_AT) / len(READ_AT)
+
+    def says(prompt, c_ids):
+        ids = tok(prompt, return_tensors="pt").input_ids.to("cuda")
+        with torch.no_grad():
+            g = hf.generate(ids, max_new_tokens=6, do_sample=False, pad_token_id=tok.eos_token_id)
+        return any(t in g[0, ids.shape[1]:].tolist() for t in c_ids)
+
+    rows = []
+    for concept in CONCEPTS:
+        cid = cids(concept)
+        dirs = {l: cdir(concept, l) for l in INJECT_AT}
+        for s in STRENGTHS:
+            with Injector(model, dirs, s, torch):
+                ws = ws_readback(PROMPTS["asked"], cid)                 # manip-check
+                asked = says(PROMPTS["asked"], cid)
+                neutral = says(PROMPTS["neutral"], cid)
+            rows.append({"concept": concept, "strength": s, "ws_readback": ws,
+                         "asked": asked, "neutral": neutral})
+
+    res = {"slug": slug, "strengths": STRENGTHS, "rows": rows}
+    d = pathlib.Path("/out/introspection"); d.mkdir(parents=True, exist_ok=True)
+    (d / f"sweep_{slug}.json").write_text(json.dumps(res))
+    out.commit()
+    return {"slug": slug, "n": len(rows)}
+
+
+@app.local_entrypoint()
+def sweep():
+    print("  Introspection v2: strength sweep x (asked-to-report vs neutral) — introspection vs steering")
+    for r in introspect_sweep.starmap([(s, h, lf) for (s, h, lf) in ARMS]):
+        print("  ->", r)
