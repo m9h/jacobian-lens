@@ -82,7 +82,16 @@ The survey maps the field and, read against it, this result is novel on three ax
    — our output-entropy baseline is the analog, and the workspace adds signal on top.)
 3. **In a base model.** The survey reports "no systematic characterization of when
    metacognitive abilities emerge during pretraining." This signal is in the *pretrained*
-   base — before any Assistant identity. (See the ladder result below for how it changes
+   base — before any Assistant identity.
+
+It also speaks to the **introspection debate** one level up (see `docs/technique-lineage.md`).
+Singh, Linzen & Ravfogel's *"Can LLMs Introspect? A Reality Check"* argues the field lacks
+"mechanistic evidence of a **dissociable second-order process**." The covert-vs-reportable
+split here — internal error signal present in the base, verbal report only after post-training
+— *is* that dissociation, on open weights. The companion concept-injection demonstration
+(`modal_introspection.py`) adds the manipulation-check the Introspection paper (Lindsey, 2025)
+lacks: reading the workspace through the lens to confirm an injected concept is genuinely
+present rather than confabulated. (See the ladder result below for how it changes
    across post-training; cf. Cacioli's base-vs-instruct comparison and the survey's note that
    "RLHF may specifically degrade metacognitive efficiency on STEM tasks.")
 

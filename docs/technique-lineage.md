@@ -180,6 +180,52 @@ lens, is what J-space inherits from the manifolds paper.
 
 ---
 
+## What the OLMo-3 replication adds to the lineage
+
+We run the same moves on fully open weights, which lets us supply the controls the four
+papers lack and — crucially — connect them to the introspection debate they set off. So our
+work is not only a response to the J-space/GWT paper; it engages the whole lineage.
+
+- **vs Manifolds / J-space (readout + lens-coordinate patching).** The Jacobian-lens ladder
+  gives the first *quantitative* version of the post-training "point of view" shift the
+  J-space paper states qualitatively (Instruct cos 0.69 from base; method-driven, decoupled
+  from capability), and the **model-randomization** control that *no* paper in the table ran
+  passes on the J-lens.
+
+- **vs Introspection (concept injection + verbal report).** Lindsey injects a concept vector
+  and asks the model to report it; his self-reported weakness is that injecting the
+  **negation** was "comparably effective" (identification may be confabulated). We run the
+  injection on OLMo (`modal_introspection.py`) with the controls that debate is missing: a
+  lens **manipulation-check** — inject at low layers, read the workspace at higher layers, so
+  we can tell "the concept is genuinely in the workspace" from "the model confabulated a
+  plausible word" — plus his own **negation** control and a **base-vs-Instruct** split.
+  *First pass (`introspection/*.json`):* the manipulation-check is clean (workspace readback of
+  the concept: baseline −0.4 → inject +20.8 → negation −17.2 on base), and the **negation
+  control is cleaner than Lindsey's** — injecting −concept produces the concept 0% of the time
+  (his was "comparably effective"). **But at the strength used the injection forces the token
+  into the output** (`"France France France…"`) — that is *steering, not introspection*. The
+  proper introspection test — a strength sweep to the regime where the concept enters the
+  workspace but not a neutral continuation, then "asked to report" vs "neutral continuation" —
+  is the v2; the tooling is proven.
+
+- **vs the Reality Check (Singh, Linzen & Ravfogel).** They argue the field lacks "mechanistic
+  evidence of a **dissociable second-order process**", the thing that would separate genuine
+  introspection from input-driven pattern matching. Our metacognition ladder supplies exactly
+  that, on open weights: the base model's workspace **covertly** tracks its own errors
+  (AUROC 0.66, beyond output confidence) while its **verbal** self-report is at chance (0.51);
+  post-training raises the report to 0.78 (Instruct) / 0.72 (Think) — and only via SFT+DPO, not
+  RLVR. The internal state and its reportability **come apart**, and they come apart by training
+  stage and method. That is a dissociable second-order process, demonstrated rather than
+  asserted — and it reframes "post-training installs self-monitoring (C2)" as *post-training
+  makes a pre-existing covert signal reportable*, not creates it.
+
+The through-line: the four papers write a direction and read an effect; the open replication
+lets us **verify the direction is doing what the label says** (manipulation-check), **run the
+control the author flags** (negation), and **exhibit the dissociation the rebuttal demands**
+(covert vs reportable) — the three things the lineage, and its rebuttal, are missing.
+
+---
+
 ## References
 
 Verified against arXiv on 2026-07-18.
