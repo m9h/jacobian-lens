@@ -100,11 +100,44 @@ The survey maps the field and, read against it, this result is novel on three ax
   next step).
 - Not peer-reviewed; open-weights only.
 
-## Across the post-training ladder
+## Across the post-training ladder — covert signal in the base, reportability from post-training
 
-*(filled from `metacog_ladder` — base → Instruct → Think → RL-Zero, each with its own lens,
-with an elicited-confidence P(True) control. Tests whether covert metacognition strengthens
-or degrades with post-training — the survey's open emergence question.)*
+Each arm answered 150 TriviaQA questions through **its own** lens; we measured the workspace
+uncertainty signal, output entropy, and the model's **elicited self-evaluation** (P(True):
+"Is this answer correct? Yes/No"), each against that arm's own correctness.
+
+| arm | acc | workspace covert (low-entropy tercile) | verbal self-eval **P(True)** AUROC |
+|---|---|---|---|
+| **base** | 0.39 | **0.66** | **0.51 (chance)** |
+| Instruct | 0.28 | 0.34 | **0.78** |
+| Think | 0.23 | 0.61 | **0.72** |
+| RL-Zero-Math | 0.39 | 0.52 | 0.52 |
+| RL-Zero-General | 0.39 | 0.47 | 0.55 |
+
+Two things, one clean and one caveated:
+
+**Clean, readout-independent — post-training installs *reportability*.** The base model's
+verbal self-evaluation is at **chance (0.51)** — it cannot tell you whether its own answer is
+right — yet its workspace covertly tracks errors at **0.66**. Post-training raises verbal
+self-evaluation to **0.78 (Instruct) / 0.72 (Think)**, but only the full SFT+DPO instruction/
+CoT pipelines do it; **RL-Zero stays at chance (0.52–0.55)**. Same method-not-domain signature
+as the geometry result: reportable self-monitoring is a product of instruction tuning, not
+RLVR.
+
+**The mechanistic upshot for the reviewers' C2 claim.** Dehaene & Naccache said the base model
+has global availability (C1) but "does not seem to be imbued with self-monitoring (C2)," which
+post-training installs. This sharpens it: the base model *already has* the self-monitoring
+information — covert, in the workspace — and what post-training installs is **reportability**
+of it. Since reportability is their operational criterion for conscious access, post-training
+does not *create* the error signal; it makes a pre-existing covert signal verbalizable.
+
+**Caveat — the covert-signal trajectory is confounded.** The apparent weakening of the covert
+workspace signal from base (0.66) to Instruct (0.34) is not clean: the uncertainty-*word*
+readout is calibrated on the base workspace, and the Instruct workspace is reshaped ~31%
+(cos 0.69 from base), so a lower reading there may reflect the readout not transferring rather
+than the signal vanishing. A per-arm **supervised direction probe** (v4) is needed to
+de-confound the covert trajectory; the reportability trajectory (P(True)) is behavioral and
+not subject to this.
 
 Reproduce: `modal run modal_metacog.py::run` (base v2) and `::ladder` (across arms) in
 `github.com/m9h/jacobian-lens`; raw on the Modal `jlens-out` volume, `metacog/`.
