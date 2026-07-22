@@ -52,18 +52,19 @@ public and rerunnable (`github.com/m9h/jacobian-lens`, `m9h/societies-of-thought
 is not any single result — it is that a working external referee now exists, and it can do
 the two things a referee must: **convict, and exonerate.**
 
-**It confirmed a claim no outsider could previously check.** Anthropic's Claim 6 — that
-post-training shaped the J-space "toward a point of view rather than pure prediction" — rests
-on Sonnet 4.5, whose activations no external party can touch; the paper's own commentators
-could not test it. AI2's fully-open OLMo-3 ladder (base → SFT → DPO → RLVR, Apache-2.0, with
-training data) makes it checkable. Anchor-gated against Anthropic's own published lens
-(identity-distance error **0.4%**) and capability-controlled, I find: post-training moves the
-J-space **~31%** while capability (MMLU) stays **flat-to-down** — a large representational
-shift with *no* competence gain, which is precisely a change of viewpoint rather than of
-prediction. The magnitude is set by training *method* (instruction/CoT tuning ~5× RLVR), not
-task *domain* (RL-Zero domains differ ~1% at matched capability). **Claim 6 supported, and
-sharpened — the first external confirmation of a frontier consciousness-adjacent claim, on
-artifacts anyone can rerun.**
+**It confirmed a claim no outsider could previously check.** Anthropic report that
+"post-training causes the J-space to acquire the Assistant's 'point of view'" — a claim they
+state *qualitatively, with no numbers,* because it rests on Sonnet 4.5, whose activations no
+external party can touch; the paper's own commentators could not test it. AI2's fully-open
+OLMo-3 ladder (base → SFT → DPO → RLVR, Apache-2.0, with training data) makes it measurable.
+Anchor-gated against Anthropic's own published lens (identity-distance error **0.4%**) and
+capability-controlled, I find: post-training moves the J-space **~31%** (Instruct) while
+capability (MMLU) stays **flat-to-down** — a large representational shift with *no* competence
+gain, which is a change of viewpoint rather than of prediction. The magnitude is set by
+training *method* (instruction/CoT tuning ~5× RLVR), not task *domain* (RL-Zero domains differ
+~1% at matched capability). **This is the first quantitative, controlled test of the claim
+that exists — Anthropic gave a qualitative story on a closed model; I gave numbers with a
+null on artifacts anyone can rerun.**
 
 **It killed a claim that looked just as convincing.** The "society of thought" accuracy gain
 — steering one conversational feature — reverses on the paper's own benchmarks: the same
