@@ -1,7 +1,7 @@
 # The Referee the Field Doesn't Have: External Controls for Machine-Consciousness Claims
 
 **Longview Philanthropy — Digital Minds RFP, "Grants for Applied Work"**
-**Applicant:** Morgan Hough (independent) · **Deadline:** 24 July 2026
+**Applicant:** Morgan Hough · Orthogonal Research and Education Lab (OREL) · **Deadline:** 24 July 2026
 
 ---
 
@@ -170,7 +170,7 @@ mechanistic interpretability. I maintain neuroscience and cognitive-modelling pa
 Fedora (ACT-R, Soar, Nengo, drift-diffusion tooling). The tutorials draw on the neuroscience
 the AI claims are borrowed from — including the COGITATE adversarial collaboration, whose own
 preregistered ignition prediction *failed* in human brains, which materially changes how much
-weight the AI analogy can bear. I am not affiliated with a laboratory. Everything above was
+weight the AI analogy can bear. I work with the Orthogonal Research and Education Lab (OREL), an independent research organization. Everything above was
 produced without funding.
 
 The timing is not incidental. AI2's OLMo-3 — released weeks ago — is the first fully-open

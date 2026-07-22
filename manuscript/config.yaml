@@ -4,7 +4,7 @@ project:
   short_title: "Controls for the Jacobian Lens"
 authors:
   - name: Morgan Hough
-    affiliation: Independent
+    affiliation: Orthogonal Research and Education Lab (OREL)
     email: morgan.hough@gmail.com
 date: "2026-07-19"
 version: "0.1.0"

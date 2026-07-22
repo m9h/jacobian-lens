@@ -2,7 +2,7 @@
 title: "Controls for the Jacobian Lens"
 author:
   - Morgan Hough
-institute: "Independent"
+institute: "Orthogonal Research and Education Lab (OREL)"
 date: "2026-07-19"
 theme: metropolis
 header-includes:

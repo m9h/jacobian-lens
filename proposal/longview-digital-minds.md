@@ -1,7 +1,7 @@
 # Controls for Consciousness-Indicator Claims in AI Systems
 
 **Longview Philanthropy — Digital Minds RFP, "Grants for Applied Work"**
-**Applicant:** Morgan Hough (independent) · **Deadline:** 24 July 2026
+**Applicant:** Morgan Hough · Orthogonal Research and Education Lab (OREL) · **Deadline:** 24 July 2026
 
 ---
 
@@ -73,9 +73,10 @@ correction: that it tracked architecture, not scale. Both were wrong. Running th
 with a *dense* 32B outperforming the hybrid 27B. The original finding was a single lucky
 prompt. I have published the retraction alongside the result.
 
-**5. And once the controls are in place, the method delivers a real result.** Anthropic's
-Claim 6 — that post-training shaped the J-space "toward a point of view rather than pure
-prediction" — rests on Sonnet 4.5, whose activations no outsider can access; the paper's
+**5. And once the controls are in place, the method delivers a real result.** Anthropic
+report (qualitatively, no numbers) that post-training makes the J-space "develop some
+signatures of adopting 'Claude's point of view'" — a claim resting on Sonnet 4.5, whose
+activations no outsider can access; the paper's
 own commentators could not check it. AI2's OLMo-3 ladder makes it checkable on fully open
 weights. Anchor-gated against Anthropic's published lens (identity-distance error 0.4%) and
 capability-controlled, I find: post-training moves the J-space ~31% (Instruct), while
@@ -162,7 +163,7 @@ tutorials draw on the neuroscience literature the AI claims are borrowed from �
 the COGITATE adversarial collaboration, whose own preregistered ignition prediction failed
 in human brains, a fact that materially changes how much weight the AI analogy can bear.
 
-I am not affiliated with a laboratory. The results above were produced without funding.
+This work was done with the Orthogonal Research and Education Lab (OREL), an independent research organization, and produced without dedicated funding.
 
 ## Budget and counterfactual
 
