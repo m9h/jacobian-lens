@@ -220,3 +220,25 @@ def ladder(n: int = 150):
     for r in metacog_arm.starmap(args):
         print("  ->", r)
     print("  saved: reviewer volume metacog/ladder_*.json")
+
+
+# STAGE sweep — every step of post-training, to LOCATE where reportable self-monitoring
+# switches on. The Scorecard's first live "emergence" cell: does reportability appear at
+# SFT, at DPO, or gradually? (base already covered; each stage has its own 11-layer lens.)
+STAGES = [
+    ("base",         "allenai/Olmo-3-1025-7B",         "lenses/olmo-3-1025-7b.pt"),
+    ("instruct-sft", "allenai/Olmo-3-7B-Instruct-SFT", "lenses/olmo-3-7b-instruct-sft.pt"),
+    ("instruct-dpo", "allenai/Olmo-3-7B-Instruct-DPO", "lenses/olmo-3-7b-instruct-dpo.pt"),
+    ("instruct",     "allenai/Olmo-3-7B-Instruct",     "lenses/olmo-3-7b-instruct.pt"),
+    ("think-sft",    "allenai/Olmo-3-7B-Think-SFT",    "lenses/olmo-3-7b-think-sft.pt"),
+    ("think-dpo",    "allenai/Olmo-3-7B-Think-DPO",    "lenses/olmo-3-7b-think-dpo.pt"),
+    ("think",        "allenai/Olmo-3-7B-Think",        "lenses/olmo-3-7b-think.pt"),
+]
+
+
+@app.local_entrypoint()
+def stages(n: int = 150):
+    print("  Metacognition across post-training STAGES (base -> SFT -> DPO -> final) — emergence")
+    for r in metacog_arm.starmap([(s, h, lf, n) for (s, h, lf) in STAGES]):
+        print("  ->", r)
+    print("  saved: metacog/ladder_*.json  (base/instruct/think reused; SFT/DPO stages added)")
