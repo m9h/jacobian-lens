@@ -148,5 +148,28 @@ than the signal vanishing. A per-arm **supervised direction probe** (v4) is need
 de-confound the covert trajectory; the reportability trajectory (P(True)) is behavioral and
 not subject to this.
 
+### Stage-resolved emergence — reportability switches on at SFT
+
+Sweeping every post-training stage (base → SFT → DPO → final) locates *where* reportable
+self-monitoring appears. Verbal self-evaluation P(True), both families:
+
+| stage | P(True) AUROC | | stage | P(True) AUROC |
+|---|---|---|---|---|
+| **base** | 0.51 (chance) | | | |
+| **Instruct-SFT** | **0.71** (+0.19) | | **Think-SFT** | **0.70** (+0.18) |
+| Instruct-DPO | 0.70 | | Think-DPO | 0.75 |
+| Instruct (final) | 0.78 | | Think (final) | 0.72 |
+
+**Reportable self-monitoring switches on at the SFT stage — the first post-training step — in
+both families.** It is not gradual and does not wait for DPO: supervised fine-tuning installs
+the bulk of it (+0.18–0.19 over base), and later stages only refine it. Combined with the
+covert base-model signal, the developmental claim is precise: **the base model already
+covertly tracks its own errors but cannot report them; SFT is the step that makes the
+pre-existing covert signal reportable.** As far as we can find, this is the first developmental
+localization of a consciousness-indicator property to a specific training stage, on open
+weights — and the first live "emergence" cell of the open scorecard this program is building.
+(The covert-readout *drop* after SFT is the confounded trajectory above; the P(True) curve is
+behavioral and clean.)
+
 Reproduce: `modal run modal_metacog.py::run` (base v2) and `::ladder` (across arms) in
 `github.com/m9h/jacobian-lens`; raw on the Modal `jlens-out` volume, `metacog/`.
