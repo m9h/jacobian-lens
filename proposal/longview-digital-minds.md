@@ -39,7 +39,7 @@ missing control. That is a field-level methodological gap, not an isolated error
 
 ## What I have already established, unfunded
 
-Over the past two weeks, working alone on personal hardware plus roughly $30 of rented
+Over the past two weeks, working alone on personal hardware plus roughly $250 of rented
 GPU, I replicated the method on open weights and ran the controls the paper does not
 report. Five results, all reproducible from a public repository
 (`github.com/m9h/jacobian-lens`):
