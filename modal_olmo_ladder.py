@@ -154,12 +154,13 @@ MAX_SEQ_LEN = 128
 # dim_batch is memory-only for a SINGLE fit but NOT throughput-neutral in practice:
 # n_passes = ceil(d_model/dim_batch), and each pass carries fixed per-launch overhead.
 # The first anchor attempt ran dim_batch=32 (128 backward passes/prompt) on an A100 and
-# measured ~55 s/prompt -- ~4x Anthropic's published ~11.5 s/prompt (dim_batch=128 on a
-# B200), which would blow both the 60-min shard timeout and the ~27 GPU-hr budget. 64
-# halves the passes and fits an 80 GB card comfortably for an 11-layer 7B fit; paired
-# with H100 (below) this restores published-class throughput. (128 fits memory too but
-# has OOM'd before on larger configs, so 64 is the safe step.)
-DIM_BATCH = 64
+# measured ~55 s/prompt; the H100+dim_batch=64 anchor that PASSED measured ~26 s/prompt --
+# still ~2x Anthropic's published ~11.5 s/prompt (dim_batch=128 on a B200). The ladder now
+# matches the published config exactly: dim_batch=128 on B200 (below), which fits
+# comfortably (Anthropic ran it on a 178 GB B200 for this same model at all 31 layers; we
+# use 11), restoring ~13 s/prompt and the ~27 GPU-hr budget. dim_batch is mathematically
+# neutral for the RESULT, so the dim_batch=64 anchor validation carries over unchanged.
+DIM_BATCH = 128
 SKIP_FIRST = 16
 
 
@@ -376,7 +377,7 @@ def capability_all():
           "as an assumed-away constant.")
 
 
-@app.function(image=image, gpu="H100", volumes={"/cache": cache, "/out": out},
+@app.function(image=image, gpu="B200", volumes={"/cache": cache, "/out": out},
               timeout=90 * 60, env=ENV, retries=1)
 def fit_shard(arm: str, shard: int) -> dict:
     """Accumulate a PARTIAL Jacobian sum over this shard's prompts.
