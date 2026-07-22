@@ -430,6 +430,75 @@ def fit_shard(arm: str, shard: int) -> dict:
 
 
 @app.function(image=image, volumes={"/out": out}, timeout=30 * 60, env=ENV)
+def analyze() -> dict:
+    """Claim-6 geometry over the fitted ladder. CPU-only; reads lenses from the volume.
+
+    Everything is a mean-over-shared-layers cosine between J-matrices (jlens_lab.compare),
+    reported AGAINST a refit-noise floor -- cos(our base fit, Anthropic's published base
+    lens), two independent 616-prompt fits of the SAME model. A distance below that floor
+    is a real move; at/above it is noise.
+
+    Three questions:
+      1. base_distance -- how far did post-training move each arm's J-space from base?
+      2. method_ladder -- does it move progressively base -> SFT -> DPO -> final?
+      3. rlzero_pairwise -- THE control: at matched method+capability, do the four RL-Zero
+         DOMAIN arms have distinguishable J-spaces (domain-specific viewpoint) or are they
+         all within refit noise of each other (no domain viewpoint)?
+    """
+    import pathlib, jlens
+    from huggingface_hub import HfApi, hf_hub_download
+    from jlens_lab import artifacts
+
+    d = pathlib.Path("/out/olmo_ladder")
+    lens = {}
+    for sub in sorted(d.iterdir()):
+        p = sub / "lens.pt"
+        if p.exists():
+            lens[sub.name] = jlens.JacobianLens.load(str(p))
+    base = lens["olmo-3-1025-7b"]
+
+    # Refit-noise floor: our base fit vs Anthropic's published base lens (same model).
+    files = [f for f in HfApi().list_repo_files("neuronpedia/jacobian-lens")
+             if f.startswith("olmo-3-1025-7b/") and f.endswith(".pt")]
+    published = artifacts.load_lens(hf_hub_download("neuronpedia/jacobian-lens", files[0]))
+    refit_floor = artifacts.compare(base, published)["mean_cosine"]
+
+    def cos(a, b):
+        return artifacts.compare(a, b)["mean_cosine"]
+
+    base_distance = {n: cos(base, l) for n, l in lens.items() if n != "olmo-3-1025-7b"}
+
+    rl = sorted(n for n in lens if "rl-zero" in n)
+    rlzero_pairwise = {f"{a.split('rl-zero-')[-1]} vs {b.split('rl-zero-')[-1]}": cos(lens[a], lens[b])
+                       for i, a in enumerate(rl) for b in rl[i + 1:]}
+
+    return {"refit_noise_floor": refit_floor,
+            "base_distance": base_distance,
+            "rlzero_pairwise": rlzero_pairwise,
+            "rlzero_min_pairwise": min(rlzero_pairwise.values()) if rlzero_pairwise else None,
+            "arms": sorted(lens)}
+
+
+@app.local_entrypoint()
+def analysis():
+    r = analyze.remote()
+    fl = r["refit_noise_floor"]
+    print(f"\n  REFIT-NOISE FLOOR (our base vs published base, same model): cos = {fl:.4f}")
+    print("  -> a cosine BELOW this is a real J-space move; at/above = noise.\n")
+    print("  DISTANCE FROM BASE (post-training moved the J-space by...):")
+    for n, c in sorted(r["base_distance"].items(), key=lambda kv: kv[1]):
+        moved = "MOVED" if c < fl - 0.005 else "~noise"
+        print(f"    {n.replace('olmo-3-7b-',''):18s} cos(base,arm)={c:.4f}   [{moved}]")
+    print(f"\n  RL-ZERO DOMAIN CONTROL (matched method+capability; do domains diverge?):")
+    for k, c in sorted(r["rlzero_pairwise"].items(), key=lambda kv: kv[1]):
+        tag = "DISTINGUISHABLE" if c < fl - 0.005 else "within refit noise"
+        print(f"    {k:22s} cos={c:.4f}   [{tag}]")
+    print(f"\n  min RL-Zero pairwise cos = {r['rlzero_min_pairwise']:.4f}  vs floor {fl:.4f}")
+    print("  Read: RL-Zero domain arms BELOW the floor => domain shapes the J-space at "
+          "held capability (supports Claim 6); all at/above => no domain viewpoint.")
+
+
+@app.function(image=image, volumes={"/out": out}, timeout=30 * 60, env=ENV)
 def combine(arm: str, half: int | None = None) -> dict:
     """sum(partials) / sum(counts) -- exact, because the fit is a plain mean.
 
