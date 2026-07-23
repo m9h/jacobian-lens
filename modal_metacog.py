@@ -305,3 +305,71 @@ def probe(n: int = 150):
     for r in metacog_probe.starmap([(s, h, lf, n) for (s, h, lf) in STAGES]):
         print("  ->", r)
     print("  saved: metacog/probe_*.pt  (offline CV diff-in-means -> per-arm covert AUROC)")
+
+
+# PRETRAINING sweep — WHEN does covert self-monitoring first appear? Because the supervised
+# probe reads the raw L18 residual (no fitted lens), it runs at any checkpoint. 7 stage1
+# checkpoints span pretraining 0 -> 1.41M steps; at each we probe whether the mid-layer
+# residual encodes the model's own correctness, alongside its TriviaQA accuracy.
+PRETRAIN = [
+    ("step0000", "stage1-step0"),       ("step0235k", "stage1-step235000"),
+    ("step0471k", "stage1-step471000"), ("step0705k", "stage1-step705000"),
+    ("step0941k", "stage1-step941000"), ("step1177k", "stage1-step1177000"),
+    ("step1414k", "stage1-step1413814"),
+]
+
+
+@app.function(image=image, gpu="A100-80GB", volumes={"/cache": cache, "/out": out},
+              timeout=60 * 60, env=ENV, retries=1)
+def metacog_pretrain(tag: str, revision: str, n: int = 150) -> dict:
+    import pathlib, torch, jlens
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    from jlens import ActivationRecorder
+    from datasets import load_dataset
+
+    tok = AutoTokenizer.from_pretrained(BASE, revision=revision)
+    hf = AutoModelForCausalLM.from_pretrained(BASE, revision=revision, dtype=torch.bfloat16,
+                                              device_map="cuda").eval()
+    model = jlens.from_hf(hf, tok)
+    LAYER = 18
+
+    def gen(prompt, k=12):
+        ids = tok(prompt, return_tensors="pt").input_ids.to("cuda")
+        with torch.no_grad():
+            g = hf.generate(ids, max_new_tokens=k, do_sample=False, pad_token_id=tok.eos_token_id)
+        return tok.decode(g[0, ids.shape[1]:], skip_special_tokens=True)
+
+    @torch.no_grad()
+    def residual(prompt):
+        ids = model.encode(prompt, max_length=256)
+        with ActivationRecorder(model.layers, at=[LAYER]) as rec:
+            model.forward(ids)
+            h = rec.activations[LAYER][0]
+        return h[-1].float().cpu()
+
+    ds = load_dataset("mandarjoshi/trivia_qa", "rc.nocontext", split="validation", streaming=True)
+    it = iter(ds); res, lab = [], []
+    while len(res) < n:
+        ex = next(it); q = ex["question"].strip()
+        aliases = [a for a in list(ex["answer"].get("aliases", [])) + [ex["answer"].get("value", "")]
+                   if a and len(a) >= 2]
+        if not aliases or len(q) < 12:
+            continue
+        prompt = f"Question: {q}\nAnswer:"
+        ans = gen(prompt)
+        lab.append(1 if any(a.lower() in ans.lower() for a in aliases) else 0)
+        res.append(residual(prompt))
+
+    d = pathlib.Path("/out/metacog"); d.mkdir(parents=True, exist_ok=True)
+    torch.save({"tag": tag, "revision": revision, "layer": LAYER,
+                "residuals": torch.stack(res).half(), "correct": lab}, d / f"pretrain_{tag}.pt")
+    out.commit()
+    return {"tag": tag, "revision": revision, "n": len(res), "acc": sum(lab) / len(lab)}
+
+
+@app.local_entrypoint()
+def pretrain(n: int = 150):
+    print("  Pretraining sweep — when does covert self-monitoring appear across stage1?")
+    for r in metacog_pretrain.starmap([(t, rev, n) for (t, rev) in PRETRAIN]):
+        print("  ->", r)
+    print("  saved: metacog/pretrain_*.pt  (offline CV probe -> covert AUROC vs pretraining step)")
