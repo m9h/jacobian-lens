@@ -1,0 +1,15 @@
+{
+  "experiment": "pretraining sweep — covert self-monitoring across stage1 checkpoints (raw L18 residual, CV probe)",
+  "n_per_ckpt": 150, "layer": 18,
+  "by_step": {
+    "0": {"acc": 0.013, "n_correct": 2, "covert_auroc": null, "note": "untrained, unmeasurable"},
+    "235000": {"acc": 0.32, "n_correct": 48, "covert_auroc": 0.652},
+    "471000": {"acc": 0.26, "n_correct": 39, "covert_auroc": 0.576},
+    "705000": {"acc": 0.29, "n_correct": 44, "covert_auroc": 0.658},
+    "941000": {"acc": 0.41, "n_correct": 61, "covert_auroc": 0.635},
+    "1177000": {"acc": 0.45, "n_correct": 67, "covert_auroc": 0.651},
+    "1413814": {"acc": 0.39, "n_correct": 58, "covert_auroc": 0.661}
+  },
+  "finding": "covert self-monitoring is present at near-final strength by the first knowledge-bearing checkpoint (235k) and flat thereafter -- early, stable pretraining property; reportability is a separate later SFT event.",
+  "raw": "residual matrices on Modal jlens-out volume: metacog/pretrain_*.pt"
+}

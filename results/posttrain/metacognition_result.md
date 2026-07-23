@@ -193,5 +193,40 @@ weights — and the first live "emergence" cell of the open scorecard this progr
 (The covert-readout *drop* after SFT is the confounded trajectory above; the P(True) curve is
 behavioral and clean.)
 
-Reproduce: `modal run modal_metacog.py::run` (base v2) and `::ladder` (across arms) in
+### Pretraining emergence — covert monitoring is early and flat
+
+Because the supervised probe reads the raw L18 residual (no fitted lens), it runs at any
+checkpoint. Sweeping seven stage1 pretraining checkpoints (step 0 → 1.41M):
+
+| step | accuracy | covert AUROC |
+|---|---|---|
+| 0 (untrained) | 0.01 | — (2 correct; unmeasurable) |
+| 235k | 0.32 | 0.65 |
+| 471k | 0.26 | 0.58 |
+| 705k | 0.29 | 0.66 |
+| 941k | 0.41 | 0.64 |
+| 1177k | 0.45 | 0.65 |
+| 1414k (≈ base) | 0.39 | 0.66 |
+
+**Covert self-monitoring appears early and is stable.** It is already near its final strength
+(~0.65) at the *first* checkpoint where the model answers enough questions to measure it
+(step 235k, ~17% of pretraining), and does not grow over the remaining 83%. It co-emerges with
+factual knowledge rather than developing later. (Step 0 is unmeasurable — only two correct
+answers — so "early" means "by the first knowledge-bearing checkpoint"; we cannot exclude an
+even earlier onset.)
+
+### The full developmental picture — two dissociable milestones
+
+- **Covert self-monitoring** is an *early pretraining* property: present by step 235k at ~0.65,
+  flat across the rest of pretraining, and persisting through every post-training stage (v4).
+- **Reportability** of that signal is a distinct, *later post-training* event, installed
+  specifically at **SFT** (verbal self-evaluation 0.51 → 0.71).
+
+The model learns to *monitor* its own errors early, as a by-product of acquiring knowledge; it
+learns to *report* that monitoring much later, and only from supervised fine-tuning. Monitoring
+and reportability are separable in both time (pretraining vs post-training) and mechanism (an
+internal representation vs a learned verbal behaviour).
+
+Reproduce: `modal run modal_metacog.py::run` (base v2), `::ladder` / `::stages` (across arms),
+`::probe` (supervised de-confounding), `::pretrain` (pretraining sweep) in
 `github.com/m9h/jacobian-lens`; raw on the Modal `jlens-out` volume, `metacog/`.
