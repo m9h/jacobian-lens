@@ -1,0 +1,11 @@
+{
+  "experiment": "v4 supervised direction probe (CV diff-in-means, per-arm L18 workspace residual)",
+  "n_per_arm": 150, "layer": 18, "folds": 5,
+  "supervised_covert_auroc": {
+    "base": 0.682, "instruct-sft": 0.758, "instruct-dpo": 0.755, "instruct": 0.766,
+    "think-sft": 0.674, "think-dpo": 0.715, "think": 0.720
+  },
+  "vs_uncertainty_word_readout": {"base": 0.67, "instruct-sft": 0.48, "instruct": 0.46, "think": 0.55},
+  "finding": "covert error signal PERSISTS/strengthens across post-training; the readout drop was a transfer artifact. SFT adds reportability ON TOP of a persistent covert signal.",
+  "raw": "residual matrices on Modal jlens-out volume: metacog/probe_*.pt"
+}

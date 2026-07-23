@@ -149,13 +149,26 @@ information — covert, in the workspace — and what post-training installs is 
 of it. Since reportability is their operational criterion for conscious access, post-training
 does not *create* the error signal; it makes a pre-existing covert signal verbalizable.
 
-**Caveat — the covert-signal trajectory is confounded.** The apparent weakening of the covert
-workspace signal from base (0.66) to Instruct (0.34) is not clean: the uncertainty-*word*
-readout is calibrated on the base workspace, and the Instruct workspace is reshaped ~31%
-(cos 0.69 from base), so a lower reading there may reflect the readout not transferring rather
-than the signal vanishing. A per-arm **supervised direction probe** (v4) is needed to
-de-confound the covert trajectory; the reportability trajectory (P(True)) is behavioral and
-not subject to this.
+**The covert trajectory, de-confounded (v4 supervised probe).** The uncertainty-*word* readout
+appeared to *weaken* after SFT (base 0.66 → Instruct 0.34), but that readout is calibrated on
+the base workspace and the post-trained workspaces are reshaped, so the drop could be a transfer
+artifact. Fitting a **correctness direction in each stage's *own* L18 workspace residual**
+(cross-validated difference-in-means, `metacog_probe`) removes the confound:
+
+| stage | supervised covert AUROC | | stage | supervised covert AUROC |
+|---|---|---|---|---|
+| base | 0.68 | | | |
+| Instruct-SFT | **0.76** | | Think-SFT | 0.67 |
+| Instruct-DPO | 0.76 | | Think-DPO | 0.72 |
+| Instruct | **0.77** | | Think | 0.72 |
+
+**The covert error signal does not weaken — it persists across every post-training stage, and
+strengthens in the Instruct family (0.68 → 0.77).** The apparent drop was entirely the readout
+not transferring. This flips the reading for the better: post-training does *not* trade a covert
+signal for a reportable one. **The covert self-monitoring signal is present throughout (base and
+all post-trained stages); SFT adds a verbalizable report *on top of* it.** The internal state
+and its reportability are dissociable and independently present — the base model already
+monitors its own errors; supervised fine-tuning grants the ability to say so.
 
 ### Stage-resolved emergence — reportability switches on at SFT
 
