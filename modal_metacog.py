@@ -242,3 +242,66 @@ def stages(n: int = 150):
     for r in metacog_arm.starmap([(s, h, lf, n) for (s, h, lf) in STAGES]):
         print("  ->", r)
     print("  saved: metacog/ladder_*.json  (base/instruct/think reused; SFT/DPO stages added)")
+
+
+# v4 — SUPERVISED direction probe. The uncertainty-word readout is calibrated on the base
+# workspace, so its apparent covert-signal DROP after SFT is confounded (the post-trained
+# workspace is reshaped). A per-arm supervised probe fixes this: fit a linear correctness
+# direction in EACH arm's own workspace residual, cross-validated, so the measure adapts to
+# each arm's geometry. Question the confounded readout could not answer: does the covert
+# error signal actually persist across post-training, or genuinely weaken?
+@app.function(image=image, gpu="A100-80GB", volumes={"/cache": cache, "/out": out},
+              timeout=45*60, env=ENV, retries=1)
+def metacog_probe(slug: str, hf_name: str, lens_file: str, n: int = 150) -> dict:
+    """Save each arm's workspace-layer residual (L18, last token) + correctness, for an
+    offline cross-validated difference-in-means probe of 'does the workspace encode error'."""
+    import pathlib, torch, jlens
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    from jlens import ActivationRecorder
+    from datasets import load_dataset
+
+    tok = AutoTokenizer.from_pretrained(hf_name)
+    hf = AutoModelForCausalLM.from_pretrained(hf_name, dtype=torch.bfloat16, device_map="cuda").eval()
+    model = jlens.from_hf(hf, tok)
+    LAYER = 18                                             # a workspace-band layer
+
+    def gen(prompt, k=12):
+        ids = tok(prompt, return_tensors="pt").input_ids.to("cuda")
+        with torch.no_grad():
+            g = hf.generate(ids, max_new_tokens=k, do_sample=False, pad_token_id=tok.eos_token_id)
+        return tok.decode(g[0, ids.shape[1]:], skip_special_tokens=True)
+
+    @torch.no_grad()
+    def residual(prompt):
+        ids = model.encode(prompt, max_length=256)
+        with ActivationRecorder(model.layers, at=[LAYER]) as rec:
+            model.forward(ids)
+            h = rec.activations[LAYER][0]                 # [seq, d]
+        return h[-1].float().cpu()                        # last-token residual
+
+    ds = load_dataset("mandarjoshi/trivia_qa", "rc.nocontext", split="validation", streaming=True)
+    it = iter(ds); res, lab = [], []
+    while len(res) < n:
+        ex = next(it); q = ex["question"].strip()
+        aliases = [a for a in list(ex["answer"].get("aliases", [])) + [ex["answer"].get("value", "")]
+                   if a and len(a) >= 2]
+        if not aliases or len(q) < 12:
+            continue
+        prompt = f"Question: {q}\nAnswer:"
+        ans = gen(prompt)
+        lab.append(1 if any(a.lower() in ans.lower() for a in aliases) else 0)
+        res.append(residual(prompt))
+
+    d = pathlib.Path("/out/metacog"); d.mkdir(parents=True, exist_ok=True)
+    torch.save({"slug": slug, "layer": LAYER, "residuals": torch.stack(res).half(),
+                "correct": lab}, d / f"probe_{slug}.pt")
+    out.commit()
+    return {"slug": slug, "n": len(res), "acc": sum(lab) / len(lab)}
+
+
+@app.local_entrypoint()
+def probe(n: int = 150):
+    print("  v4 supervised direction probe — de-confound the covert trajectory across stages")
+    for r in metacog_probe.starmap([(s, h, lf, n) for (s, h, lf) in STAGES]):
+        print("  ->", r)
+    print("  saved: metacog/probe_*.pt  (offline CV diff-in-means -> per-arm covert AUROC)")
