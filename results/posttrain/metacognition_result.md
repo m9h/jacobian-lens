@@ -53,13 +53,22 @@ at 0.64.** The workspace carries error information the output does not surface �
 exactly where it matters, on confident-looking answers. This is the "knows more than it says"
 result, and the direct internal-vs-output comparison the survey (§4.2) notes is missing.
 
-### Calibration — clean and monotonic
+### Calibration and standard metrics
 
-p(correct) by workspace uncertainty-signal quartile (low → high uncertainty):
+p(correct) by workspace uncertainty-signal quartile (low → high uncertainty) — monotonic:
 
 ```
 Q1 low-unc  0.66     Q2  0.38     Q3  0.30     Q4 high-unc  0.22
 ```
+
+Field-standard metrics, to connect to the metacognition literature (all on the base model,
+n=200): the model's **output** confidence is moderately miscalibrated (**ECE 0.113**, Brier
+0.195) and slightly *under*confident (mean top-1 prob 0.30 vs accuracy 0.39). Meta-sensitivity
+as type-2 ROC (the ROC form of meta-d′): **workspace 0.69, output-entropy 0.80** — with
+√2·z(AUROC) meta-d′ proxies of **0.71** and **1.21** respectively (cf. Wang et al.'s DMC
+M-ratios ~0.85–1.05 for log-probs). The output distribution is the stronger overall predictor;
+the workspace's contribution is the covert residual it adds beyond it (the within-entropy-tercile
+result above).
 
 ### Known vs unknown — the workspace flags nonsense highest
 
@@ -102,8 +111,8 @@ present rather than confabulated. (See the ladder result below for how it change
   standalone error detector. Framed accordingly.
 - The peak is at L30 (output-adjacent), so it is "workspace **and** late," not uniquely
   mid-band; the signal accumulates toward the readout.
-- The within-tercile control is robust and non-parametric; a 2-feature logistic fit and a
-  proper meta-d′/M-ratio would tie it more tightly to the field's metrics (planned).
+- The within-tercile control is robust and non-parametric; the type-2 AUROC / meta-d′-proxy
+  above ties it to the field's metrics, and a full Maniscalco–Lau meta-d′ fit would refine it.
 - n = 200, one base model. The "uncertainty signal" reads uncertainty-*word* logits; a
   supervised error direction may do better (a cross-validated direction probe is the natural
   next step).
