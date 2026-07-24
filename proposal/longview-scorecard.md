@@ -127,8 +127,11 @@ maintained, validated, adopted benchmark. Specifically: (1) harden the measureme
 contribute it to Neuronpedia; (2) a seed Scorecard of three indicators and three metacognitive
 properties across five open-weight models and the OLMo checkpoint sequence, providing the first
 emergence entries; (3) an executable, controlled implementation of the Butlin–Long indicator
-framework, currently applied only in prose; and (4) tutorials in which the reader runs each
-control — the principal one requiring no GPU. The chief risk is adoption and test quality: a
+framework, currently applied only in prose; and (4) a public tutorial curriculum (*Spinning Up
+in Mechanistic Interpretability*, already begun) that climbs from vision circuits to the recent
+claims, each rung running a technique on an open model and its control — building on canonical
+open tooling (TransformerLens, Gemma Scope, circuit-tracer) rather than reinventing it, with the
+principal control requiring no GPU. The chief risk is adoption and test quality: a
 poorly constructed test is worse than none, which is why the controls-first, self-correcting
 methodology already demonstrated is essential.
 
