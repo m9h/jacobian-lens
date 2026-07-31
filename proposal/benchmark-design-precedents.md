@@ -70,10 +70,45 @@ signal. The Scorecard has neither. Our compensating strength has to be the contr
 carrying an explicit null and a reproduction, so that when a cell turns out not to measure what
 we thought, that is visible in the artifact rather than discovered fifteen months later.
 
-## Direct technical overlap
+## What we cannot borrow — checked, not assumed
 
-RewardBench evaluates **DPO models via implicit rewards** (`scripts/run_dpo.py`) — the same
-post-training stage our J-space result singles out as doing most of the work (SFT+DPO moves the
-J-space ~5× more than RLVR). If a J-space measurement on the DPO checkpoints tracked reward-model
-quality, that would be exactly the downstream validation point (1) asks for. Untested, and
-cheap to test on the OLMo ladder we already have.
+An obvious idea is to score our OLMo-3 ladder on RewardBench and use that as the downstream
+validation point (1) demands. **It does not work, and the reason is instructive.**
+
+- `scripts/run_v2.py` (RewardBench 2) is **reward-model-only**: `--model`, `--revision`,
+  `--tokenizer`, `--chat_template`. There is no `--ref_model` and no implicit-reward path. Its
+  OLMo support registers `Olmo2ForSequenceClassification` — explicitly *"for Olmo 2 reward
+  models"*, i.e. sequence-classification heads.
+- `scripts/run_dpo.py` **does** score policy models via implicit rewards (it takes `--ref_model`
+  and asserts policy ≠ reference) — but it runs on **v1** data.
+
+Our ladder checkpoints are policy models. So the only path that accepts them is the one running
+the benchmark whose validity failure is this document's entire subject. Validating our work
+against v1 would be self-defeating.
+
+## The right downstream, and we can compute it ourselves
+
+The transferable lesson was never "use RewardBench" — it is **make the benchmark prove it
+predicts a downstream outcome**. For the metacognitive cells the downstream is *reliability*,
+and it is directly measurable on policy models with no reward model in the loop:
+
+- **Calibration** — ECE / Brier on the model's own confidence (we already have ECE 0.113).
+- **Selective prediction** — risk–coverage curves, AURC: if the workspace error signal is real,
+  abstaining on the flagged cases should cut error at a given coverage.
+- **Best-of-N gain** — does ranking samples by the covert workspace signal beat ranking by
+  output probability? This is the same shape as RewardBench 2's own best-of-N validation, but
+  using our signal instead of a reward model.
+
+That last one is the sharpest test and the closest analogue to what v2 did to validate itself.
+It runs on the OLMo ladder we already have, needs no reward model, and yields a number of the
+form *"the workspace signal improves best-of-N selection by X over the output-probability
+baseline"* — which is a validity claim, not a description.
+
+**Status:** designed, not run.
+
+## Direct technical overlap that remains
+
+RewardBench's DPO path targets the same post-training stage our J-space result singles out
+(SFT+DPO moves the J-space ~5× more than RLVR). The overlap is conceptual rather than
+operational: both are asking what that stage installs. Ours reads representations; theirs reads
+preferences.
