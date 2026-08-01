@@ -57,6 +57,10 @@ the first. → `results/posttrain/bestofn_validity.md`
   curriculum that teaches these techniques; rungs 6 and 8 use this repo.
 - [**tri-lens**](https://github.com/m9h/tri-lens) — do three instruments agree about the same
   activation?
+- [**societies-of-thought**](https://github.com/m9h/societies-of-thought) — the adversarial
+  replication: rebuild a no-code/no-data paper, then try to break it. Sibling project;
+  see `docs/JSPACE.md` there for how the two claims connect, and
+  `NOTE_FROM_SOT_AGENT.md` here for the current cross-project state.
 - [**controls-and-trajectories**](https://github.com/m9h/controls-and-trajectories) — the
   published null/trajectory datasets.
 - Lenses on the Hub: [mhough/olmo3-jacobian-lenses](https://huggingface.co/mhough/olmo3-jacobian-lenses).
