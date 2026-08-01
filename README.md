@@ -1,104 +1,64 @@
-# jlens — Jacobian lens
+# Jacobian lens — open replication, controls, and the Consciousness-Indicator Scorecard
 
-> **Reference implementation.** Not maintained and not accepting contributions.
+> **Attribution.** This repository is a **derivative** of Anthropic's reference implementation
+> [`anthropics/jacobian-lens`](https://github.com/anthropics/jacobian-lens) (Apache-2.0),
+> companion code for [*Verbalizable Representations Form a Global Workspace in Language
+> Models*](https://transformer-circuits.pub/2026/workspace/index.html). The `jlens/` package is
+> theirs; the upstream README is preserved as [`UPSTREAM_README.md`](UPSTREAM_README.md).
+> **Everything else here is independent work and is not endorsed by, affiliated with, or
+> reviewed by Anthropic.** Their notice — "not maintained and not accepting contributions" —
+> applies to the upstream library, not to this fork.
 
-Companion code for [**Verbalizable Representations Form a Global Workspace in
-Language Models**](https://transformer-circuits.pub/2026/workspace/index.html).
+Anthropic's global-workspace result rests on a closed model; the paper's own invited
+commentators could not check it. This repository does the replication on **open weights**, runs
+the controls the source papers omit, and reports the results that came out negative.
 
-The Jacobian lens reads out what an internal activation is disposed to make the
-model say. It linearly transports a residual-stream vector at any layer and
-position into the final-layer basis, then decodes it with the model's own
-unembedding into a ranked list of vocabulary tokens.
+## What is here
 
-The transport is the average input–output Jacobian over a text corpus:
+| directory | contents |
+|---|---|
+| `jlens/` | **upstream** Anthropic library (unmodified) |
+| `results/` | our measurements — OLMo post-training ladder, metacognition, ignition, the reviewer battery, cross-validation, best-of-N |
+| `proposal/` | the **Consciousness-Indicator Scorecard** and its design notes |
+| `docs/` | technique lineage; the interpretability curriculum survey |
+| `modal_*.py`, `spark_*.py` | runnable experiments (Modal cloud / DGX Spark) |
 
-```
-lens_l(h) = unembed( J_l @ h ), J_l = E[∂h_final / ∂h_l]
-```
+## Findings
 
-The expectation is over prompts, source positions, and all current-and-future
-target positions in a generic web-text corpus; the precise estimator
-(cotangents summed over target positions, then averaged over source positions)
-is documented in the [`jlens.fitting`](jlens/fitting.py) module docstring.
+**Post-training installs a viewpoint, decoupled from capability.** Across the fully open OLMo-3
+ladder, post-training moves the J-space ~31% from base (cos 0.69) while MMLU is flat to slightly
+*down*. **Method sets the magnitude, not domain**: SFT+DPO moves it ~5× more than RLVR, and
+varying the RLVR domain at matched capability adds ~1%. First quantitative, controlled test of a
+claim Anthropic could only state qualitatively. → `results/posttrain/`
 
-This repo fits the lens on open-weights decoder transformers, applies it, and
-renders the interactive layer × position view shown below. Examples use Qwen;
-other HuggingFace decoders adapt cleanly.
+**A covert error signal, made reportable by SFT.** The base model's workspace predicts whether
+its own answer is wrong (AUROC 0.69) *beyond what its output distribution reveals*, while its
+verbal self-assessment is at chance (0.51). Post-training raises verbal self-eval to 0.71–0.78
+— at **SFT**, not RLVR. Two dissociable milestones. → `results/metacognition_result.md`
 
-![Slice visualisation: ASCII-face example](assets/slice_vis.png)
+**The reviewers' battery, executed.** Dehaene & Naccache proposed six tests and noted Anthropic
+could run them; none were, because the model is closed. All six were run here, with an honest
+mixed outcome: two clean signatures, one partial, three inconclusive under first-pass
+adaptations whose flaws are documented. → `results/reviewer_tests_results.md`
 
-*The ASCII-face example: selecting the `^` (nose) position shows the lens
-reading out "nose" at mid layers, although the word never appears in the
-prompt.*
+**External cross-validation, and a per-layer refit floor.** Against Neuronpedia's independently
+fitted lens for the same model, the final layer agrees to cosine **0.9998** — but agreement is
+strongly layer-dependent (0.884 at layer 0). J-space claims must be read against a *per-layer*
+floor. → `results/neuronpedia_crossvalidation.md`
 
-## Install
+**Two negatives we report as results.** Introspection came out as *steering, not introspection*.
+And the covert error signal does **not** improve best-of-N selection (+0.008 over a logprob
+baseline) — question-level and sample-level metacognition are different tasks, and we only have
+the first. → `results/posttrain/bestofn_validity.md`
 
-```bash
-pip install -e .
-```
+## Related
 
-## Usage
+- [**spinning-up-in-mech-interp**](https://github.com/m9h/spinning-up-in-mech-interp) — the
+  curriculum that teaches these techniques; rungs 6 and 8 use this repo.
+- [**tri-lens**](https://github.com/m9h/tri-lens) — do three instruments agree about the same
+  activation?
+- [**controls-and-trajectories**](https://github.com/m9h/controls-and-trajectories) — the
+  published null/trajectory datasets.
+- Lenses on the Hub: [mhough/olmo3-jacobian-lenses](https://huggingface.co/mhough/olmo3-jacobian-lenses).
 
-### Apply
-
-To apply a pre-fitted lens:
-
-```python
-import transformers, jlens
-
-hf = transformers.AutoModelForCausalLM.from_pretrained("org/model").cuda()
-tok = transformers.AutoTokenizer.from_pretrained("org/model")
-model = jlens.from_hf(hf, tok)
-
-lens = jlens.JacobianLens.from_pretrained("org/lens-repo", filename="model/lens.pt")
-lens_logits, model_logits, _ = lens.apply(
-    model, "Fact: The currency used in the country shaped like a boot is",
-    positions=[-2])
-for layer, logits in sorted(lens_logits.items()):
-    print(layer, [tok.decode([t]) for t in logits[0].topk(5).indices])
-```
-
-### Fit
-
-To fit a lens on your own model:
-
-```python
-lens = jlens.fit(model, prompts=my_prompts, checkpoint_path="out/ckpt.pt")
-lens.save("out/jacobian_lens.pt")
-```
-
-The paper's lenses use 1000 sequences of 128 tokens from a pretraining-like
-corpus. Quality saturates quickly (§9.3); ~100 prompts is usable. This is a
-reference implementation and is not optimized; fitting time is dominated by
-the model's own backward pass. Parallelize by running `fit()` on disjoint
-slices and combining with `JacobianLens.merge()`.
-
-## Walkthrough
-
-[`walkthrough.ipynb`](walkthrough.ipynb) is the end-to-end notebook: load a
-model, load (or fit) a lens, apply it at a few layers, and render a slice page
-like the one above.
-
-Reading a slice page:
-
-- Each cell shows the lens top-1 word at that (position, layer); the
-  superscript is its rank over the full vocabulary.
-- Click a cell to select a (position, layer) and pin its top-1 token; pinned
-  tokens get rank-tracking charts and a rank heatmap.
-- The bottom row (`L = n_layers − 1`) is the model's actual output.
-
-## License and data
-
-Code is released under the Apache License 2.0 — see [LICENSE](LICENSE).
-
-The replication and lens-eval prompt sets in [`data/`](data/) are synthetic,
-authored by Anthropic, and released under the same Apache License 2.0 as the
-code. See the READMEs in [`data/experiments/`](data/experiments/) and
-[`data/evaluations/`](data/evaluations/) for what each set contains.
-
-The slice-vis pages use [d3](https://github.com/d3/d3) (ISC license), loaded
-from the jsDelivr CDN with subresource integrity or inlined into
-self-contained pages.
-
-No model weights or text corpora are bundled; models and datasets downloaded
-at run time are subject to their own licenses.
+Apache-2.0, matching upstream. Work by Morgan Hough, Orthogonal Research and Education Lab (OREL).
