@@ -89,6 +89,19 @@ to them — verified: their entire feature export contains no steering measureme
 lists comparing steering methods as an open problem in its own paper, and the best existing
 course material states the core control as an optional bonus exercise with no code.
 
+**An in-person activity at the hub.** The Scorecard's inputs come from a **reproduction group**
+run on site: we take papers whose claims are exciting and whose artifacts are incomplete, and
+give them a public open-source implementation, training documentation, and the control the
+original omitted. It is organised on the 1978 cognitive-science hexagon — each session pairs the
+foundational text with the AI paper borrowing from it, because most of these claims import a
+construct (global workspace, introspection, metacognition) from a discipline that is not in the
+room. Five papers have already been through this process, including two where the artifact we
+produced refuted or corrected something — one of them ours.
+
+This is what makes weekly in-person participation substantive rather than incidental: the group
+is the pipeline that fills the Scorecard's cells, and it is the natural way to bring other hub
+members into producing artifacts rather than reading about them.
+
 **Milestones (12 months).** (1) Harden the measurement tooling and contribute it upstream —
 Neuronpedia is MIT-licensed, actively developed, and has publicly solicited exactly the
 artifacts we produce. (2) A seed Scorecard: three consciousness indicators and three
