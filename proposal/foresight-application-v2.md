@@ -8,23 +8,33 @@ person · **DRAFT v2 — reframed around reasoning models and benchmark attribut
 
 ## The problem: we forecast from numbers whose causes we do not measure
 
-AGI timelines are argued from benchmark movement, and ARC-AGI is the benchmark that argument
-runs on. But the recent movement was **not primarily model capability**:
+AGI timelines are argued from benchmark movement, and ARC-AGI is where that argument runs. The
+decomposition has been done, and it is lopsided:
 
-- A **7-million-parameter** Tiny Recursive Model reaches ~45% on ARC-AGI-1 — essentially all
-  task-specific learning happening at *test time*.
-- NVIDIA's winning 2025 entry used a **4B** model with synthetic data and test-time training.
-- Test-time training reached 53.5% on the private ARC-AGI-1 set; evolutionary program synthesis
-  in *natural-language* program space is a separate line again.
-- The ARC Prize 2025 technical report's own summary: **"test-time adaptation and refinement loops
-  emerge as critical success factors."**
+| study | harness effect | base-model effect |
+|---|---|---|
+| Product of Experts ([2505.07859](https://arxiv.org/abs/2505.07859)) | **+53.3 pts** on a *frozen* 8B model | **+3.4 pts** (3B → 8B) |
+| Cost-Effective Harnesses ([2607.06764](https://arxiv.org/abs/2607.06764)) | **+51.75 pts**, and it replicates across base models | — |
+| Berman, evolutionary search in natural language | **+12.9 / +13.4 pts** on a fixed base model | — |
 
-So a score moved. Five things could have moved it: **the model, the harness, test-time compute,
-synthetic data, or contamination.** These have completely different implications for what comes
-next, and the public conversation routinely attributes all of it to the first.
+A 7-million-parameter model reaches ~45% on ARC-AGI-1; the 2025 Kaggle winner used a **4B** base.
+ARC Prize's own 2024 report concludes that *"there does not exist any static inference-style
+transduction solution that scores above 10%"* — i.e. essentially all reported performance is
+harness.
 
-**This is an epistemics problem before it is a capabilities problem**, and it is squarely in
-Foresight's stated interest in forecasting and short-timeline feasibility.
+**So the attribution question is settled for ARC and unasked everywhere else.** The gap this
+project addresses is not "prove harness matters on ARC" — that is done. It is that **no reusable
+method exists for asking it of the next benchmark**, and the field keeps reporting scores as
+capability. Three specific consequences:
+
+- The **API track and the Kaggle track differ by ~68 points** on ARC-AGI-2 (92.5% vs ~24%) under
+  different compute constraints. Conflating them is the most common error in secondary coverage,
+  including in timeline arguments.
+- **`arc_challenge` in mainstream evaluation harnesses is a different benchmark entirely** — the
+  2018 AI2 Reasoning Challenge, grade-school science multiple choice. Headline claims routinely
+  cite it as ARC-AGI. There is no ARC-AGI evaluation in any mainstream harness.
+- Published results exist whose post-method numbers look like contamination and whose baselines
+  are sound. Distinguishing those requires the artifacts, not the paper.
 
 ## Why open artifacts, and what cognitive science is actually for
 
@@ -97,23 +107,26 @@ were never released.
 
 ## Proposed work
 
-**1. An attribution harness for reasoning benchmarks.** For a given score movement, decompose it:
-model swap, harness swap, test-time compute budget, data. ARC Prize already publishes
-**cost-per-task** alongside score and separates base LLMs / reasoning systems / compute-capped
-Kaggle entries — the apparatus exists and is underused. Deliverable: a public, re-runnable
-attribution for a set of headline results, on open models and open harnesses.
+**1. A reusable attribution harness — the thing that does not exist.** ARC's decomposition took
+the field several years and several groups. Deliverable: a public tool that performs the same
+decomposition on *any* benchmark — model swap, harness swap, test-time budget, at matched
+cost-per-task — so the next benchmark does not need its own multi-year effort. ARC Prize already
+publishes cost-per-task and separates base / reasoning / compute-capped tracks; that apparatus
+should be portable and is not.
 
-**2. Construct-validity tests, imported from psychometrics.** Does an ARC-style score predict the
-ability it names, or the harness that produced it? Concretely: within-item controls, transfer to
-held-out task families, and sensitivity to test-time budget at fixed model. **ARC-AGI-3 is
-interactive and agentic**, which makes this sharper — an agent's score confounds reasoning with
-exploration policy, and separating them is exactly a psychophysics design problem.
+**2. Sample self-agreement, which is genuinely unmeasured.** How often do independent samples
+from the same model produce *identical* structured outputs? H-ARC defines the metric and
+explicitly declines to compute it for models. It matters because it determines whether voting is
+even a coherent selection rule — and the indirect evidence points the counterintuitive way:
+models agree with themselves far more than assumed, so voting selects confident wrong answers
+rather than aggregating diverse ones. We are already measuring this (a pilot shows samples
+converging on a single wrong grid roughly 6 times in 16). Cheap, and nobody has published it.
 
-**3. Contamination and provenance checks**, which the benchmark community treats as a footnote
-and psychometrics treats as disqualifying.
+**3. Re-analysis of artifacts already public.** ARC Prize releases per-task pass/fail with costs
+for **77 models × 400 tasks**. Much of the model-axis half of any attribution is sitting there
+unanalysed. First deliverable, and it costs no GPU time.
 
-**4. The reproduction group at the hub** (below), which produces the implementations these
-analyses run on.
+**4. The reproduction group at the hub**, which produces the implementations the above run on.
 
 ## Why this reduces risk
 
