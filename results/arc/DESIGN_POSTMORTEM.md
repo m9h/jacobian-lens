@@ -13,7 +13,7 @@ MiniARC (5×5) gives Qwen3-4B **0.67%**.
 
 Our own run: Qwen3-4B finished at **4/40 solved at pass@16** (618/640 grids parsed). Higher than
 the literature's 0.63% because ARC's *training* set is easier than the evaluation set and pass@16
-gives 16 attempts, not the official 2. An early check at 18 tasks read 0/40 and I over-read it as
+gives 16 attempts, not the official 2. An early check at 18 tasks read 0/18 and I over-read it as
 a hard zero — the floor is low, not absent. It makes no difference to the power problem: 4 vs a
 plausible 6 for the 8B arm is Fisher p≈0.7.
 
