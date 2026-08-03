@@ -26,27 +26,45 @@ next, and the public conversation routinely attributes all of it to the first.
 **This is an epistemics problem before it is a capabilities problem**, and it is squarely in
 Foresight's stated interest in forecasting and short-timeline feasibility.
 
-## Why cognitive science, and why this is NeuroAI
+## Why open artifacts, and what cognitive science is actually for
 
-ARC-AGI is not an arbitrary benchmark. Chollet built it on **psychometrics** — the measurement
-theory psychology developed precisely because "this test score went up" is not the same as "this
-ability improved" — and on Spelke's core-knowledge priors. The discipline that owns this problem
-calls it **construct validity**, and it has a century of methods for it: does the instrument
-measure the ability it names, or something correlated and cheaper?
+The reason to insist on open code, models and datasets is not that these systems resemble
+brains. It is that **they are computational objects we do not understand, and understanding them
+requires continuing to probe them.** A closed model can be described; it cannot be interrogated.
+A published number without the artifact behind it can be believed or doubted, but not checked.
 
-That places this work directly in **path 4 of Mineault et al., *NeuroAI for AI Safety***
-(arXiv:2411.18526) — *"interpretability advancement using neuroscience methods"* — and extends
-it where the white paper is explicitly thin, since it "emphasizes neuroscience-driven approaches
-rather than traditional benchmarking." **The neuroscience contribution here is methodological,
-not architectural: importing measurement standards, not brain structure.**
+Attribution makes this concrete. To decide whether a score moved because of the model or the
+harness, you have to **hold one fixed and swap the other** — which requires both to be open, and
+requires the evaluation harness to be re-runnable. Almost no headline result on a reasoning
+benchmark currently permits that. That is the gap, and it is a tooling and artifact gap, not a
+theoretical one.
 
-Two examples of what that buys, both already run:
+**Where cognitive science comes in — and where it does not.** It is not a claim that brain-like
+systems are safer, and this proposal explicitly declines the architectural version of that
+argument. The contribution is narrower and entirely methodological:
 
-- Psychology measures metacognition with **meta-d′ and type-2 ROC** because "the model's
-  confidence tracks its accuracy" is too loose to test. Most AI metacognition work reinvents a
-  weaker version.
-- Psychophysics insists an effect be shown **within item**, not only between items. Applying that
-  to our own results is an open exposure we have published rather than hidden.
+- **Psychometrics** already has the machinery for "did the score move for the reason claimed" —
+  construct validity, developed because IQ testing failed in exactly this way. ARC-AGI is itself
+  built on that tradition.
+- **Signal detection theory** (meta-d′, type-2 ROC) already formalises "does the system know when
+  it is wrong". AI work repeatedly reinvents a weaker version.
+- **Psychophysics** insists effects be shown *within item*, not only between items — a control
+  that has already made a collaborator's effect disappear, and one of our own open exposures.
+- **Adversarial collaboration and preregistration** are how disputes between labs get settled.
+  These fields built that machinery after a replication crisis; AI evaluation is pre-crisis.
+
+So the relationship to Mineault et al.'s *NeuroAI for AI Safety* (arXiv:2411.18526) — Foresight's
+reference — is partial and worth stating honestly. Of its five paths, four are architectural
+bets that brain-likeness confers safety. **We are not making that bet.** Only path 4,
+"interpretability advancement using neuroscience methods", is load-bearing here, and even there
+the useful import is *measurement discipline*, not brain structure. The white paper itself notes
+it emphasises neuroscience-driven approaches over benchmarking; this fills that gap without
+requiring its central premise.
+
+The connection to safety needs no analogy at all: **safety cases rest on evaluations.** If a
+score reflects a harness, contamination or test-time compute rather than the capability it names,
+the safety case built on it is unfounded. Evaluation integrity is upstream of every safety
+argument, and attribution is upstream of evaluation integrity.
 
 ## What has been built, on ~$250 of compute
 
