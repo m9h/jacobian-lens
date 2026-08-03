@@ -102,9 +102,15 @@ This is what makes weekly in-person participation substantive rather than incide
 is the pipeline that fills the Scorecard's cells, and it is the natural way to bring other hub
 members into producing artifacts rather than reading about them.
 
-**Milestones (12 months).** (1) Harden the measurement tooling and contribute it upstream —
-Neuronpedia is MIT-licensed, actively developed, and has publicly solicited exactly the
-artifacts we produce. (2) A seed Scorecard: three consciousness indicators and three
+**Milestones (12 months).** (1) **Contribute the control layer to Neuronpedia** — an explicit
+goal, and the gaps are verified rather than assumed: their per-feature export contains no
+steering measurement of any kind, SAEBench has no steering eval, AxBench has no null, and Gemma
+Scope lists the comparison as an open problem in its own paper. Their Jacobian-lens collection
+holds 38 models with the post-training axis absent and exactly one mixture-of-experts, and their
+blog carries an open call for exactly the lenses we produce. Their documentation has zero pages
+on the Jacobian lens. Sequenced to open with the smallest useful piece — a per-layer refit floor
+for their own lenses, already computed — so the first contribution is a measurement that makes
+their artifact more useful, not a request for hosting. Plan: `proposal/neuronpedia-contribution-plan.md`. (2) A seed Scorecard: three consciousness indicators and three
 metacognitive properties across five open-weight model families plus a checkpoint sequence.
 (3) An executable implementation of the Butlin–Long indicator framework, currently applied only
 in prose. (4) The public curriculum, already begun and running.
