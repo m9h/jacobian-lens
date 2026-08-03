@@ -22,19 +22,33 @@ ARC Prize's own 2024 report concludes that *"there does not exist any static inf
 transduction solution that scores above 10%"* — i.e. essentially all reported performance is
 harness.
 
-**So the attribution question is settled for ARC and unasked everywhere else.** The gap this
-project addresses is not "prove harness matters on ARC" — that is done. It is that **no reusable
-method exists for asking it of the next benchmark**, and the field keeps reporting scores as
-capability. Three specific consequences:
+**But the 2026 results forbid the simple reading.** The frontier moved enormously:
 
-- The **API track and the Kaggle track differ by ~68 points** on ARC-AGI-2 (92.5% vs ~24%) under
-  different compute constraints. Conflating them is the most common error in secondary coverage,
-  including in timeline arguments.
-- **`arc_challenge` in mainstream evaluation harnesses is a different benchmark entirely** — the
-  2018 AI2 Reasoning Challenge, grade-school science multiple choice. Headline claims routinely
-  cite it as ARC-AGI. There is no ARC-AGI evaluation in any mainstream harness.
-- Published results exist whose post-method numbers look like contamination and whose baselines
-  are sound. Distinguishing those requires the artifacts, not the paper.
+| track (verified, Jul 2026) | best | cost/task |
+|---|---|---|
+| ARC-AGI-1, API | **98.0%** Gemini 3.1 Pro | **$0.52** — human parity at 98%, and **33× cheaper than the $17 human baseline** |
+| ARC-AGI-2, API | **92.5%** GPT-5.6 Sol | $1.44 — from near-zero at its Mar-2025 launch |
+| ARC-AGI-2, Kaggle compute-capped | **~24%** NVARC (a **4B** base) | $0.20 |
+| ARC-AGI-3, interactive | **30.2%** Claude Opus 5 | **<1% in Mar 2026** → ~30% by July |
+
+So "harness dominates, the model barely matters" is true **of small models under a compute cap
+and false of the frontier**, where 2026 delivered real and very large model-axis gains — and
+crossed the human cost line on ARC-AGI-1. A benchmark went from adversarially-designed to
+saturated-and-cheaper-than-people inside four years.
+
+**That tension is the opportunity, not an obstacle.** The API and Kaggle tracks run **the same
+tasks** and differ by **~68 points** purely in compute budget and harness. That is the cleanest
+published decomposition of capability-vs-scaffold that exists anywhere in AI evaluation — and
+nobody analyses it as one. The field instead reports whichever number suits the argument, which
+is exactly how a forecast goes wrong:
+
+- Timeline claims cite the **API** number as capability and the **Kaggle** number as the limit,
+  interchangeably, without noting they differ by a factor of four on identical problems.
+- **`arc_challenge` in every mainstream evaluation harness is a different benchmark** — the 2018
+  AI2 Reasoning Challenge, grade-school science multiple choice. Headline "scores 83% on ARC"
+  claims routinely cite it. There is **no ARC-AGI evaluation in any mainstream harness at all.**
+- Published methods exist whose baselines are sound and whose post-method numbers look like
+  contamination (a 4B model reported at 97%). Separating those requires the artifacts.
 
 ## Why open artifacts, and what cognitive science is actually for
 
