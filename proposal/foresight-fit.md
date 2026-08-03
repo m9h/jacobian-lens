@@ -43,7 +43,23 @@ built a process that catches wrong results, including our own":
 Most grant applications cannot show a retraction. For a programme funding *epistemics*, the
 ability to demonstrate self-correction under public artifact is the differentiating evidence.
 
-## ⚠ The one condition that could disqualify us
+## ✅ Hub requirement — RESOLVED (2026-08-02): in person in San Francisco
+
+The binding constraint is satisfied. This also converts a requirement into an advantage: their
+hubs offer **local compute**, and "active in-person member" is a stronger position to apply from
+than "funding-only", which they accept only exceptionally.
+
+**Two decisions remain, both the applicant's:**
+
+1. **What in-person cadence to commit to in writing.** "Active member" implies a stated
+   commitment, not just proximity.
+2. **The budget figure.** Range $10k–$100k, higher for safety-oriented areas. Our cost shape is
+   unusual and worth stating plainly: **compute has been ~$250 for the entire project to date**,
+   and the currently queued experiments cost ~$5. The ask is essentially researcher time. That is
+   a strong story for a funder — very high artifact-output per dollar, everything open — but the
+   number is a judgement about time, not about resources.
+
+## ⚠ (superseded) The condition that could have disqualified us
 
 > "We prioritize AI-first projects that want to be active, **in-person** members of one of our
 > hubs" (San Francisco or Berlin). "We accept 'funding-only' projects only in exceptional cases."
@@ -67,8 +83,9 @@ epistemics and reliability, keep moral status as a secondary implication rather 
 
 ## Next actions
 
-1. **Resolve the hub question** — everything else is downstream of it.
-2. Watch for the deadline announcement; the application is an Airtable form plus an itemised
+1. ~~Resolve the hub question~~ — **done, SF in person.**
+2. Decide the in-person cadence and the budget figure (see above).
+3. Watch for the deadline announcement; the application is an Airtable form plus an itemised
    budget and project plan.
 3. Reuse `longview-scorecard.md` as the substrate but **re-frame the opening** from moral status
    to epistemics, and add the artifact list and the self-correction record, neither of which
