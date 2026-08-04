@@ -140,7 +140,16 @@ mistake we have already published a post-mortem about.
    capability-vs-scaffold decomposition in evaluation, and nobody analyses it as one. ARC Prize
    publishes per-task results for **77 models × 400 tasks**; that analysis needs no GPU and is the
    empirical base for §Phase 2.
-5. **The reproduction group at the hub**, weekly and in person, which is what produces 1–4.
+5. **★ A red–green testbed with synthetic ground truth.** The dead-salmon argument supplies only
+   the *null* — a randomized network, where a sound method must find nothing. The positive control
+   already exists and is barely used: **[Tracr](https://arxiv.org/abs/2301.05062)** compiles a
+   human-written RASP program *into* transformer weights, so the ground truth is known by
+   construction ([TracrBench](https://arxiv.org/abs/2409.13714) is a dataset of them). Bracket a
+   method between the two — *find nothing on the random net, find exactly the program on the
+   compiled one* — and you can finally state a method's error rate rather than its plausibility.
+   This is question zero of our own reading checklist, answered with material the field has had
+   since 2023. Timaeus lists a Tracr project as **unclaimed**.
+6. **The reproduction group at the hub**, weekly and in person, which is what produces 1–5.
 
 ### Phase 2 — the harness is where the frontier is
 
@@ -183,6 +192,21 @@ model-versus-harness boundary turned into an architecture. We already author sci
 that format ([m9h/terminal-bench-science](https://github.com/m9h/terminal-bench-science): NODDI
 diffusion, transcranial ultrasound), and Martian solicits them. **A task pack costs us almost
 nothing and puts us inside the infrastructure where the agentic question gets settled.**
+
+**Program synthesis is the bridge between the two phases, and deserves renewed emphasis.** What
+actually moved ARC was not models that emit answers but **models that emit programs, selected by
+execution** — Greenblatt's ~8,000 candidates filtered by whether they reproduce the training pairs
+(50%), BARC's induction head run at t=0.8 with execution filtering against its transduction head at
+t=0 (ensembling for +13.75, because they solve *different* tasks), SOAR weighting execution
+accuracy over vote count by 1000. The common element is **verifiable selection**: keep what
+executes, not what is popular.
+
+That matters twice over. A program is **an interpretable artifact by construction** — read it, run
+it, test it, no reverse-engineering required. And execution filtering carries something no
+interpretability method currently has: **a measured false-discovery rate.** Greenblatt found ~**9%**
+of programs that pass the training pairs are still wrong, and voting removes about half. Ask what
+the equivalent number is for an attribution graph or an SAE feature label and nobody can answer.
+**Producing that number for interpretability methods is what item 5 is for.**
 
 Phase 2 needs real compute and more than one person. This proposal does not ask for it. It asks
 for the twelve months that make asking credible.
