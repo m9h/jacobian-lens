@@ -86,8 +86,8 @@ Every artifact public, open weights only, on **~$250 of compute**.
 
 **A published claim, reproduced, that reverses.** A 2026 paper reported that steering a single
 feature produced a "society of thought" improving reasoning accuracy. On the paper's own
-benchmarks the gain **inverts** — +10 points on one, −22 on another. The original had no public
-code or data. Ours does.
+benchmarks the gain **inverts** — +10 on one, −22 on another. The original had no public code or
+data. Ours does.
 
 **Two independent instruments made comparable.** We put the Jacobian lens and a natural-language
 activation reader on the same footing and showed they converge **42× above a mismatch null**, both
@@ -120,48 +120,72 @@ control logic survived; the spectacular demo did not. It is now
 That last item is the qualification that matters. **An adjudication group that has never published
 a retraction of its own is not doing adjudication.**
 
-## Proposed work
+## Proposed work: cheap now, and the only route to the expensive thing
 
-**1. Tool gates — hold the tooling to the standard we hold papers to.** The open stack is
-recommended on *maintenance* evidence: the repo is alive, it has stars. That is not evidence a
-tool works. A gate holds an external line of evidence against a number someone already measured
-and fails loudly when they disagree. One exists and has already paid for itself. Deliverable: a
-gate suite across the stack Decode Research maintains, contributed upstream. *This is the concrete
-answer to the ACL paper's mechanism (2).*
+**The scoping is deliberate.** Model-level interpretability is where the methods exist and where
+compute is nearly free — our entire published record cost ~$250. Agents are where the field is
+going and where its toolkit does not reach. This grant funds the first, **because it is the
+positive control for the second.**
+
+That is not a euphemism for "it is what we can afford." An adjudication method has to be shown to
+catch real errors somewhere cheap before it is trusted somewhere expensive. Ours has: a gate we
+built last week found a live 28× bug in our own curriculum, on a laptop, in under an hour. Running
+unvalidated audits over agent traces at serious compute cost would repeat exactly the mistake we
+have already published a post-mortem about — an expensive experiment whose design was never
+checked cheaply first.
+
+### Phase 1 — this grant, 12 months, model scale
+
+**1. Tool gates.** The open stack is recommended on *maintenance* evidence — the repo is alive, it
+has stars. That is not evidence a tool works. A gate holds an external line of evidence against a
+number someone already measured and fails loudly when they disagree. One exists and has already
+paid for itself. Deliverable: a gate suite across the stack Decode Research maintains, contributed
+upstream. *The ACL paper's mechanism (2).*
 
 **2. A public register of interpretability claims and their controls** — what was claimed, what
-control would discriminate it, whether anyone has run one, what happened. Prospective, so targets
-are nominated before results are known. Seeded with the ~20 claims we have already adjudicated,
+control would discriminate it, whether anyone ran one, what happened. Prospective, so targets are
+nominated before results are known. Seeded with the ~20 claims we have already adjudicated,
 including our own reversals. *Mechanisms (1) and (3).*
 
-**3. Reproductions the field has asked for and not received.** Two are already scoped and
-unclaimed: Timaeus's own project board lists **vision-circuit development** (our rung 1 measures
-InceptionV1 tuning with two nulls; they want the training axis) and a **review of
-complexity measures** — where we have a worked confound to contribute, having watched a difference
-matrix look strikingly low-rank until we checked that the matrix it came from already was. We
-would also run the side-by-side nobody has: our behavioural induction phase-change across Pythia
-checkpoints, seeds and sizes against Timaeus's weight-space rLLC detector.
+**3. Reproductions the field has asked for and not received.** Timaeus's public board lists
+**vision-circuit development** with no lead (our rung 1 already measures InceptionV1 tuning against
+two nulls; they want the training axis) and a **review of complexity measures**, where we have a
+worked confound to contribute — having watched a difference matrix look strikingly low-rank until
+we checked that the matrix it came from already was. Plus the side-by-side nobody has run: our
+behavioural induction phase-change across Pythia checkpoints, seeds and sizes against Timaeus's
+weight-space rLLC detector.
 
-**4. Benchmark attribution as one worked case.** Reasoning benchmarks are where interpretability
-claims meet forecasting. ARC-AGI's API and Kaggle tracks run **identical tasks** and differ by
-**~68 points** on compute budget and harness alone — the cleanest published capability-vs-scaffold
-decomposition in evaluation, and nobody analyses it as one. ARC Prize publishes per-task pass/fail
-with costs for **77 models × 400 tasks**; most of that analysis is undone and needs no GPU.
+**4. One worked attribution case.** ARC-AGI's API and Kaggle tracks run **identical tasks** and
+differ by **~68 points** on compute budget and harness alone — the cleanest published
+capability-vs-scaffold decomposition in evaluation, unanalysed as one. ARC Prize publishes
+per-task pass/fail with costs for **77 models × 400 tasks**; that analysis needs no GPU.
 
-**5. ★ The gap nobody's toolkit covers: agents.** Every method in the open stack — attribution
-graphs, SAEs, lenses, probes — was built for **a single forward pass**, while deployment has moved
-to agents running for hours over many decisions. Martian's [ARES](https://github.com/withmartian/ares)
-(open-source, actively developed, Terminal-Bench 2.0 and 36+ Harbor task packs) exists partly to
-support interpretability of *sequential decision-making*, and its central design choice — "the LLM
-itself is the agent, not the scaffolding" — **is the model-versus-harness boundary made into an
-architecture**, which is item 4's question with an intervention handle on it. We already author
-scientific tasks in the Harbor format
-([m9h/terminal-bench-science](https://github.com/m9h/terminal-bench-science): the NODDI diffusion
-and transcranial-ultrasound challenges), and Martian solicits exactly that. Contributing a task
-pack is a first deliverable that costs almost nothing and opens the harder question: what does a
-*control* even look like for a claim about an agent's reasoning over a hundred steps?
+**5. The reproduction group at the hub** — weekly, in person, which is what produces 1–4.
 
-**6. The reproduction group at the hub** — weekly, in person, which is what produces 1–5.
+### Phase 2 — what this is for, and what it will cost more than this
+
+**Every method in the open stack assumes a single forward pass.** Attribution graphs, SAEs, lenses,
+probes, activation oracles — all of it. Deployment has moved to agents running for hours across
+hundreds of decisions, and the interpretability toolkit did not move with it. That is the largest
+uncovered surface in the landscape, and no rung of our own curriculum touches it either.
+
+The honest statement of the problem: **what does a control even look like for a claim about an
+agent's reasoning over a hundred steps?** We cannot answer that yet, and we are not going to
+promise a method we have not scoped.
+
+What we can do inside this grant is buy the position to attack it. Martian's
+[ARES](https://github.com/withmartian/ares) — open source, actively developed, Terminal-Bench 2.0
+and 36+ Harbor task packs — exists partly to support interpretability of sequential decision-making,
+and its core design choice, *"the LLM itself is the agent, not the scaffolding,"* is the
+model-versus-harness boundary turned into an architecture. We already author scientific tasks in
+that format ([m9h/terminal-bench-science](https://github.com/m9h/terminal-bench-science): NODDI
+diffusion, transcranial ultrasound), and Martian solicits exactly those. **A task pack is a
+near-zero-cost first contribution that puts us inside the infrastructure where the agentic question
+will be settled** — and Martian is also the group that published the auditability call and runs a
+$1M prize awarding completed work.
+
+Phase 2 is a larger project needing real compute and more than one person. This proposal does not
+ask for it. It asks for the twelve months that make asking credible.
 
 ## Why this reduces risk, and why it is cheap
 
