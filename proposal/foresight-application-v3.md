@@ -289,6 +289,25 @@ of programs that pass the training pairs are still wrong, and voting removes abo
 the equivalent number is for an attribution graph or an SAE feature label and nobody can answer.
 **Producing that number for interpretability methods is what item 5 is for.**
 
+**A concrete first target already exists.** COS-PLAY ([arXiv 2604.20987](https://arxiv.org/abs/2604.20987),
+UMD / USC / Good Start Labs / MBZUAI, **MIT-licensed code**) reports that an **8B base model** with
+a co-evolving skill bank reaches **924.4** average reward across four single-player games against
+GPT-5.4's **717.4** — the base Qwen3-8B alone scores 379.6. A harness moving an 8B from bottom to
+top of a frontier leaderboard is the thesis in one table.
+
+It is also exactly the kind of claim that should be adjudicated rather than repeated, and its own
+ablation table says why: **every partial configuration lands at or below the base model** (SFT +
+final skill 359.5, GRPO + 1st skill 305.2, base 379.6) while the full system doubles the best of
+them. An interaction effect with no main effects is either real synergy or something the ablations
+do not isolate. At 16 rollouts per condition with public code, it is cheap to check — and it is a
+better first entry for the register (item 2) than anything we would invent.
+
+The honest other half, which the write-ups lead less with: on **multi-player social reasoning the
+same harness loses** — Avalon win rate 39.0 vs GPT-5.4's 65.0, Diplomacy 2.96 supply centres vs
+4.70. So harness gains are large *and domain-bounded*: they transfer where skills are reusable
+procedures and fail where the task is social and adversarial. **That boundary is a finding, and
+nobody is measuring where it sits.**
+
 Phase 2 needs real compute and more than one person. This proposal does not ask for it. It asks
 for the twelve months that make asking credible.
 

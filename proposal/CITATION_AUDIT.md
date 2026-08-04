@@ -106,6 +106,37 @@ Four sources promoted from ⬛/🟨 to 🟩 by reading the PDFs. **One claim was
 
 **Read-through rate so far: 1 error in 4 checks**, and the error was in the claim I liked best.
 
+---
+
+## Round 2 — ARC leaderboard numbers verified against the primary source (2026-08-04)
+
+Fetched ARC Prize's own leaderboard JSON (`arcprize.org/media/data/leaderboard/v{1,2,3}.json`,
+generated 2026-07-31), which is the authority behind every number in the opening section.
+
+| our claim | official | |
+|---|---|---|
+| ARC-AGI-1: 98.0% Gemini 3.1 Pro | **98.0%** (human panel 98.0%) | ✅ |
+| ARC-AGI-2: 92.5% GPT-5.6 Sol | **92.5%** Sol (Max); human panel 100% | ✅ |
+| ARC-AGI-3: 30.2% Claude Opus 5 | **30.2%** Opus 5 (High) — ~4× the next model (Sol Max 7.8%) | ✅ |
+
+**All three exact.** This promotes them from ⬛ (subagent report) to ✅, and materially raises
+confidence in the rest of that report, though it does not verify it item by item.
+
+**A claim that did NOT verify.** Good Start Labs' write-up states OpenAI tripled GPT-5.6 Sol on
+ARC-AGI-3 from **13.3% → 38.3%** via two API settings (retained reasoning + compaction), at ~6×
+fewer output tokens. No GPT-5.6 Sol tier on the official semi-private board is near either figure
+(Max 7.8 / xHigh 7.0 / High 2.1). Their numbers are presumably on the **public preview**
+environments, which are a different set. **Do not cite as an ARC-AGI-3 score.** The *structure* of
+the claim — same weights, two settings, large gain, lower cost — would be the single best
+harness-vs-model datapoint available if sourced to OpenAI directly, so it is worth chasing.
+
+**★ A parsing error of our own, caught by a control.** The leaderboard `score` field is a
+**fraction**, not a percentage. Read naively, ARC-AGI-3 appears to show Opus 5 at "0.3%" and I was
+one step from filing a correction claiming our own proposal was wrong. It was caught by
+sanity-checking v1 against the independently known 98% figure — a positive control on the
+*parsing*, not on the claim. Same lesson as the rung-5 attention sink: **the number that looks
+empirical is exactly where an artifact hides.**
+
 ## What to do before submission
 
 1. **Cut or source the ⬛ claims still in the first table.** The Anthropic "quarter of prompts" and the DeepMind quotes remain the highest-risk items: specific, quotable, about named labs, unsourced. A reviewer from either lab would notice.
