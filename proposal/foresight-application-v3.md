@@ -135,13 +135,35 @@ mistake we have already published a post-mortem about.
    a worked confound: a difference matrix that looked strikingly low-rank until we checked the
    matrix it came from already was. Plus the side-by-side nobody has run, our behavioural
    induction phase-change across Pythia checkpoints and seeds against Timaeus's weight-space rLLC.
-4. **One worked attribution case.** ARC-AGI's API and Kaggle tracks run **identical tasks** and
-   differ by **~68 points** on compute budget and harness alone — the cleanest published
-   capability-vs-scaffold decomposition in evaluation, unanalysed as one. ARC Prize publishes
-   per-task results for **77 models × 400 tasks**; that analysis needs no GPU.
+4. **The harness, measured.** ARC-AGI's API and Kaggle tracks run **identical tasks** and differ
+   by **~68 points** on compute budget and scaffold alone — the cleanest published
+   capability-vs-scaffold decomposition in evaluation, and nobody analyses it as one. ARC Prize
+   publishes per-task results for **77 models × 400 tasks**; that analysis needs no GPU and is the
+   empirical base for §Phase 2.
 5. **The reproduction group at the hub**, weekly and in person, which is what produces 1–4.
 
-### Phase 2 — what this is for, and what it will cost more than this
+### Phase 2 — the harness is where the frontier is
+
+**This is not a guess about the future; ARC-AGI has already run the experiment.**
+
+| | what moved | what it measures |
+|---|---|---|
+| **ARC-AGI-1** | saturated at **98%**, $0.52/task against a $17 human baseline | harness on a *frozen* 8B: **+53.3 pts**. Base-model swap 3B→8B: **+3.4** |
+| **ARC-AGI-2** | API **92.5%** vs Kaggle-constrained **~24%** | **68 points on identical tasks**, from compute budget and scaffold alone |
+| **ARC-AGI-3** | **<1% in March 2026 → ~30% by July** | the benchmark itself went **interactive and agentic** |
+
+The tell is in the name: **ARC-AGI-3's first milestone was won by Tufa Labs' "Duck Harness"** — a
+small open LLM writing Python in a live REPL. The winning entry is a harness, and is called one.
+
+So the harness and the agent are the same object seen twice. ARES's design choice — *"the LLM
+itself is the agent, not the scaffolding"* — is a claim about where that boundary sits, and where
+you draw it determines what an interpretability result is even *about*.
+
+Which yields the uncomfortable statement this proposal exists to act on:
+
+> **Mechanistic interpretability studies the model. The measured evidence says the model
+> contributes the minority of the capability. The field's entire toolkit is pointed at the
+> smaller term.**
 
 **Every method in the open stack assumes a single forward pass** — attribution graphs, SAEs,
 lenses, probes, activation oracles. Deployment has moved to agents running for hours across
@@ -149,7 +171,9 @@ hundreds of decisions and the toolkit did not follow. That is the largest uncove
 landscape, and no rung of our own curriculum touches it either.
 
 Stated honestly: **what does a control even look like for a claim about an agent's reasoning over
-a hundred steps?** We cannot answer that yet and will not promise a method we have not scoped.
+a hundred steps?** A matched-norm random direction is a clean null for a steering claim; there is
+no accepted analogue when the behaviour is a *trajectory*. We cannot answer that yet and will not
+promise a method we have not scoped.
 
 What this grant buys is the position to attack it. Martian's
 [ARES](https://github.com/withmartian/ares) — open source, actively developed, Terminal-Bench 2.0
