@@ -53,9 +53,30 @@ establishes which results survive.
 | **Tooling** — the libraries and platform everyone uses | [Decode Research](https://www.decoderesearch.org/) — Neuronpedia, SAELens, circuit-tracer, SAEDashboard | funded by Open Philanthropy, LTFF, AISTOF, Anthropic, Manifund |
 | **Commercial** | Goodfire (Ember), Tilde, Apollo | Goodfire raised a **$50M Series A** |
 | **Theory & development** | [Timaeus](https://timaeus.co/) (SLT, `devinterp`), EleutherAI ("Interpreting Across Time") | nonprofit, Discord, open project boards |
-| **★ Adjudication** — does a published claim survive a control? | **nobody** | **—** |
+| **Adjudication as an academic agenda** | **[TSG Lab](https://tsglab.github.io/)** (Barez & Trager, Oxford) — the auditability call, an automated-auditing research agenda, the Agentic Benchmark Checklist, *Chain-of-Thought Is Not Explainability* | a lab: two PIs, ~12 people, papers |
+| **★ Adjudication as a standing community function** | **nobody** | **—** |
 
-That last row is not my editorialising. It is the field's own finding.
+**The distinction in those last two rows is the honest version of this proposal's claim, and it took
+me three passes to get right.** Each time I mapped the landscape, a group turned out to be doing
+part of what I thought was unoccupied — Transluce ran the neuron baseline the SAE literature
+skipped; Timaeus has an open project board; and **TSG Lab is the closest thing to this agenda that
+exists**, with a published research agenda for automated interpretability-driven auditing.
+
+What remains genuinely unoccupied is narrower and more defensible:
+
+- **A standing group whose output is other people's results, rechecked** — not papers advancing an
+  agenda, but reproductions, negative findings and controls on claims *someone else nominated*.
+  That is mechanism (1) of the ACL call, and it is the one nobody has built, including its authors.
+- **Process validity, as distinct from outcome validity.** TSG's Agentic Benchmark Checklist fixes
+  how agentic tasks are *scored* — reward design, test cases, measurement errors up to 100%
+  relative. It does not address whether a claim about an agent's **reasoning** is valid. That is
+  the gap the Diplomacy result and protocol analysis both point at.
+- **The teaching layer.** A curriculum where every technique ships with its null, so the next
+  cohort arrives already able to check.
+
+**TSG is therefore the collaborator, not the competitor** — and they explicitly invite sponsored
+research directions. A lab producing automated auditing methods and a community running human
+reproduction are complements; neither substitutes for the other.
 
 ## The gap has been formally named, and left unbuilt
 
