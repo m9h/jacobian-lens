@@ -209,11 +209,11 @@ publish a negative. Three channels, most targeted first:
 
 Foresight's reference is Mineault et al., *NeuroAI for AI Safety* (arXiv:2411.18526). Four of its
 five paths are architectural bets that brain-likeness confers safety. **We are not making that
-bet.** Only path 4 — interpretability using neuroscience methods — is load-bearing here, and even
-there the import is *measurement discipline*, not brain structure: construct validity from
-psychometrics, meta-d′ and type-2 ROC from signal detection theory, within-item controls from
-psychophysics, and adversarial collaboration from fields that built it after a replication crisis.
-AI evaluation is pre-crisis. That is the whole argument.
+bet.** Only path 4 — interpretability using neuroscience methods — is load-bearing here, and the
+import is *measurement discipline*, not brain structure: construct validity from psychometrics,
+meta-d′ and type-2 ROC from signal detection theory, within-item controls from psychophysics,
+adversarial collaboration from fields that built it after a replication crisis. **AI evaluation is
+pre-crisis. That is the whole argument.**
 
 ## Qualifications
 
