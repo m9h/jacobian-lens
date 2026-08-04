@@ -360,6 +360,12 @@ already paid for the lesson this one is about to learn.**
 
 ---
 
+*Source-based audit of this document's own claims — which rest on a full read, which on an
+abstract, which on a search summary — is in [CITATION_AUDIT.md](CITATION_AUDIT.md). Several
+claims are currently at the weakest tier and are marked not-for-submission until sourced. That
+file is mechanism (3) of the ACL call applied to this proposal, and it exists because a document
+arguing the field does not check its sources should say how well it checked its own.*
+
 *github.com/m9h/{jacobian-lens, spinning-up-in-mech-interp, tri-lens, controls-and-trajectories}
 · huggingface.co/mhough. Every result, control and retraction reproducible from published open
 artifacts.*
