@@ -93,11 +93,24 @@ is not evidence either.
 
 ---
 
+## Round 1 of reads — results (2026-08-04)
+
+Four sources promoted from ⬛/🟨 to 🟩 by reading the PDFs. **One claim was wrong; three held.**
+
+| source | verdict |
+|---|---|
+| **Diplomacy** (ACL 2024) | ❌ **WRONG — corrected.** No ablation exists. See above. |
+| **Dead Salmons** (2512.18792) | ✅ **Verbatim accurate.** Méloux, Dirupo, Portet & Peyrard (Grenoble Alpes; Dirupo at Icahn/Mount Sinai), 21 Dec 2025. The quoted list — "feature attribution, probing, sparse auto-encoding, and even causal analyses" on randomly initialized networks — is exact, as is the statistical-estimator prescription and the identifiability point. **Bonus material we did not have:** their own Figure 1 runs a *minimal* dead-salmon artifact — a **randomly initialized BERT**, 300 IMDb sentences, where principal components correlate spuriously with sentiment and a probe reaches nontrivial cross-validated accuracy. And the primary source for SAEs-on-random-nets is **Heap et al. (2025)**, which we had only via ARENA's paraphrase. |
+| **MIB** (2504.13151) | ✅ **Verbatim accurate, with a needed qualifier.** Full sentence: *"For causal variable localization, we find that the supervised DAS method performs best, while SAE features are not better than neurons, i.e., non-featurized hidden vectors."* So it is the **causal-variable-localization track**, where "neuron" means a single dimension of a hidden vector — not a general statement that SAEs lose to neurons. Transluce's result concerns *circuits* on MLP activations. Both find learned dictionaries failing to beat the raw basis, but **in different tracks**; "two unrelated methods, same conclusion" now carries that qualifier. Authors include **David Bau** (NDIF) and **Michael Hanna** (Decode Research). |
+| **Product of Experts** (2505.07859) | ✅ **Exact.** Franzen, Disselhoff & Hartmann. Table: Llama-3.2-3B 14.9%→61.4%; NeMo-Minitron-8B 18.3%→71.6%. Harness on the frozen 8B **+53.3**; 3B→8B swap at baseline **+3.4**; at the end **+10.2**. All three as claimed. 71.6% = 286.5/400 on the **public** eval set, SOTA among publicly available approaches. |
+
+**Read-through rate so far: 1 error in 4 checks**, and the error was in the claim I liked best.
+
 ## What to do before submission
 
-1. **Cut or source the four ⬛ claims in the first table's top rows.** The Anthropic "quarter of prompts" and DeepMind quotes are the highest-risk items in the document: specific, quotable, about named labs, and unsourced. A reviewer from either lab would notice.
-2. **Read the Diplomacy paper.** It is now a worked case in the proposal and my "ablation" reading came from a press release.
-3. **Read the dead salmon paper.** It is the opening frame.
-4. **Spot-check three ARC numbers** against the primary sources our research report links.
+1. **Cut or source the ⬛ claims still in the first table.** The Anthropic "quarter of prompts" and the DeepMind quotes remain the highest-risk items: specific, quotable, about named labs, unsourced. A reviewer from either lab would notice.
+2. ~~Read the Diplomacy paper~~ — done, claim was wrong, corrected.
+3. ~~Read the dead salmon paper~~ — done, accurate.
+4. ~~Spot-check ARC numbers~~ — done on the load-bearing one; the rest of the subagent's report gains credibility but is not individually verified.
 
 Nothing here is known to be false. The point is that **"I could not find a problem" and "I checked" are different claims**, and this proposal has been making the second while doing the first.
