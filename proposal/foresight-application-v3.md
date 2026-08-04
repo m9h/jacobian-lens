@@ -23,6 +23,15 @@ alternative hypotheses, identifiability and quantified uncertainty rather than a
 That is this proposal, and it is not our idea. **Neuroimaging needed a dead fish and a decade.
 Interpretability already has the paper; what it lacks is anyone whose job is to run the test.**
 
+For me this is not a borrowed metaphor. **I am a neuroscientist and computational psychiatrist; the
+salmon is my field's scandal, not an analogy I found useful.** I have spent my career doing
+mechanistic inference on neuroimaging data — the original setting where a plausible mechanism story,
+a compelling picture and an uncorrected statistic combined to produce findings that were not there.
+Neuroimaging responded with cluster correction, preregistration, adversarial collaboration and
+multi-site replication, and it worked. **AI interpretability is currently pre-reform, running the
+same failure mode on a substrate where the ground truth is more accessible, not less.** I am
+proposing to import the reform, not the neuroscience.
+
 Meanwhile MIT Technology Review named mechanistic interpretability a **2026 Breakthrough
 Technology**. In the same window its central results have been failing their controls: Anthropic's
 circuit tracing on Claude 3.5 Haiku gave satisfying insight for **about a quarter** of tested
@@ -208,11 +217,30 @@ AI evaluation is pre-crisis. That is the whole argument.
 
 ## Qualifications
 
-Systems engineering, computational neuroscience, and scientific-software maintenance (I maintain
-ACT-R, Soar and Nengo packages for Fedora). The work engages the neuroscience these claims borrow
-from — including the COGITATE adversarial collaboration, whose own preregistered prediction was
-*not* confirmed in humans, which is the sort of thing an adjudication project should be willing to
-say out loud about its own source disciplines.
+**A neuroscientist and computational psychiatrist who does this work on brains.** Mechanistic
+inference from neuroimaging — the discipline that had this exact crisis, diagnosed it, and fixed
+it. I know what the reform cost and which parts of it transferred, including the uncomfortable
+parts: I follow the **COGITATE** adversarial collaboration, whose own preregistered prediction was
+*not* confirmed in humans. An adjudication project should be willing to say that out loud about
+its own source disciplines.
+
+**A community builder in exactly this space, already doing it at scale.** I am Executive Director
+and President of **Société BCI Montréal (NeuroTechX)**, a Quebec non-profit — so running a
+distributed technical community with governance, contributors and continuity is my existing job,
+not a skill this grant would fund me to acquire. I co-run a **San Francisco cognitive-science
+reading group with a thirty-session, three-year record**, and participate in the **Active Inference
+Institute's** textbook group. The reproduction group proposed here is a continuation of things that
+already meet, not a new thing hoping to attract people.
+
+**A scientific-software maintainer.** I package and maintain **ACT-R, Soar, Nengo, pyactr and
+pyDDM** for Fedora, plus neuroimaging and cognitive-modelling stacks. Reproducibility here is not
+an aspiration — keeping other people's research code running on other people's machines is
+something I do continuously, and it is the same skill the tool gates require.
+
+The combination is the point. The AI interpretability field is importing constructs from cognitive
+science and statistics — *representation*, *mechanism*, *report*, *metacognition* — mostly without
+anyone in the room who has had to defend one to a reviewer. **I have, and the fields I come from
+already paid for the lesson this one is about to learn.**
 
 ---
 
