@@ -9,41 +9,32 @@ person · **DRAFT v3 — reframed from benchmark attribution to the open mech-in
 ## The field went mainstream on foundations that are shakier than the coverage
 
 In 2009 a dead Atlantic salmon was placed in an fMRI scanner and shown photographs of humans in
-social situations. Standard analysis found significant activation in its brain. The fish was
-dead. The study won an Ig Nobel and permanently changed how an entire discipline handles multiple
-comparisons — **a negative result that improved a field more than most positive ones.**
+social situations. Standard analysis found significant activation in its brain. The fish was dead.
+The study won an Ig Nobel and permanently changed how a discipline handles multiple comparisons —
+**a negative result that improved a field more than most positive ones.**
 
-[*The Dead Salmons of AI Interpretability*](https://arxiv.org/abs/2512.18792) (Méloux, Dirupo,
-Portet & Peyrard, 2025) shows the AI analogue is not hypothetical: **feature attribution, probing,
-sparse autoencoding and even causal analyses all produce plausible-looking explanations of
-randomly initialized networks** — models that cannot contain the structure being reported. Its
-prescription is that an interpretability result is a **parameter of a statistical model inferred
-from computational traces**, and needs alternative hypotheses, identifiability and quantified
-uncertainty rather than a picture and a name.
+[*The Dead Salmons of AI Interpretability*](https://arxiv.org/abs/2512.18792) (Méloux et al., 2025)
+shows the AI analogue is not hypothetical: **feature attribution, probing, sparse autoencoding and
+even causal analyses all produce plausible-looking explanations of randomly initialized networks** —
+models that cannot contain what is being reported. Its prescription is that an interpretability
+result is a parameter of a statistical model inferred from computational traces, needing
+alternative hypotheses, identifiability and quantified uncertainty rather than a picture and a name.
 
-That is the whole of this proposal, and it is not our idea. **Neuroimaging needed a dead fish and
-roughly a decade. Interpretability now has the paper; what it does not have is anyone whose job is
-to run the test.**
+That is this proposal, and it is not our idea. **Neuroimaging needed a dead fish and a decade.
+Interpretability already has the paper; what it lacks is anyone whose job is to run the test.**
 
 Meanwhile MIT Technology Review named mechanistic interpretability a **2026 Breakthrough
-Technology** — niche to essential in about two years, with Anthropic, Google DeepMind and
-well-capitalised startups all investing heavily. In the same window its central results have been
-failing their controls:
+Technology**. In the same window its central results have been failing their controls: Anthropic's
+circuit tracing on Claude 3.5 Haiku gave satisfying insight for **about a quarter** of tested
+prompts; DeepMind's months-long Chinchilla analysis was brittle and partial, and DeepMind has
+publicly retreated from *"ambitious reverse-engineering"* to *"pragmatic interpretability"*; and
+**sparse autoencoders are not beating neurons**, found twice by unrelated routes —
+[MIB](https://arxiv.org/abs/2504.13151) by benchmarking against a private test set (ICML 2025) and
+[Transluce](https://arxiv.org/abs/2601.22594) by building better neuron circuits and reproducing
+three of Anthropic's own case studies without any learned dictionary (2026).
 
-- **Anthropic's circuit tracing on Claude 3.5 Haiku produced satisfying insight for about a
-  quarter of tested prompts.** DeepMind's months-long Chinchilla circuit analysis produced a
-  brittle, partial explanation.
-- **Sparse autoencoders — the field's flagship method — are not beating neurons.**
-  [MIB](https://arxiv.org/abs/2504.13151) (ICML 2025) found it by benchmarking against a private
-  test set; [Transluce](https://arxiv.org/abs/2601.22594) (2026) found it by building better
-  neuron circuits and reproducing three of Anthropic's own case studies without any learned
-  dictionary. **Two unrelated methods, same negative.**
-- DeepMind has publicly shifted from *"ambitious reverse-engineering"* to *"pragmatic
-  interpretability"* — useful-but-imperfect understanding. That is a retreat, correctly made, and
-  it went largely unremarked outside the field.
-
-None of this is a reason to stop funding interpretability. It is a reason to fund the part of it
-that establishes which results survive.
+None of this argues for funding interpretability less. It argues for funding the part that
+establishes which results survive.
 
 ## The open stack is real, and it is funded at two of its three layers
 
@@ -84,108 +75,84 @@ hosting critiques, it is *producing* them, and that requires people who will do 
 
 Every artifact public, open weights only, on **~$250 of compute**.
 
-**A published claim, reproduced, that reverses.** A 2026 paper reported that steering a single
-feature produced a "society of thought" improving reasoning accuracy. On the paper's own
-benchmarks the gain **inverts** — +10 on one, −22 on another. The original had no public code or
-data. Ours does.
+- **A published claim that reverses on reproduction.** A 2026 paper reported that steering one
+  feature produced a "society of thought" improving reasoning. On the paper's own benchmarks the
+  gain **inverts** — +10 on one, −22 on another. The original had no public code; ours does.
+- **Two instruments made comparable.** The Jacobian lens and a natural-language activation reader,
+  put on the same footing, converge **42× above a mismatch null**. That is precisely the
+  "partially correct but incomparable" problem the ACL paper names, resolved by construction.
+- **Method separated from scale.** Across OLMo-3, instruction tuning moves internal representation
+  ~10× more than RLVR while capability stays flat; varying tuning-data *quantity* across a 300×
+  sweep changes nothing measurable.
+- **A dead-salmon test, passed and published.** Under the Adebayo randomization control the
+  Jacobian lens reads out **nothing** from random blocks — a *positive* data point in a
+  mostly-negative literature, and exactly what the register below would hold.
+- **Three corrections and retractions of our own.** A false negative about another lab's method,
+  traced to two bugs of ours; a sparsity claim that was really model family; a headline effect
+  that pooled noise floors differing by an order of magnitude.
+- **A gate that caught us.** Built last week; within an hour it found a live bug in our own
+  published curriculum — a steering coefficient calibrated on GPT-2's attention sink,
+  over-steering **28×** while the code printed *"at the feature's natural activation scale."* Now
+  [PITFALLS #24](https://github.com/m9h/spinning-up-in-mech-interp/blob/master/PITFALLS.md), one of
+  24 entries each recording a wrong result we produced and caught.
 
-**Two independent instruments made comparable.** We put the Jacobian lens and a natural-language
-activation reader on the same footing and showed they converge **42× above a mismatch null**, both
-detecting known injected content. That is exactly the "partially correct but incomparable" problem
-the ACL paper names, resolved by construction.
-
-**Method separated from scale.** Across the fully open OLMo-3 family, instruction tuning moves the
-model's internal representation ~10× more than RLVR while task capability stays flat — and varying
-tuning-data *quantity* across a 300× sweep changes nothing measurable.
-
-**Three corrections and retractions of our own, published.** A false negative about another lab's
-method, traced to two bugs of ours. A sparsity claim that turned out to be model family. A
-headline effect that pooled measurements whose noise floors differed by an order of magnitude —
-correcting it halved one number and doubled another.
-
-**We have already run a dead-salmon test, and published the result.** Applying the Adebayo
-randomization control to the Jacobian lens — replace trained blocks with random ones and see
-whether the instrument still reads out content — the lens **passes**: random blocks read out
-nothing. That is a *positive* data point in a literature that is mostly negative, and it is
-exactly the kind of entry the register below would hold.
-
-**A gate that caught us.** Last week we built a tool gate asking whether an external line of
-evidence recovers a signal we had measured. Within an hour it found a **live bug in our own
-published curriculum**: a steering coefficient calibrated on GPT-2's attention sink, over-steering
-**28×** while the code printed the words *"at the feature's natural activation scale."* The
-control logic survived; the spectacular demo did not. It is now
-[PITFALLS #24](https://github.com/m9h/spinning-up-in-mech-interp/blob/master/PITFALLS.md), one of
-24 entries each recording a wrong result we produced and caught.
-
-That last item is the qualification that matters. **An adjudication group that has never published
-a retraction of its own is not doing adjudication.**
+**An adjudication group that has never published a retraction of its own is not doing
+adjudication.**
 
 ## Proposed work: cheap now, and the only route to the expensive thing
 
-**The scoping is deliberate.** Model-level interpretability is where the methods exist and where
-compute is nearly free — our entire published record cost ~$250. Agents are where the field is
-going and where its toolkit does not reach. This grant funds the first, **because it is the
-positive control for the second.**
-
-That is not a euphemism for "it is what we can afford." An adjudication method has to be shown to
-catch real errors somewhere cheap before it is trusted somewhere expensive. Ours has: a gate we
-built last week found a live 28× bug in our own curriculum, on a laptop, in under an hour. Running
-unvalidated audits over agent traces at serious compute cost would repeat exactly the mistake we
-have already published a post-mortem about — an expensive experiment whose design was never
-checked cheaply first.
+**The scoping is deliberate.** Model-level interpretability is where the methods exist and compute
+is nearly free. Agents are where the field is going and where its toolkit does not reach. This
+grant funds the first **because it is the positive control for the second** — an adjudication
+method must be shown to catch real errors somewhere cheap before it is trusted somewhere
+expensive. Ours has: a gate built last week found a live 28× bug in our own curriculum, on a
+laptop, in under an hour. Auditing agent traces with an unvalidated gate would repeat exactly the
+mistake we have already published a post-mortem about.
 
 ### Phase 1 — this grant, 12 months, model scale
 
-**1. Tool gates.** The open stack is recommended on *maintenance* evidence — the repo is alive, it
-has stars. That is not evidence a tool works. A gate holds an external line of evidence against a
-number someone already measured and fails loudly when they disagree. One exists and has already
-paid for itself. Deliverable: a gate suite across the stack Decode Research maintains, contributed
-upstream. *The ACL paper's mechanism (2).*
-
-**2. A public register of interpretability claims and their controls** — what was claimed, what
-control would discriminate it, whether anyone ran one, what happened. Prospective, so targets are
-nominated before results are known. Seeded with the ~20 claims we have already adjudicated,
-including our own reversals. *Mechanisms (1) and (3).*
-
-**3. Reproductions the field has asked for and not received.** Timaeus's public board lists
-**vision-circuit development** with no lead (our rung 1 already measures InceptionV1 tuning against
-two nulls; they want the training axis) and a **review of complexity measures**, where we have a
-worked confound to contribute — having watched a difference matrix look strikingly low-rank until
-we checked that the matrix it came from already was. Plus the side-by-side nobody has run: our
-behavioural induction phase-change across Pythia checkpoints, seeds and sizes against Timaeus's
-weight-space rLLC detector.
-
-**4. One worked attribution case.** ARC-AGI's API and Kaggle tracks run **identical tasks** and
-differ by **~68 points** on compute budget and harness alone — the cleanest published
-capability-vs-scaffold decomposition in evaluation, unanalysed as one. ARC Prize publishes
-per-task pass/fail with costs for **77 models × 400 tasks**; that analysis needs no GPU.
-
-**5. The reproduction group at the hub** — weekly, in person, which is what produces 1–4.
+1. **Tool gates.** The open stack is recommended on *maintenance* evidence — the repo is alive, it
+   has stars. That is not evidence a tool works. A gate holds an external line of evidence against
+   a number someone already measured and fails loudly when they disagree. One exists and has
+   already paid for itself; deliverable is a suite across the stack Decode Research maintains,
+   contributed upstream. *ACL mechanism (2).*
+2. **A public register of claims and their controls** — what was claimed, what control would
+   discriminate it, whether anyone ran one, what happened. Prospective, so targets are nominated
+   before results are known. Seeded with the ~20 claims we have adjudicated, our reversals
+   included. *Mechanisms (1) and (3).*
+3. **Reproductions the field asked for and did not get.** Timaeus's board lists **vision-circuit
+   development with no lead** — our rung 1 already measures InceptionV1 tuning against two nulls;
+   they want the training axis — and a **review of complexity measures**, where we can contribute
+   a worked confound: a difference matrix that looked strikingly low-rank until we checked the
+   matrix it came from already was. Plus the side-by-side nobody has run, our behavioural
+   induction phase-change across Pythia checkpoints and seeds against Timaeus's weight-space rLLC.
+4. **One worked attribution case.** ARC-AGI's API and Kaggle tracks run **identical tasks** and
+   differ by **~68 points** on compute budget and harness alone — the cleanest published
+   capability-vs-scaffold decomposition in evaluation, unanalysed as one. ARC Prize publishes
+   per-task results for **77 models × 400 tasks**; that analysis needs no GPU.
+5. **The reproduction group at the hub**, weekly and in person, which is what produces 1–4.
 
 ### Phase 2 — what this is for, and what it will cost more than this
 
-**Every method in the open stack assumes a single forward pass.** Attribution graphs, SAEs, lenses,
-probes, activation oracles — all of it. Deployment has moved to agents running for hours across
-hundreds of decisions, and the interpretability toolkit did not move with it. That is the largest
-uncovered surface in the landscape, and no rung of our own curriculum touches it either.
+**Every method in the open stack assumes a single forward pass** — attribution graphs, SAEs,
+lenses, probes, activation oracles. Deployment has moved to agents running for hours across
+hundreds of decisions and the toolkit did not follow. That is the largest uncovered surface in the
+landscape, and no rung of our own curriculum touches it either.
 
-The honest statement of the problem: **what does a control even look like for a claim about an
-agent's reasoning over a hundred steps?** We cannot answer that yet, and we are not going to
-promise a method we have not scoped.
+Stated honestly: **what does a control even look like for a claim about an agent's reasoning over
+a hundred steps?** We cannot answer that yet and will not promise a method we have not scoped.
 
-What we can do inside this grant is buy the position to attack it. Martian's
+What this grant buys is the position to attack it. Martian's
 [ARES](https://github.com/withmartian/ares) — open source, actively developed, Terminal-Bench 2.0
 and 36+ Harbor task packs — exists partly to support interpretability of sequential decision-making,
-and its core design choice, *"the LLM itself is the agent, not the scaffolding,"* is the
+and its core choice, *"the LLM itself is the agent, not the scaffolding,"* is the
 model-versus-harness boundary turned into an architecture. We already author scientific tasks in
 that format ([m9h/terminal-bench-science](https://github.com/m9h/terminal-bench-science): NODDI
-diffusion, transcranial ultrasound), and Martian solicits exactly those. **A task pack is a
-near-zero-cost first contribution that puts us inside the infrastructure where the agentic question
-will be settled** — and Martian is also the group that published the auditability call and runs a
-$1M prize awarding completed work.
+diffusion, transcranial ultrasound), and Martian solicits them. **A task pack costs us almost
+nothing and puts us inside the infrastructure where the agentic question gets settled.**
 
-Phase 2 is a larger project needing real compute and more than one person. This proposal does not
-ask for it. It asks for the twelve months that make asking credible.
+Phase 2 needs real compute and more than one person. This proposal does not ask for it. It asks
+for the twelve months that make asking credible.
 
 ## Why this reduces risk, and why it is cheap
 
@@ -205,40 +172,29 @@ not resources.**
 ## The in-person activity
 
 A **reproduction group** at the San Francisco hub: papers with incomplete artifacts get a public
-open-source implementation, training documentation, and the control the original omitted. It
-continues an existing SF cognitive-science reading group with a thirty-session, three-year record,
-organised on the 1978 cognitive-science hexagon — because most of these claims import a construct
-from a discipline that is not in the room.
-
-We expect to hand work upstream rather than accumulate it: Decode Research states it is "always
-looking for new partners," Timaeus runs a public project board with a stated protocol for claiming
-work, and EleutherAI runs an open mentorship programme. **The collaborators exist and are asking.
-What is missing is somebody whose actual job is to check.**
+implementation, training documentation, and the control the original omitted. It continues an
+existing SF cognitive-science reading group with a thirty-session, three-year record, organised on
+the 1978 cognitive-science hexagon — because most of these claims import a construct from a
+discipline that is not in the room. Five papers have been through the process; two produced a
+refutation or a correction.
 
 ## Who does the work
 
 An adjudication group is only as good as the people willing to run someone else's experiment and
-publish a negative. Three channels, in order of how targeted they are:
+publish a negative. Three channels, most targeted first:
 
-- **★ The authors of the call, who are also a funder.** Lan et al. (ACL 2026) invite debate on
-  the design and implementation of exactly this — and Oozeer, Quirke and Abdullah are at
+- **★ The authors of the call, who are also a funder.** Oozeer, Quirke and Abdullah are at
   **[Martian](https://withmartian.com/prize)**, which runs a **$1M interpretability prize**
-  awarding both promising directions and *completed work*, plus hackathons with Apart Research.
-  Their commercial product is LLM routing, so their stake in interpretability being *auditable*
-  is structural rather than rhetorical. Approaching the people who published the call, with the
-  implementation, is a better first move than any broadcast.
-- **Named unclaimed work, not open invitations.** Timaeus runs a public project board — its
-  *vision-circuit development* project is in progress **with no lead listed**, and our rung 1
-  already measures InceptionV1 tuning against two nulls. Decode Research states it is "always
-  looking for new partners." MIB will score a submission against a private test set. Every one of
-  these is a specific thing a specific person can own, which is what MedARC got right and what
-  reading groups without projects get wrong.
-- **[BuzzRobot](https://buzzrobot.substack.com/about)** — a community founded by an OpenAI alum
-  that runs talks with researchers from DeepMind, OpenAI, Meta and NVIDIA, and has published on
-  interpretability. Reach into the right population. The talk we would give is not a recruitment
-  pitch but a failure report: *we built a gate to check interpretability tooling and it
-  immediately found a live bug in our own published curriculum.* That self-selects for people who
-  find checking interesting — the one trait this work requires and cannot instil.
+  awarding completed work, ships ARES, and runs hackathons with Apart Research. Their product is
+  LLM routing, so their stake in interpretability being *auditable* is structural. We would arrive
+  with a task pack, not a request.
+- **Named unclaimed work, not open invitations.** Timaeus's board has a project with no lead;
+  Decode Research says it is "always looking for new partners"; MIB will score a submission
+  against a private test set. Specific things a specific person can own — what MedARC got right
+  and what reading groups without projects get wrong.
+- **[BuzzRobot](https://buzzrobot.substack.com/about)** — an OpenAI-alum community running talks
+  with researchers from DeepMind, OpenAI, Meta and NVIDIA. The talk we would give is a failure
+  report, not a pitch, because that self-selects for people who find checking interesting.
 
 ## On the NeuroAI framing, honestly
 
