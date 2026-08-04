@@ -233,20 +233,33 @@ Protocol analysis distinguishes concurrent from retrospective report, quantifies
 rather than *narrating* one. That is the missing validity theory for every interpretability claim
 built on an agent's stated reasoning, it is a solved problem in another field, and think-aloud
 protocol analysis is standard equipment in the clinical decision-making research I come from.
-**And there is already a worked case that the interpretability field has not noticed.** CICERO
-reached human-level play at *Diplomacy*, a game whose entire premise is negotiation.
-[*More Victories, Less Cooperation*](https://arxiv.org/abs/2406.04643) (ACL 2024, USC ISI + UMD)
-then checked it properly — 24 games, 27,000+ messages, Abstract Meaning Representation comparing
-stated intentions against actual moves — and found that **ablating the communication inputs barely
-changed its score**. The talk was largely *epiphenomenal* to whatever produced the play.
+**And there is a worked case the interpretability field has not noticed.** CICERO reached
+human-level play at *Diplomacy*, a game whose entire premise is negotiation.
+[*More Victories, Less Cooperation*](https://aclanthology.org/2024.acl-long.672/) (ACL 2024, UMD /
+Princeton / Sydney / USC ISI) then assessed the communication itself — 24 games, 200 human-player
+hours, ~27,000 messages, Abstract Meaning Representation used to map stated intentions onto actual
+moves, plus human annotation of perceived deception (318 messages annotated as lies, 1,167
+perceived as lies). Their finding, in their words: Cicero's communication is **"more transactional,
+relying on its optimal strategy rather than the alliance building which is the hallmark of top
+human players,"** humans can reliably identify it, and it is *less* deceptive and persuasive than
+they are. They state the attribution problem explicitly: **"it is unclear if Cicero's success is
+due to its use of natural language or its strategic model."**
 
-That is a stronger experiment than most chain-of-thought faithfulness work: an **ablation** rather
-than a perturbation, over a long horizon, with an **independent behavioural ground truth** (the
-moves) that single-prompt studies do not have. **Of the 13 papers citing it, none mention
-faithfulness, chain-of-thought, verbal reports or interpretability** — the two literatures are
-running in parallel and neither has noticed. Connecting them is a concrete, cheap first
+That is a verbal-report validity study with something single-prompt chain-of-thought work does not
+have — an **independent behavioural record** (the moves) to check the talk against. Of the 13
+papers citing it, **none** mention faithfulness, chain-of-thought, verbal reports or
+interpretability; the two literatures are running in parallel. Connecting them is a cheap, concrete
 deliverable, and one of the ACL auditability authors also co-wrote *Chain-of-Thought Is Not
-Explainability*, so it is a contribution to work he is already doing.
+Explainability*, so it contributes to work he is already doing.
+
+⚠️ **A correction we are keeping visible.** An earlier draft described this as an *ablation* — that
+communication was switched off and the score barely moved. **The paper contains no such
+experiment.** That reading came from a university press page, and it was ours to check. Reading the
+paper also produced a second lesson: an automated summariser of the same PDF asserted the *opposite*
+(that removing communication sharply reduced the win rate), which is equally absent. **Two
+secondary sources, two different wrong answers, one primary text.** This is recorded in
+[CITATION_AUDIT.md](CITATION_AUDIT.md) rather than quietly fixed, because it is the failure mode
+this proposal exists to address, committed by us, mid-drafting.
 
 **This is the same argument as the dead salmon, arriving by a second route.** I am not promising
 a finished method for agentic interpretability — but I can name which discipline has the controls,

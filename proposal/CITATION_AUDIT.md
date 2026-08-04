@@ -37,7 +37,7 @@ about someone else's work that I have only thirdhand.
 |---|---|
 | *The Dead Salmons of AI Interpretability* (2512.18792) | abstract page. **The framing device of the whole proposal.** The characterisation of which methods fail on random nets comes from the abstract; I have not seen its experiments or numbers. |
 | *Make MI Auditable* (2606.00033) — the three mechanisms | abstract page. The mechanisms and "position paper, nothing implemented" are from the abstract. |
-| Diplomacy — *More Victories, Less Cooperation* (2406.04643) | ⚠️ **search results + a USC ISI news article.** The key sentence — *"changing inputs related to communication did not significantly impact its high score"* — is **from the university's press page, not the paper.** My reading of it as an *ablation* is an inference. **Read the paper before this claim leaves the building.** |
+| ~~Diplomacy — *More Victories, Less Cooperation*~~ | ✅ **RESOLVED — and the claim was wrong.** See below. |
 | Tracr (2301.05062), TracrBench (2409.13714) | search summaries; the mechanism is well known but unread here |
 | AI Agent Behavioral Science (Nature HSSC); Machine Psychology | search summaries; the "moving beyond architectural interpretability" quote is unverified |
 | AgentTrace (2602.10133) | search summary |
@@ -63,6 +63,33 @@ about someone else's work that I have only thirdhand.
 | SAELens → `decoderesearch/SAELens`; circuit-tracer → `decoderesearch/`; lucent last pushed 2025-03-21; tuned-lens 2025-08-07 | GitHub API |
 | ARENA deep link 404; OREL 404; Microscope 503; MIB leaderboard live | HTTP status |
 | Our own results — SoT reversal, J-lens/NLA 42×, OLMo ~10×, Adebayo pass, three retractions | our published artifacts |
+
+---
+
+---
+
+## Resolved: the Diplomacy claim was wrong
+
+**Checked 2026-08-04 by reading the ACL PDF directly.** The proposal had described an *ablation*:
+communication switched off, score barely moves. **No such experiment exists in the paper.**
+
+What the paper does: AMR-maps stated intentions onto actual moves across 24 games / ~27,000
+messages, with human deception annotation (318 annotated as lies, 1,167 perceived). What it
+concludes: Cicero's communication is *"more transactional, relying on its optimal strategy rather
+than the alliance building which is the hallmark of top human players"*; humans reliably identify
+it; it is **less** deceptive and persuasive than humans. It states the attribution question as
+**open**: *"it is unclear if Cicero's success is due to its use of natural language or its
+strategic model."*
+
+**Provenance of the error.** The sentence *"changing inputs related to communication did not
+significantly impact its high score"* is from a **USC ISI press page**, not the paper. Reading it
+as an ablation was my inference on top of a paraphrase.
+
+**Second lesson, and the sharper one.** An automated summariser reading the same PDF reported the
+*opposite* — that removing communication significantly dropped the win rate. Also absent from the
+paper. **Two secondary sources, two contradictory wrong answers, and only the primary text
+settles it.** A summary that agrees with your prior is not evidence; a summary that contradicts it
+is not evidence either.
 
 ---
 
