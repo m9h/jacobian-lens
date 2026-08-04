@@ -53,7 +53,8 @@ establishes which results survive.
 | **Tooling** — the libraries and platform everyone uses | [Decode Research](https://www.decoderesearch.org/) — Neuronpedia, SAELens, circuit-tracer, SAEDashboard | funded by Open Philanthropy, LTFF, AISTOF, Anthropic, Manifund |
 | **Commercial** | Goodfire (Ember), Tilde, Apollo | Goodfire raised a **$50M Series A** |
 | **Theory & development** | [Timaeus](https://timaeus.co/) (SLT, `devinterp`), EleutherAI ("Interpreting Across Time") | nonprofit, Discord, open project boards |
-| **Adjudication as an academic agenda** | **[TSG Lab](https://tsglab.github.io/)** (Barez & Trager, Oxford) — the auditability call, an automated-auditing research agenda, the Agentic Benchmark Checklist, *Chain-of-Thought Is Not Explainability* | a lab: two PIs, ~12 people, papers |
+| **Adjudication as an academic agenda** | **[TSG Lab](https://tsglab.github.io/)** (Barez & Trager, Oxford) — the auditability call, an automated-auditing research agenda, *Chain-of-Thought Is Not Explainability*, contamination and benchmark critique | a lab: two PIs, ~12 people, papers |
+| **Benchmark rigour** | **[ABC](https://github.com/uiuc-kang-lab/agentic-benchmarks)** — Zhu, Jin & Kang (UIUC) with Stanford, Berkeley, MIT, Transluce, ML Commons and **UK AISI** | a released checklist, and an audit that should alarm people |
 | **★ Adjudication as a standing community function** | **nobody** | **—** |
 
 **The distinction in those last two rows is the honest version of this proposal's claim, and it took
@@ -67,10 +68,17 @@ What remains genuinely unoccupied is narrower and more defensible:
 - **A standing group whose output is other people's results, rechecked** — not papers advancing an
   agenda, but reproductions, negative findings and controls on claims *someone else nominated*.
   That is mechanism (1) of the ACL call, and it is the one nobody has built, including its authors.
-- **Process validity, as distinct from outcome validity.** TSG's Agentic Benchmark Checklist fixes
-  how agentic tasks are *scored* — reward design, test cases, measurement errors up to 100%
-  relative. It does not address whether a claim about an agent's **reasoning** is valid. That is
-  the gap the Diplomacy result and protocol analysis both point at.
+- **Process validity, as distinct from task and outcome validity.** The **Agentic Benchmark
+  Checklist** ([Zhu, Jin & Kang, UIUC, + 8 institutions](https://github.com/uiuc-kang-lab/agentic-benchmarks))
+  is the state of the art here and its audit is alarming: a trivial agent returning **empty
+  responses** passes **38%** of τ-bench airline tasks; SWE-Lancer agents can overwrite the test
+  files and **score 100% without solving anything**; and **24% of SWE-bench-Verified's top-50
+  leaderboard positions are incorrect**. Applied to CVE-Bench it removed **33% absolute**
+  overestimation. But ABC is a checklist for whether a *score* means what it says — task validity
+  (does success equal the capability?) and outcome validity (does the result equal success?). It
+  contains a single subcheck gesturing at reasoning — *"correlate metrics with actual reasoning"* —
+  and no method for it. **Whether a claim about an agent's reasoning is valid remains unaddressed**,
+  which is precisely where the Diplomacy ablation and protocol analysis both point.
 - **The teaching layer.** A curriculum where every technique ships with its null, so the next
   cohort arrives already able to check.
 
