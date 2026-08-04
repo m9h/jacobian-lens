@@ -8,11 +8,27 @@ person · **DRAFT v3 — reframed from benchmark attribution to the open mech-in
 
 ## The field went mainstream on foundations that are shakier than the coverage
 
-MIT Technology Review named mechanistic interpretability a **2026 Breakthrough Technology**. In
-roughly two years it went from niche to essential, with Anthropic, Google DeepMind and
-well-capitalised startups all investing heavily.
+In 2009 a dead Atlantic salmon was placed in an fMRI scanner and shown photographs of humans in
+social situations. Standard analysis found significant activation in its brain. The fish was
+dead. The study won an Ig Nobel and permanently changed how an entire discipline handles multiple
+comparisons — **a negative result that improved a field more than most positive ones.**
 
-In the same window, its central results have been failing their controls:
+[*The Dead Salmons of AI Interpretability*](https://arxiv.org/abs/2512.18792) (Méloux, Dirupo,
+Portet & Peyrard, 2025) shows the AI analogue is not hypothetical: **feature attribution, probing,
+sparse autoencoding and even causal analyses all produce plausible-looking explanations of
+randomly initialized networks** — models that cannot contain the structure being reported. Its
+prescription is that an interpretability result is a **parameter of a statistical model inferred
+from computational traces**, and needs alternative hypotheses, identifiability and quantified
+uncertainty rather than a picture and a name.
+
+That is the whole of this proposal, and it is not our idea. **Neuroimaging needed a dead fish and
+roughly a decade. Interpretability now has the paper; what it does not have is anyone whose job is
+to run the test.**
+
+Meanwhile MIT Technology Review named mechanistic interpretability a **2026 Breakthrough
+Technology** — niche to essential in about two years, with Anthropic, Google DeepMind and
+well-capitalised startups all investing heavily. In the same window its central results have been
+failing their controls:
 
 - **Anthropic's circuit tracing on Claude 3.5 Haiku produced satisfying insight for about a
   quarter of tested prompts.** DeepMind's months-long Chinchilla circuit analysis produced a
@@ -86,6 +102,12 @@ tuning-data *quantity* across a 300× sweep changes nothing measurable.
 method, traced to two bugs of ours. A sparsity claim that turned out to be model family. A
 headline effect that pooled measurements whose noise floors differed by an order of magnitude —
 correcting it halved one number and doubled another.
+
+**We have already run a dead-salmon test, and published the result.** Applying the Adebayo
+randomization control to the Jacobian lens — replace trained blocks with random ones and see
+whether the instrument still reads out content — the lens **passes**: random blocks read out
+nothing. That is a *positive* data point in a literature that is mostly negative, and it is
+exactly the kind of entry the register below would hold.
 
 **A gate that caught us.** Last week we built a tool gate asking whether an external line of
 evidence recovers a signal we had measured. Within an hour it found a **live bug in our own
@@ -161,9 +183,13 @@ What is missing is somebody whose actual job is to check.**
 An adjudication group is only as good as the people willing to run someone else's experiment and
 publish a negative. Three channels, in order of how targeted they are:
 
-- **The authors of the call.** Lan et al. (ACL 2026) invite debate on the design and
-  implementation of exactly this. Seven researchers already committed in print to the problem
-  being real is a better first approach than any broadcast.
+- **★ The authors of the call, who are also a funder.** Lan et al. (ACL 2026) invite debate on
+  the design and implementation of exactly this — and Oozeer, Quirke and Abdullah are at
+  **[Martian](https://withmartian.com/prize)**, which runs a **$1M interpretability prize**
+  awarding both promising directions and *completed work*, plus hackathons with Apart Research.
+  Their commercial product is LLM routing, so their stake in interpretability being *auditable*
+  is structural rather than rhetorical. Approaching the people who published the call, with the
+  implementation, is a better first move than any broadcast.
 - **Named unclaimed work, not open invitations.** Timaeus runs a public project board — its
   *vision-circuit development* project is in progress **with no lead listed**, and our rung 1
   already measures InceptionV1 tuning against two nulls. Decode Research states it is "always
