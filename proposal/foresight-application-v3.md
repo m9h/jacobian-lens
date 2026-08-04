@@ -181,8 +181,32 @@ landscape, and no rung of our own curriculum touches it either.
 
 Stated honestly: **what does a control even look like for a claim about an agent's reasoning over
 a hundred steps?** A matched-norm random direction is a clean null for a steering claim; there is
-no accepted analogue when the behaviour is a *trajectory*. We cannot answer that yet and will not
-promise a method we have not scoped.
+no accepted analogue when the behaviour is a *trajectory*.
+
+**But the discipline that owns this question is identifiable, and it is mine.** The gap is already
+occupied by psychologists rather than by circuits people: *AI Agent Behavioral Science*
+([Nature HSSC, 2026](https://www.nature.com/articles/s41599-026-07316-7)) and *Machine
+Psychology* — the latter describing itself as "moving beyond architectural interpretability by
+treating models as experimental subjects." And the classical method for long-horizon reasoning is
+**Ericsson & Simon's protocol analysis**, *Verbal Reports as Data*, which agent tooling is
+currently reinventing — [AgentTrace](https://arxiv.org/html/2602.10133v1) bills itself as "the
+first open standard for structured agent logging," spanning cognitive, operational and contextual
+traces — **without the validity conditions that took thirty years to establish.**
+
+The sharpest statement of the problem I can offer:
+
+> **Chain-of-thought is a concurrent verbal protocol, and "unfaithful chain-of-thought" is
+> Nisbett & Wilson (1977) rediscovered** — *Telling More Than We Can Know*, in which people
+> confidently report reasons that had no causal role in their behaviour.
+
+Protocol analysis distinguishes concurrent from retrospective report, quantifies **reactivity**
+(verbalizing alters the process being reported), and specifies when a report *tracks* a process
+rather than *narrating* one. That is the missing validity theory for every interpretability claim
+built on an agent's stated reasoning, it is a solved problem in another field, and think-aloud
+protocol analysis is standard equipment in the clinical decision-making research I come from.
+**This is the same argument as the dead salmon, arriving by a second route.** I am not promising
+a finished method for agentic interpretability — but I can name which discipline has the controls
+and why nobody is importing them.
 
 What this grant buys is the position to attack it. Martian's
 [ARES](https://github.com/withmartian/ares) — open source, actively developed, Terminal-Bench 2.0
