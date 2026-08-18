@@ -17,19 +17,22 @@ that the field does not check its sources should be able to say how well it chec
 
 ## ⬛ S3 — load-bearing claims resting on a search summary
 
-**These are the ones to fix before submission.** Each is a specific quantitative or quoted claim
-about someone else's work that I have only thirdhand.
+~~**These are the ones to fix before submission.**~~ **All resolved in round 3 — see below.** Each
+was a specific quantitative or quoted claim about someone else's work held only thirdhand. Two did
+not survive.
 
 | claim in the proposal | status |
 |---|---|
-| *"Anthropic's circuit tracing on Claude 3.5 Haiku produced satisfying insight for about a quarter of tested prompts"* | ⬛ **A specific quantitative claim about another lab's flagship result, taken from a search-result paraphrase.** I have not found the primary source. **Do not submit as stated.** |
-| *"DeepMind's months-long Chinchilla circuit analysis produced a brittle, partial explanation"* | ⬛ same paraphrase, no primary source located |
-| *"DeepMind has publicly shifted from 'ambitious reverse-engineering' to 'pragmatic interpretability'"* | ⬛ quoted phrases I never sourced to a document |
-| MIB's *"SAE features are not better than neurons"* | ⬛ quoted from a search summary of the paper. The **claim** is corroborated independently by Transluce (S1), but **the quotation is not verified.** |
-| MIT Tech Review "2026 Breakthrough Technology" | ⬛ trivially checkable, not checked |
-| NDIF **$9M NSF**; Goodfire **$50M Series A**; Open Phil ~$336M / $46–50M yr | ⬛ search summaries; plausible, unverified |
-| All ARC numbers — DiARC 0.63%, ARChitects 50.5 vs 51.5, Greenblatt 50%, BARC +13.75, SOAR c=1000, the 2026 leaderboard (98% / 92.5% / 30.2%), Duck Harness, the ~68-point gap | ⬛ **from our research subagent's report.** Well-sourced *in that report* with links, but I did not open the underlying papers. The report itself lists what it could not verify. |
-| *"Anthropic's own report: no static transduction solution above 10%"* | ⬛ same |
+| ~~Anthropic "about a quarter of tested prompts"~~ | ✅ **RESOLVED round 3** — verbatim, with two qualifiers that must travel with it. |
+| ~~DeepMind Chinchilla "months-long, brittle, partial"~~ | ❌ **CUT round 3** — substantially fabricated; the paper's headline is the opposite. |
+| ~~DeepMind "ambitious reverse-engineering" → "pragmatic interpretability"~~ | ✅ **RESOLVED round 3** — real first-party quote, but it is the *team*, not the organization. |
+| ~~MIB's *"SAE features are not better than neurons"*~~ | ✅ **RESOLVED round 1** — verified verbatim from the PDF, and scoped narrower than we implied (causal-variable track only). |
+| ~~MIT Tech Review "2026 Breakthrough Technology"~~ | ✅ **RESOLVED round 3** — verbatim entry title. |
+| ~~NDIF $9M; Goodfire $50M~~ | ✅ **RESOLVED round 3** — award #2408455 ($8,993,038) and Menlo-led Series A, 17 Apr 2025. |
+| ~~Open Phil ~$336M / $46–50M yr~~ | ❌ **CUT round 3** — third-party tally, not their reporting, and stale. |
+| ARC **leaderboard** numbers — 98% / 92.5% / 30.2% and the ~68-point gap | ✅ **RESOLVED round 2** — all exact against ARC Prize's own JSON. |
+| Other ARC numbers — DiARC 0.63%, ARChitects 50.5 vs 51.5, Greenblatt 50%, BARC +13.75, SOAR c=1000, Duck Harness | ⬛ **still from our research subagent's report.** Product of Experts (+53.3 / +3.4) was separately verified in round 1; the rest were not. |
+| ~~ARC "no static transduction solution above 10%"~~ | ⚠️ **CORRECTED round 3** — 11% in the current version; 10% is superseded v1. (Also: it is *ARC Prize's* report, not Anthropic's — a misattribution in this very table.) |
 
 ## 🟨 S2 — abstract or landing page only
 
@@ -136,6 +139,92 @@ one step from filing a correction claiming our own proposal was wrong. It was ca
 sanity-checking v1 against the independently known 98% figure — a positive control on the
 *parsing*, not on the claim. Same lesson as the rung-5 attention sink: **the number that looks
 empirical is exactly where an artifact hides.**
+
+---
+
+## Round 3 — the ⬛ tier, resolved (2026-08-17)
+
+106 agents, adversarial 3-vote verification, primary sources only. **Three verified, two needed
+correction, one was substantially fabricated.**
+
+| claim | verdict |
+|---|---|
+| Anthropic "~quarter of prompts" | ✅ **verbatim** — but carry two qualifiers |
+| DeepMind Chinchilla "months-long, brittle, partial" | ❌ **substantially fabricated — cut** |
+| "ambitious reverse-engineering" → "pragmatic interpretability" | ✅ **real quote, wrong subject** |
+| MIT Tech Review 2026 | ✅ **verbatim** |
+| NDIF $9M · Goodfire $50M | ✅ **verified**, one needs precision |
+| Open Phil $336M / $46–50M | ❌ **misattributed and stale** |
+| ARC "above 10%" | ⚠️ **figure is 11% in the current version** |
+
+### ❌ The one that was fabricated, and it was ours
+
+*"DeepMind's months-long Chinchilla circuit analysis produced a brittle, partial explanation."*
+Against [arXiv 2307.09458](https://arxiv.org/abs/2307.09458) (Lieberum, Rahtz, Kramár, Nanda,
+Irving, Shah, Mikulik):
+
+- **"months-long"** — no duration figure exists anywhere in the paper. The strings *month*, *week*,
+  *person-year* return zero relevant hits. The authors' only effort language is *"labour intensive"*.
+- **"brittle"** — appears **zero times**. Their own negative language is *"relatively noisy and at
+  times contradictory"*.
+- **"partial"** — is theirs, but scoped to one thing: the semantic explanation of the *"correct
+  letter"* attention heads is *"only a partial explanation"* of those heads **under randomized
+  answer labels**.
+- **★ The headline is POSITIVE.** The paper reports that circuit-analysis techniques *do* scale to
+  70B. GDM's own retrospective: *"The key contribution here was to show that the circuit analysis
+  techniques used in smaller models scaled."* **Citing this as evidence that circuit analysis
+  failed at scale inverts the paper's top-line result.**
+
+**And a fabrication of mine inside the verification request itself.** I told the agents to look for
+a paper titled *"Does It Know?: Interpreting arithmetic in Chinchilla 70B"*. **No such paper
+exists** — I invented a plausible title while writing the prompt, and the Chinchilla work is about
+multiple-choice answer→letter mapping, not arithmetic. Had the agents been less careful they would
+have gone looking for it and reported failure to find rather than non-existence.
+
+**The real fact, which is better and is verified.** GDM names a multi-month failure — just not this
+one: *"We spent much of 2024 researching sparse autoencoders. In hindsight, we think we made
+significant tactical errors and our progress was much slower than it could have been."* That is
+first-party, self-critical, and about the method our own rung 5 teaches.
+
+### ✅ Verified, with qualifiers that must travel
+
+**Anthropic, ~a quarter.** Verbatim from
+[biology.html](https://transformer-circuits.pub/2025/attribution-graphs/biology.html): *"Though
+it's difficult to quantify precisely, we've found that our attribution graphs provide us with
+satisfying insight for about a quarter of the prompts we've tried."* Two qualifiers are not
+optional: it is a **self-assessment the authors hedge**, and the denominator is a **self-selected
+exploratory set**, not a benchmark. The figure is **not** in the companion methods paper and **not**
+in the anthropic.com announcement — cite `biology.html` or you are citing the wrong document.
+
+**The pivot — right quote, wrong subject.** It is the **Google DeepMind mechanistic interpretability
+team**, not Google DeepMind: an eight-author
+[LessWrong post](https://www.lesswrong.com/posts/StENzDcD3kpfGJssR/a-pragmatic-vision-for-interpretability)
+(1 Dec 2025), not a corporate channel. They explicitly do **not** abandon the old agenda — *"not
+claiming that ambitious reverse-engineering is useless or should stop"* — and the post itself notes
+*"internal disagreement within the team"*. Saying "DeepMind has retreated" overstates it on both
+the subject and the strength.
+
+**MIT Tech Review.** Entry titled exactly **"Mechanistic interpretability"**, 10 Breakthrough
+Technologies 2026, 12 Jan 2026, by Will Douglas Heaven.
+
+**NDIF.** NSF award **#2408455**, $**8,993,038** (Cooperative Agreement, Northeastern, PI David
+Bau, May 2024–Apr 2028). Only **$6,191,643 obligated** so far — say "~$9M award", not "$9M paid".
+
+**Goodfire.** $50M Series A, led by **Menlo Ventures**, **17 Apr 2025**, Anthropic participating.
+
+### ❌ Open Philanthropy figures — drop them
+
+The "$336M since 2017 / ~$46–50M a year" figures are **not Open Philanthropy's reporting**. They
+come from a **third-party LessWrong tally** of the public grants database (McAleese, 2023, updated
+Jan 2025). The $336M is the AI-safety slice of ~$2.8B total giving; the $46M is **calendar 2023
+specifically**, not a standing rate. And the organization **rebranded to Coefficient Giving in
+2025**, so any present-tense sentence naming it is out of date.
+
+### ⚠️ ARC "above 10%" — version-dependent
+
+v1 (5 Dec 2024, and the PDF still hosted on arcprize.org) says **10%**. **v2** (8 Jan 2025) — what
+`arxiv.org/abs/2412.04604` serves today — says **11%**. Citing 10% to that arXiv ID without a
+version pin quotes a figure the current paper does not contain.
 
 ## What to do before submission
 

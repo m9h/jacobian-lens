@@ -32,12 +32,22 @@ multi-site replication, and it worked. **AI interpretability is currently pre-re
 same failure mode on a substrate where the ground truth is more accessible, not less.** I am
 proposing to import the reform, not the neuroscience.
 
-Meanwhile MIT Technology Review named mechanistic interpretability a **2026 Breakthrough
-Technology**. In the same window its central results have been failing their controls: Anthropic's
-circuit tracing on Claude 3.5 Haiku gave satisfying insight for **about a quarter** of tested
-prompts; DeepMind's months-long Chinchilla analysis was brittle and partial, and DeepMind has
-publicly retreated from *"ambitious reverse-engineering"* to *"pragmatic interpretability"*; and
-**sparse autoencoders are not beating neurons**, found twice by unrelated routes —
+Meanwhile MIT Technology Review named **"Mechanistic interpretability"** one of its
+[10 Breakthrough Technologies 2026](https://www.technologyreview.com/2026/01/12/breakthrough-technologies-2026/)
+(12 Jan 2026). In the same window its central results have been failing their controls, and the
+most candid statements come from the labs themselves:
+
+- **Anthropic's own limitations note** for *On the Biology of a Large Language Model* reports that
+  attribution graphs on Claude 3.5 Haiku *"provide us with satisfying insight for **about a quarter
+  of the prompts we've tried**"* — a figure they hedge as *"difficult to quantify precisely"*, over
+  a self-selected exploratory set rather than a benchmark.
+- **Google DeepMind's mechanistic interpretability team publicly pivoted** in December 2025 *"from
+  ambitious reverse-engineering to a focus on pragmatic interpretability"* — with the failure they
+  name being their own: *"We spent much of 2024 researching sparse autoencoders. In hindsight, we
+  think we made significant tactical errors and our progress was much slower than it could have
+  been."* An eight-author team post, not a corporate announcement, and one they note is internally
+  contested.
+- **Sparse autoencoders are not beating neurons**, found twice by unrelated routes —
 [MIB](https://arxiv.org/abs/2504.13151) by benchmarking against a private test set (ICML 2025) and
 [Transluce](https://arxiv.org/abs/2601.22594) by building better neuron circuits and reproducing
 three of Anthropic's own case studies without any learned dictionary (2026).
