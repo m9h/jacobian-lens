@@ -1,3 +1,9 @@
+> ## ⚠️ ERRATUM (2026-09-05)
+> These results were computed from lenses fitted under **transformers 5.9.0**, which applied YaRN
+> `rope_scaling` to **all 32 OLMo-3 layers** instead of the 8 full-attention ones — so **24 of 32
+> layers ran the wrong RoPE**. Numbers here will move on refit. See
+> [ROPE_ERRATUM.md](../ROPE_ERRATUM.md). Reported externally by @venvoo.
+
 # The covert workspace signal does NOT improve best-of-N selection
 
 **2026-07-31** · `allenai/Olmo-3-1025-7B`, layer 18 · 250 TriviaQA questions × 8 samples

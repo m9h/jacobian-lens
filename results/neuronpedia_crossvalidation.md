@@ -1,3 +1,16 @@
+> ## ⚠️ ERRATUM (2026-09-05)
+> These results were computed from lenses fitted under **transformers 5.9.0**, which applied YaRN
+> `rope_scaling` to **all 32 OLMo-3 layers** instead of the 8 full-attention ones — so **24 of 32
+> layers ran the wrong RoPE**. Numbers here will move on refit. See
+> [ROPE_ERRATUM.md](ROPE_ERRATUM.md). Reported externally by @venvoo.
+> **And this file's own framing was wrong.** It calls itself "the first external check" of our
+> pipeline. Both lenses — ours and Neuronpedia's — were fitted under the same library convention,
+> so the comparison could only measure sampling noise, never correctness. The first real external
+> check was @venvoo's, and it found an error this one was structurally incapable of finding.
+> See [PITFALLS #26](https://github.com/m9h/spinning-up-in-mech-interp/blob/master/PITFALLS.md).
+
+
+
 # Cross-validation against Neuronpedia's independently fitted OLMo-3-7B J-lens
 
 **Date:** 2026-07-25

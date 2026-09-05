@@ -1,3 +1,9 @@
+> ## ⚠️ ERRATUM (2026-09-05)
+> These results were computed from lenses fitted under **transformers 5.9.0**, which applied YaRN
+> `rope_scaling` to **all 32 OLMo-3 layers** instead of the 8 full-attention ones — so **24 of 32
+> layers ran the wrong RoPE**. Numbers here will move on refit. See
+> [ROPE_ERRATUM.md](../ROPE_ERRATUM.md). Reported externally by @venvoo.
+
 # Claim 6 (post-training shapes the J-space "toward a point of view") — free scoping
 
 Run on Anthropic's published base/-it lens pairs, no fitting, no GPU. Two measures.
