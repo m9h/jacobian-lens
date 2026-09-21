@@ -70,6 +70,53 @@ Recorded as [PITFALLS #26](https://github.com/m9h/spinning-up-in-mech-interp/blo
 the way that could be wrong.* What would have caught it is a cross-**version** check, or validation
 against the model's training-time definition — not another consumer of the same library.
 
+
+## Update 2026-09-21: Neuronpedia has refit. Ours is now the only stale one.
+
+Independently filed against them as
+[hijohnnylin/neuronpedia#235](https://github.com/hijohnnylin/neuronpedia/issues/235) — *"olmo-3-1025-7b
+Jacobian lens was fitted under transformers 5.11.0, which applies YaRN to the wrong layers"* —
+**status Closed**. Note their version was **5.11.0** and ours **5.9.0**: different versions, same
+bug window, which is further confirmation the report is sound.
+
+Their replacement lens landed **2026-09-21 04:07 UTC**, and their `config.yaml` now records:
+
+```
+# Environment (the forward pass this lens encodes depends on these):
+#   transformers 5.17.0, torch 2.11.0+cu128, ... jlens_commit 22f0412f...
+```
+
+**They have adopted the lesson of PITFALLS #26 in their artifact format** — the environment is now
+part of the published lens, because the forward pass it encodes depends on it. We should do the
+same.
+
+### ★ This invalidates our refit floor's baseline, not just our lenses
+
+`posttrain/perlayer_floor_correction.md` states plainly: **"The floor is n = 1. It is one
+comparison — our fit against Neuronpedia's."** That comparison was against **their old lens, which
+no longer exists**. So the published per-layer floor (0.884 at L0 → 1.000 at L30) is now measured
+against a withdrawn artifact, on a forward neither party uses.
+
+The upside is large: their full fit protocol is public in that config —
+`n_prompts 1000, dim_batch 128, max_seq_len 128, bfloat16, stop_at_delta 0.002`, dataset
+`Salesforce/wikitext` (wikitext-103-raw-v1, train). **Refitting to match it gives us a genuine
+cross-implementation floor with both sides on the corrected forward** — which is exactly the
+cross-version check PITFALLS #26 says would have caught this in the first place.
+
+### ⚠️ Correction to the "refit is cheap now" hope
+
+I relayed Nanda's commentary as showing n=10 suffices. Checked against the paper's §A.7 directly:
+
+> "We observe that J-lens beats the logit lens and tuned lens **baselines** with as few as 10
+> prompts, with modest improvements coming from additional data."
+
+That is a claim about **beating baselines**, not about matching an n=1000 lens. **Our measurement is
+a difference *between* lenses** (`cos(base, instruct)`, and excess over a refit floor), which is a
+stricter requirement than "is this lens better than logit lens" — a noisier lens raises the floor,
+and our ladder signals sit close to it at some layers. **Do not refit at n=25 and compare against a
+floor measured at n=1000.** Either match Neuronpedia's n=1000 protocol, or measure the floor at
+whatever n we choose. Same n on both sides of every comparison.
+
 ## Actions
 
 - [x] Confirm the report (lockfile, both PRs, the config's layer types) — all verified

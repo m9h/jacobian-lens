@@ -4,6 +4,11 @@
 > layers ran the wrong RoPE**. Numbers here will move on refit. See
 > [ROPE_ERRATUM.md](../ROPE_ERRATUM.md). Reported externally by @venvoo.
 
+> **Update 2026-09-21:** the n=1 comparison this floor rests on was against **Neuronpedia's
+> pre-refit lens, which has since been withdrawn and replaced** (their transformers 5.17.0 refit,
+> 21 Sep). So this floor is measured against an artifact that no longer exists, on a forward
+> neither party now uses. It must be recomputed. See [../ROPE_ERRATUM.md](../ROPE_ERRATUM.md).
+
 # Restating the post-training result as excess over a per-layer refit floor
 
 **2026-08-02.** The published headline — `cos(J_base, J_instruct) = 0.69`, "~31% move" — is a
