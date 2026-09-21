@@ -4,6 +4,31 @@
 > layers ran the wrong RoPE**. Numbers here will move on refit. See
 > [ROPE_ERRATUM.md](../ROPE_ERRATUM.md). Reported externally by @venvoo.
 
+> ## ⚠️ Confound check against solarkyle/jspace (2026-09-21)
+> A preregistered J-lens reliability campaign on Gemma-4-12B
+> ([solarkyle/jspace](https://github.com/solarkyle/jspace)) reports an **answer-readout confound**:
+> *"On any evaluation slice where the correct answer is constant (… unanswerable detection: abstain
+> is always right), an internal-features probe reaches AUC ~1.0 by reading which answer the model
+> is about to emit, not by detecting error: the label is a deterministic function of the answer."*
+> Their in-domain probes hit 1.000/1.000/0.991 on such slices against honest varying-truth numbers
+> of **0.55–0.78** on the same datasets.
+>
+> **Our exposure, checked item by item:**
+>
+> - ✅ **The main result is not exposed.** The supervised covert AUROCs (base 0.68 → Instruct-SFT
+>   0.76) are computed on **TriviaQA correct-vs-wrong**, a *varying-truth* slice — the answer
+>   differs per item, so correctness is not a deterministic function of the answer. Those numbers
+>   also sit squarely inside their honest 0.55–0.78 band, which is mild corroboration.
+> - ⚠️ **The unanswerable control IS exposed.** Our 10 nonsense questions ("capital of Zorblaxia?")
+>   are a **constant-truth slice** — abstain is always right — which is exactly the case they name.
+>   So the finding that the workspace is *most* uncertain on unanswerables (+5.03 vs wrong +4.72)
+>   may be reading **"the model is about to emit a non-answer"** rather than uncertainty. At n=10 it
+>   was never more than suggestive; it should now be treated as **not supporting the
+>   unanswerable-detection claim** until re-run with varying-truth items.
+>
+> This is a good example of the register working: someone else's control invalidated a specific
+> claim of ours without touching the main one.
+
 # A covert error-monitoring signal in the open base model's workspace
 
 **Run 2026-07-22. OLMo-3-1025-7B (base), published 31-layer Jacobian lens, 200 TriviaQA
