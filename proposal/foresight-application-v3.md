@@ -92,6 +92,44 @@ What remains genuinely unoccupied is narrower and more defensible:
 - **The teaching layer.** A curriculum where every technique ships with its null, so the next
   cohort arrives already able to check.
 
+### Update, September 2026: a fourth narrowing, and a sharper argument
+
+Two months of watching the landscape has narrowed the claim again — and, in the same window,
+produced the strongest evidence for it.
+
+**What narrowed it.** When Anthropic released its global-workspace paper it **published ~22k words
+of solicited external critique alongside it** — from Dehaene and Naccache, who originated the
+global neuronal workspace model; from Butlin, Shiller, Plunkett and Long of Eleos AI, who wrote the
+indicator framework; and from Neel Nanda, whose commentary contains **an independent replication on
+an open model**. That is the adjudication function, performed voluntarily by the party being
+adjudicated, and performed well. Separately, [`solarkyle/jspace`](https://github.com/solarkyle/jspace)
+is a **preregistered** reliability campaign on Gemma-4-12B with frozen hashed classifiers and public
+traces, reporting a prospective transfer miss and a confound found by auditing its own favourable
+numbers. **Adjudication is being done. It is simply being done episodically, by the interested
+party or by volunteers, and only where someone happens to care.**
+
+**What sharpened it.** In the same period, both halves of the function ran on *us*:
+
+- **A stranger reading our lockfile found a real error in our published artifacts.** Our 11 OLMo-3
+  Jacobian lenses were fitted under a library version that applied YaRN rope-scaling to **24 of 32
+  layers that should not have had it**. We confirmed it, published
+  [an erratum](../results/ROPE_ERRATUM.md), annotated ten result files, and pinned the dependency.
+  Our own cross-validation — which we had called *"the first external check"* — **could not have
+  caught it**, because both lenses compared shared the same wrong convention. That is now
+  [PITFALLS #26](https://github.com/m9h/spinning-up-in-mech-interp/blob/master/PITFALLS.md).
+- **Someone else's control invalidated a specific claim of ours.** The `solarkyle/jspace`
+  answer-readout confound — probes scoring ~1.0 on slices where the correct answer is constant, by
+  reading *which answer is coming* rather than detecting error — applies exactly to our
+  unanswerable-detection control. We checked item by item: our main TriviaQA AUROCs are not exposed
+  and sit inside their honest band; **our unanswerable result is, and is now marked as not
+  supporting the claim** until re-run.
+
+**Neither of those was found by the people who produced the work, and both were cheap.** The
+argument is no longer that nobody adjudicates. It is that **adjudication currently depends on a
+volunteer happening to read your lockfile** — and that the same function, run as somebody's actual
+job against a standing register of claims, would catch these before they propagate rather than two
+months after. Every group above is doing it for their own results. Nobody is doing it for yours.
+
 **TSG is therefore the collaborator, not the competitor** — and they explicitly invite sponsored
 research directions. A lab producing automated auditing methods and a community running human
 reproduction are complements; neither substitutes for the other.
