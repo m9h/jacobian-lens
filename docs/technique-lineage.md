@@ -265,7 +265,11 @@ Verified against arXiv on 2026-07-18.
   Generate Societies of Thought.* [arXiv:2601.10825](https://arxiv.org/abs/2601.10825)
 - Gurnee, W., Sofroniew, N., Pearce, A., et al. & Lindsey, J. (2026). *Verbalizable
   Representations Form a Global Workspace in Language Models.* 6 Jul 2026.
-  https://transformer-circuits.pub/2026/workspace/index.html
+  https://transformer-circuits.pub/2026/workspace/index.html ·
+  **[arXiv:2607.15495](https://arxiv.org/abs/2607.15495)** ·
+  [external commentary](https://www-cdn.anthropic.com/files/4zrzovbb/website/cc4be2488d65e54a6ed06492f8968398ddc18ebe.pdf)
+  (Dehaene & Naccache; Butlin/Shiller/Plunkett/Long; Nanda — the last containing an independent
+  replication on Qwen 3.6 27B). See [notes/jspace_reception.md](../notes/jspace_reception.md).
 
 **Infrastructure**
 - Lin, J. *Neuronpedia — open source interpretability platform.* MIT, created 21 Jun 2023.
