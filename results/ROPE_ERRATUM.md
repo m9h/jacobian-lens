@@ -117,6 +117,18 @@ and our ladder signals sit close to it at some layers. **Do not refit at n=25 an
 floor measured at n=1000.** Either match Neuronpedia's n=1000 protocol, or measure the floor at
 whatever n we choose. Same n on both sides of every comparison.
 
+## Damage bounded (2026-09-22) — the ladder survives
+
+Measured `cos(ours_buggy, theirs_corrected)` against our per-layer refit floor, using Neuronpedia's
+21 Sep corrected lens. **Every layer lands within ±0.013 of the floor**, mean cos 0.967, worst layer
+L0 at 0.897 against a floor of 0.884. The bug moves our lenses by about as much as two honest refits
+disagree. Our ladder signal (`cos(base, instruct) = 0.69`) is far below both, so the published
+qualitative conclusions stand. Full numbers and caveats in
+[rope_damage_bound.md](rope_damage_bound.md).
+
+This downgrades the refit from *urgent* to *correct to do*, and re-prioritises it: the base lens
+first (it anchors the floor and has a public corrected counterpart), then decide on the other ten.
+
 ## Actions
 
 - [x] Confirm the report (lockfile, both PRs, the config's layer types) — all verified
