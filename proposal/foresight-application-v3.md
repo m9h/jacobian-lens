@@ -6,6 +6,12 @@ person · **DRAFT v3 — reframed from benchmark attribution to the open mech-in
 
 ---
 
+> **This is the long-form supporting document.** The submission draft is
+> [foresight-application.md](foresight-application.md) (~1,150 words); this version carries the
+> full landscape survey, the evidence tiering, and the record of how the claim narrowed four times
+> under evidence. Keep both: reviewers who want the receipts follow the link.
+
+
 ## The field went mainstream on foundations that are shakier than the coverage
 
 In 2009 a dead Atlantic salmon was placed in an fMRI scanner and shown photographs of humans in
