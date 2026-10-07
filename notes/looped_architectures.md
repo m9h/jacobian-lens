@@ -1,3 +1,15 @@
+> ## ⚠️ Superseded in part (6 Oct 2026)
+> **Wang & Reid, [arXiv 2609.01924](https://arxiv.org/abs/2609.01924) (1 Sep 2026) — six days before
+> this note — did the experiment §2–4 only pose.** They built the `(layer, loop)` adapter, ran eleven
+> causal experiment families on Ouro-2.6B and Huginn-0125, and found the workspace *does* form under
+> weight-tying, with the interfaces following iteration structure rather than depth. Weight tying
+> makes per-loop transports near-identical (cos 0.9991 on Huginn), which answers §3's SAE-pooling
+> concern. The "is a fixed unroll recurrence?" caveat in §4 is resolved against the strong reading:
+> persistence is re-grounding, not memory. **What survives of this note:** Nanbeige 4.2 is untested
+> by them, and their stated limitation — one checkpoint per family — is our developmental axis.
+> Full account in [`lit_review_roadmap_2026-10.md`](lit_review_roadmap_2026-10.md). I did not search
+> before writing this. That is the second time this quarter.
+
 # Looped architectures and what they break for introspection
 
 **Research note, 2026-09-07.** Prompted by Nanbeige4.2-3B-Base. Everything in §1 was checked
