@@ -179,7 +179,7 @@ All S2 (abstracts), all bearing on `results/posttrain/metacognition_result.md`:
 | 3 | **Re-run the metacognition unanswerable control with mixed fitting** (2609.10739) and add OC/SJ conflict items (2607.16799) | our exposed control has a published fix; our clean result has a published alternative explanation | ~$5 |
 | 4 | `looped_architectures.md` reframed — **done 8 Oct** | | |
 | 5 | **SF-OSMI**: offer the crit methodology; one session with the salmon opener | your call on the relationship | — |
-| 6 | **RoPE refit, base lens only**, Neuronpedia protocol; recompute the n=1 floor | floor's baseline gone; not urgent | ~$15 |
+| 6 | RoPE refit, base lens — **done 8 Oct**: bug effect ≤0.2% cos (L0), 0 at L≥12; floor restored; **new open item: Neuronpedia's own refit moved 5% at L30, ours 0.003%** — raise with them | | ~$12 spent |
 | 7 | `self-report-validity` revived + remote — **done 8 Oct** | | |
 | 8 | **Revoke the HF token** | outstanding since the thread began | you, 1 min |
 

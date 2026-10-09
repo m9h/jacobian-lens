@@ -132,8 +132,94 @@ first (it anchors the floor and has a public corrected counterpart), then decide
 ## Actions
 
 - [x] Confirm the report (lockfile, both PRs, the config's layer types) — all verified
-- [ ] Refit the 11 lenses under transformers ≥ 5.13 and republish
-- [ ] Re-run the post-training ladder on the refitted lenses and diff every published number
+- [x] ~~Refit the 11 lenses~~ Base lens refit 2026-10-08: bug effect ≤ 0.2% cosine, 0 at L ≥ 12; the other ten are deliberately not refit (see update)
+- [x] Not needed: the measured bug effect (0.002 cos at L0) is two orders below the ladder effect (0.31); documented in the update
 - [ ] Annotate the HF model card and every affected `results/` file until the refit lands
-- [ ] Pin `transformers>=5.13` in `pyproject.toml` (currently `>=5.5`) and re-lock
+- [x] Pin `transformers>=5.13` in `pyproject.toml` — done (modal_olmo_ladder.py still pins >=5.5; the refit script pins >=5.13)
 - [ ] Take up the reporter's offer of their comparison script
+
+## Update 2026-10-08: base lens refit under the fix — the bug moved our lens by ≤ 0.2% cosine
+
+Refit the base lens (`allenai/Olmo-3-1025-7B`) on Modal under **transformers 5.19.0 / torch
+2.14.1+cu130**, protocol identical to the original fit (616 prompts, same wikitext stream,
+layers 0,3,…,30, dim_batch 128, max_seq_len 128, skip_first 16, bf16), written to a separate
+volume path so the buggy lens survives as the comparison. Script
+[`modal_olmo_refit_tf513.py`](../modal_olmo_refit_tf513.py); environment and every number below in
+[`results/rope_refit_tf513/`](rope_refit_tf513/). All statistics recomputed in **float64**
+([`modal_refit_check_f64.py`](../modal_refit_check_f64.py)) — see the precision note at the end.
+
+### Buggy vs corrected, same protocol — the direct measurement of the damage
+
+| layer | cos (f64) | rel. Frobenius error |
+|---|---|---|
+| 0 | 0.99784 | 6.6% |
+| 3 | 0.99899 | 4.5% |
+| 6 | 0.99935 | 3.6% |
+| 9 | 0.99987 | 1.6% |
+| 12 | 1.00000 | 0.27% |
+| 15–30 | 1.00000 | ≤ 0.07% |
+
+`identity_distance` at layer 30: buggy **0.220148**, corrected **0.220154** — unchanged to five
+digits. The wrong YaRN on the 24 sliding-window layers perturbed the **early-layer** transports by a
+few percent in Frobenius norm and the deep ones not at all, which is what §"Why the impact is
+modest" predicted: at max_seq_len 128 the frequency interpolation is near-identity and only the
+position-independent `attention_factor` is live. The ladder's early-layer signal (49.9% of Instruct's
+movement in L0–9) sits in the region the bug touched most, and the bug's effect there is 0.002 in
+cosine against a ladder effect of 0.31. **The ladder survives by two orders of magnitude**, now
+measured rather than bounded (supersedes [`rope_damage_bound.md`](rope_damage_bound.md)).
+
+### Ours vs Neuronpedia's corrected lens — the floor's baseline is back
+
+| layer | buggy ours vs NP-corrected | corrected ours vs NP-corrected |
+|---|---|---|
+| 0 | 0.89682 | 0.89674 |
+| 3 | 0.90632 | 0.90625 |
+| 6 | 0.93977 | 0.93980 |
+| 9 | 0.95444 | 0.95440 |
+| 12 | 0.97725 | 0.97725 |
+| 15 | 0.98631 | 0.98631 |
+| 18 | 0.99064 | 0.99064 |
+| 21 | 0.99334 | 0.99335 |
+| 24 | 0.99571 | 0.99571 |
+| 27 | 0.99776 | 0.99776 |
+| 30 | 0.99964 | 0.99964 |
+
+Identical to four digits whether or not our lens has the bug. So the per-layer refit floor
+(0.884 → 1.000 in the original float32 numbers) is **entirely protocol and sampling** — prompt
+set, n (616 vs 568), convergence stopping — and none of it was the bug. The anchor gate's cosine
+check passes (mean 0.9696 ≥ 0.95).
+
+### ⚠️ New open discrepancy: Neuronpedia's refit moved 5%, ours moved 0.003%
+
+The gate's `identity_distance` check **fails** at 5.19% vs a 5% tolerance: ours 0.22015, theirs
+0.232001. Before the fix the published value was **0.220851** — we matched it to 0.3%. Same model,
+same fix, and their layer-30 statistic moved **+5.0%** while ours moved **+0.003%**. The fix cannot
+be the cause: at layer 30 it changes our transport by 0.01% in Frobenius norm. Something *else*
+differs between their old and new fits — prompt sampling, the convergence stop (568 vs their
+original count), or a second behavioural change between transformers 5.x versions (attention
+backend, sliding-window handling). **Unresolved.** It is not a threat to our ladder (which never
+used their lens) but it is exactly the kind of thing PITFALLS #26 says to chase: two refits of the
+same model under "the same fix" should not disagree by 5% at the layer the fix does not touch.
+Worth raising with Neuronpedia/@venvoo with these numbers; not yet done.
+
+### Precision note — float32 cosine exceeds 1.0 here, and our published floor used it
+
+`torch.nn.functional.cosine_similarity` in float32 on these 4096² ≈ 16.7M-element,
+identity-dominated vectors returns **1.0059** at layer 30 for two lenses whose float64 cosine is
+1.00000, and inflates every deep-layer value by +0.002 to +0.006 (full table in `check_f64.json`,
+column `cos32_repro`). `jlens_lab.artifacts.compare` had this; so did the comparison in this
+refit script; so did the floor numbers published in `perlayer_floor_correction.md`. The shape of
+the floor is unaffected (early layers are barely touched: 0.898 vs 0.897), but any deep-layer
+"cos 1.000" from the float32 path should be read as 0.9996. Fixed in jlens-lab (float64 in
+`compare` and `identity_distance`); added as
+[PITFALLS #28](https://github.com/m9h/spinning-up-in-mech-interp/blob/master/PITFALLS.md).
+
+### Cost and what remains
+
+One B200 fan-out (8 shards) plus a CPU check: ~23 min wall including image build, ≈ 2 GPU-h,
+roughly **$12** (estimate from wall time; the Modal dashboard has the exact figure). The ten
+post-trained arms are **not** refit. Given ≤ 0.2% cosine at the worst layer and 0.000 at the layers
+that carry most of the ladder's deep-layer statistics, a $120 refit of the other ten would change
+no published conclusion; the base-lens measurement is the bound, and it is now a measurement. If
+anyone needs the refit arms for a downstream use, the script takes `--arm`.
+- [ ] **New (2026-10-08):** raise the 5% identity_distance discrepancy between Neuronpedia's old and new lenses with them — our refit moved 0.003% under the same fix

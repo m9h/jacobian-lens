@@ -69,3 +69,22 @@ what the *early* residual stream is disposed to say.
 ## Reproduce
 
 `analyze_perlayer_floor.py` — downloads published lenses, no GPU, runs in minutes.
+
+
+## Update 2026-10-08 — the baseline exists again, and the floor was never the bug
+
+The base lens was refit under the RoPE fix with protocol held constant
+([`ROPE_ERRATUM.md`](../ROPE_ERRATUM.md), update 2026-10-08). Two consequences for this file:
+
+1. **The floor is restored, and unchanged in substance.** Our *corrected* lens against
+   Neuronpedia's *corrected* lens, float64: 0.897, 0.906, 0.940, 0.954, 0.977, 0.986, 0.991,
+   0.993, 0.996, 0.998, 0.9996 (L0 … L30). The buggy-vs-corrected floor it replaces was 0.884 …
+   1.000. The bug contributed at most 0.002 at L0 and nothing at L ≥ 12; the rest is sampling and
+   protocol, as the file's own "n = 1" caveat assumed.
+2. **The deep-layer "1.000" entries were a float32 artefact.** The published floor used float32
+   cosine on 16.7M-element vectors, which overshoots by +0.002 to +0.006 at deep layers (it
+   returns 1.006 for two lenses whose true cosine is 1.0000). Read every deep-layer floor value
+   above as ~0.003 lower. The early/late contrast this file reports (49.9% vs 10.6%) is unaffected:
+   the early layers, where the effect lives, are where float32 is accurate.
+
+The floor is still **n = 1**. It is now the right n = 1.

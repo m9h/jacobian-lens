@@ -1,3 +1,10 @@
+> **Superseded 2026-10-08.** This file *bounded* the damage by comparing our buggy lens with
+> Neuronpedia's corrected one and arguing the difference sat inside the refit floor. The base lens
+> has since been refit under the fix with the protocol held fixed, which *measures* it: cos
+> 0.9978 at layer 0 rising to 1.0000 from layer 12, identity_distance unchanged to five digits.
+> See [`ROPE_ERRATUM.md`](ROPE_ERRATUM.md), update 2026-10-08. The argument below was right in
+> conclusion and is kept for the record.
+
 # Bounding the RoPE damage, for free: it sits inside the refit floor
 
 **2026-09-22.** Before spending GPU hours on a refit, we measured what the bug actually cost —
