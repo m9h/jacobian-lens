@@ -1,3 +1,6 @@
+<!-- Foresight AI for Science & Safety Nodes RFP · call: Coordination and Accountability ·
+     deadline 31 Oct 2026 23:59 PDT · form: https://airtable.com/appyVXc5SMPAvIKpP/pagp7takV26cG6JY1/form
+     (form fields/limits not yet read — open in a browser before pasting) -->
 # Fund the Layer Nobody Funds: Adjudication for Open Mechanistic Interpretability
 
 **Foresight Institute — AI for Science & Safety Nodes** · focus: **AI for Science & Epistemics**
@@ -50,6 +53,16 @@ reviewing platform for critiques, negative findings and reproductions; expert-ve
 and source-based auditing. **It is a position paper. Nothing is implemented, including by its
 authors** — several of whom are at Martian, which runs a **$1M interpretability prize** awarding
 completed work.
+
+Since then two methods have appeared in print, and both confirm the diagnosis rather than fill the
+gap. *Execution-grounded evaluation* ([arXiv 2602.18458](https://arxiv.org/abs/2602.18458), UChicago)
+ran code and data, not just the paper, on 30 mechanistic-interpretability outputs including ten
+human-written repositories from ICLR, NeurIPS and the Alignment Forum: **over 90% had at least one
+reproducibility failure**, and the agent surfaced 51 issues human reviewers missed. *Mechanistic
+unit tests* ([ICML 2026](https://icml.cc/virtual/2026/79409)) give a negative-control protocol —
+matched negatives, off-target damage, same-budget baselines — and describe themselves as "a
+falsification layer … not a new discovery method." Both are papers. Neither is anyone's standing
+job, and neither has been run on a 2026 flagship claim by a party that did not make it.
 
 ## Why me: the function has already run on my own work, twice, in two months
 

@@ -234,3 +234,13 @@ version pin quotes a figure the current paper does not contain.
 4. ~~Spot-check ARC numbers~~ — done on the load-bearing one; the rest of the subagent's report gains credibility but is not individually verified.
 
 Nothing here is known to be false. The point is that **"I could not find a problem" and "I checked" are different claims**, and this proposal has been making the second while doing the first.
+
+## Round 4 — 8 Oct 2026 (post literature pass)
+
+| claim in `foresight-application.md` | tier | status |
+|---|---|---|
+| MechEvalAgent: 30 outputs, 10 human-written from ICLR/NeurIPS/Alignment Forum; "over 90% of the tasks have at least one failure in reproducibility"; 51 issues humans missed; >80% agreement | 🟩 S1 (arXiv HTML, quoted) | [2602.18458](https://arxiv.org/abs/2602.18458); code github.com/ChicagoHAI/MechEvalAgent |
+| ICML unit tests: "a falsification layer for mechanistic claims, not a new discovery method"; negative-control protocol | 🟨 S2 (ICML abstract page) | [icml.cc/virtual/2026/79409](https://icml.cc/virtual/2026/79409); no arXiv ID found |
+| "neither has been run on a 2026 flagship claim by a party that did not make it" | 🟨 our inference from both abstracts: MechEvalAgent's human-written set is from prior venues; unit tests ran "a controlled case study and a small distilgpt2 pilot" | state as our reading, which the sentence does |
+| Foresight deadline 31 Oct 2026 23:59 PDT; $30k–$100k; open-source required; Coordination & Accountability call | ✅ S0 (RFP page verbatim) | foresight.org/grants/ai-science-safety-nodes-rfp/ |
+| Wang & Reid SFT comparison (if cited in v3 appendix): "leads rather than conclusions", Ouro-2.6B-Thinking only | 🟩 S1 | cite with the authors' qualifier; the 6 Oct "unsourced" note was wrong |

@@ -1,14 +1,34 @@
-> ## ⚠️ Superseded in part (6 Oct 2026)
-> **Wang & Reid, [arXiv 2609.01924](https://arxiv.org/abs/2609.01924) (1 Sep 2026) — six days before
-> this note — did the experiment §2–4 only pose.** They built the `(layer, loop)` adapter, ran eleven
-> causal experiment families on Ouro-2.6B and Huginn-0125, and found the workspace *does* form under
-> weight-tying, with the interfaces following iteration structure rather than depth. Weight tying
-> makes per-loop transports near-identical (cos 0.9991 on Huginn), which answers §3's SAE-pooling
-> concern. The "is a fixed unroll recurrence?" caveat in §4 is resolved against the strong reading:
-> persistence is re-grounding, not memory. **What survives of this note:** Nanbeige 4.2 is untested
-> by them, and their stated limitation — one checkpoint per family — is our developmental axis.
-> Full account in [`lit_review_roadmap_2026-10.md`](lit_review_roadmap_2026-10.md). I did not search
-> before writing this. That is the second time this quarter.
+> ## Status, 8 Oct 2026 — superseded in part, and the surviving question now has a substrate
+>
+> **Wang & Reid, [arXiv 2609.01924](https://arxiv.org/abs/2609.01924) (1 Sep 2026) — six days
+> before this note — did the experiment §2–4 only pose.** They built the `(layer, loop)` adapter,
+> ran eleven causal experiment families on Ouro-2.6B and Huginn-0125, and found the workspace
+> *does* form under weight-tying, with its interfaces following iteration structure rather than
+> depth. Three of this note's claims are now settled by them, one is answered, and one is open:
+>
+> | this note said | Wang & Reid |
+> |---|---|
+> | §2 *"nothing in the open stack addresses by `(layer, loop)`"* | they built an adapter that does; **no code release linked in the paper**, so it must be rebuilt |
+> | §3 *"SAEs would pool two distributions … nobody has measured whether the passes differ"* | measured: per-loop transports are near-identical under weight tying (**cos 0.9991**, Huginn). The pooling problem shrinks to nothing on Huginn; on Ouro deep supervision makes loops near-Markovian instead |
+> | §4 *"is a fixed unroll recurrence?"* | resolved against the strong reading: *"continuous recomputation from a re-injected input encoding, not a memory buffer"* |
+> | §5 latent vs token-space iteration | **not addressed** by them; still unsurveyed by us |
+> | — | **their stated limitation:** *"one pre-trained checkpoint per family … Following checkpoints throughout pretraining would … reveal when J-space emerges."* |
+>
+> **What survives, and what changed since 6 Oct:** Nanbeige 4.2 is untested by them (4.5 is
+> unreleased). And the open problem they name has a public substrate — **Huginn-0125 publishes 46
+> in-training checkpoints at 1,024-step spacing**
+> ([`JonasGeiping/huginn-0125-checkpoints`](https://huggingface.co/JonasGeiping/huginn-0125-checkpoints),
+> 14.26 GB each, "only to be used for analysis"). Huginn is the model where the workspace *survives*
+> recurrence, and weight tying means one iteration's lens fit covers full depth. **"When does the
+> workspace signature appear in a looped model during pretraining?" is runnable today**, and I
+> found no one running it. Design sketch and the reading that must precede it:
+> [`lit_review_roadmap_2026-10.md`](lit_review_roadmap_2026-10.md) §2.2 and §3 item 1.
+>
+> Also relevant and unread in full: Blayney et al. [2604.11791](https://arxiv.org/abs/2604.11791)
+> (each layer in the cycle converges to a distinct fixed point); Luo & Yu
+> [2609.21383](https://arxiv.org/abs/2609.21383) (prediction dynamics across depth, Huginn + Ouro).
+>
+> I did not search before writing the note below. That was the second time this quarter.
 
 # Looped architectures and what they break for introspection
 
@@ -63,7 +83,8 @@ is layer-indexed, and the index silently assumes each layer runs exactly once:
 
 `resid_post.7` in a looped model is **two different computations sharing one name** — same weights,
 different residual state, different function. The fix is mechanical (address by `(layer, loop)`,
-exactly as their cache does), but nothing in the open stack does it today.
+exactly as their cache does). *[8 Oct: Wang & Reid built exactly this adapter for the J-lens; no
+code release is linked, so for the open stack the sentence still holds in practice.]*
 
 **This is a good test case for `interp-engine` specifically.** Its pitch is standardised addresses
 across architectures; a looped model is precisely the architecture a flat address space cannot
@@ -74,9 +95,10 @@ name. Worth raising with Decode Research.
 **SAEs would pool two distributions.** Collect activations at layer 7 across both passes and you
 train one dictionary over two computational regimes that happen to share weights. Features come out
 as a mixture. Either train per `(layer, loop)`, or first *measure* whether the two passes'
-activation distributions actually differ. **That measurement is the cheapest useful experiment here
-and nobody has run it** — and it is a real question, not a formality: if the distributions are
-near-identical the whole problem shrinks.
+activation distributions actually differ. **That measurement is the cheapest useful experiment here**
+— and it is a real question, not a formality: if the distributions are near-identical the whole
+problem shrinks. *[8 Oct: Wang & Reid ran it on Huginn — per-loop transports cos 0.9991 — so on
+that model the problem does shrink to nothing. Nanbeige 4.2 remains unmeasured.]*
 
 **The Jacobian lens survives formally, but its reading changes.** `J̄_l` is still the derivative of
 a composed function. What gets muddy is the *interpretation* — "what layer 3 writes that layer 18
@@ -119,7 +141,8 @@ Comparing them isolates the question:
 
 If latent looping substitutes for token-space "reasoning," that is direct evidence the tokens were
 doing computation rather than reporting it. This is a real experiment at 3B scale and, as far as we
-know, unrun. *(We have not checked the literature on this — apply the usual rule before building.)*
+know, unrun. *(We have not checked the literature on this — apply the usual rule before building.
+8 Oct: still unchecked; Wang & Reid do not address it.)*
 
 ## 6. Practical notes
 

@@ -29,6 +29,31 @@
 > This is a good example of the register working: someone else's control invalidated a specific
 > claim of ours without touching the main one.
 
+> ## ⚠️ Literature update (2026-10-08) — the confound has three published names, and a fix
+>
+> - **The exposed unanswerable control is "perfect aliasing"** — *The Truth Was Never Gone*
+>   ([2609.10739](https://arxiv.org/abs/2609.10739)): where the true label and the prescribed
+>   answer coincide on a slice, a probe *"cannot tell which of the two it measures."* Their fix is
+>   **mixed fitting** across contexts where the labels differ (0.006 → 1.000 AUROC in their game) or
+>   randomised output codebooks. **That is the re-run design for this control**: fit on
+>   answerable + unanswerable items with varying truth, never on a constant-truth slice.
+> - **The main result has a published alternative reading** — *Diagnosing Correctness Probes under
+>   Self-Judgement Confounding* ([2607.16799](https://arxiv.org/abs/2607.16799)): objective
+>   correctness (OC) and the model's self-judgement (SJ) usually agree, so a "correctness" probe may
+>   be reading SJ. On items where they conflict, probes follow SJ; across four models ≤14B the SJ
+>   direction transfers cross-domain and the OC direction has a below-chance point estimate. Our
+>   TriviaQA AUROCs are clean of the *answer-readout* confound (above) but **not yet tested against
+>   this one** — it needs OC/SJ conflict items (questions the model is confidently wrong on, and
+>   unconfidently right on). "Covert error monitoring" and "covert self-judgement" are different
+>   claims; the honest label until the conflict set is run is the second.
+> - **"Covert" needs a margin check** — *When Do Internal Probes Beat Reading the Answer?*
+>   ([2609.04582](https://arxiv.org/abs/2609.04582)) separates *concealed* (probe yes, decision
+>   margin no) from *miscalibrated* (margin knows, threshold erases it). Our decisive control
+>   compares against output confidence; adding the margin-ranking comparison would say which of the
+>   two we have.
+>
+> Roadmap: [`notes/lit_review_roadmap_2026-10.md`](../../notes/lit_review_roadmap_2026-10.md) §3 item 3.
+
 # A covert error-monitoring signal in the open base model's workspace
 
 **Run 2026-07-22. OLMo-3-1025-7B (base), published 31-layer Jacobian lens, 200 TriviaQA
