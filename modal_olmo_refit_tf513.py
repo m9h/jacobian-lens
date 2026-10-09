@@ -586,7 +586,7 @@ def ministral():
 def env_report() -> dict:
     """Record the fit environment in the artifact (ECOSYSTEM s2.3)."""
     import json, pathlib, platform, torch, transformers
-    r = {"transformers": transformers.__version__, "torch": torch.__version__,
+    r = {"transformers": str(transformers.__version__), "torch": str(torch.__version__),   # TorchVersion is not plain str; client has no torch
          "python": platform.python_version(), "n_prompts": N_PROMPTS, "layer_step": LAYER_STEP,
          "dim_batch": DIM_BATCH, "max_seq_len": MAX_SEQ_LEN, "skip_first": SKIP_FIRST,
          "dataset": "Salesforce/wikitext wikitext-103-raw-v1 train", "dtype": "bfloat16"}
