@@ -1,6 +1,6 @@
 # Erratum: OLMo-3 lenses were fitted with the wrong RoPE on 24 of 32 layers
 
-**Status: confirmed, unresolved. Refit pending.**
+**Status (2026-10-15): the bug was real; it never applied to our lenses. See §"Retraction, 2026-10-15" at the end — the sections between were written believing it did.**
 **Reported by [@venvoo](https://huggingface.co/mhough/olmo3-jacobian-lenses/discussions/1)
 (Wenbin Wu), 2026-09-05.** First external check of these artifacts by someone outside the project,
 and it found a real error.
@@ -223,3 +223,133 @@ that carry most of the ladder's deep-layer statistics, a $120 refit of the other
 no published conclusion; the base-lens measurement is the bound, and it is now a measurement. If
 anyone needs the refit arms for a downstream use, the script takes `--arm`.
 - [ ] **New (2026-10-08):** raise the 5% identity_distance discrepancy between Neuronpedia's old and new lenses with them — our refit moved 0.003% under the same fix
+
+---
+
+## Retraction, 2026-10-15: our lenses were never fitted with the bug
+
+**Status now: the bug was real (transformers 5.0–5.12, Neuronpedia's June lens). Our eleven
+OLMo-3 lenses were not affected. The "measured damage" of 8 Oct was version drift between two
+fixed releases.**
+
+### What was wrong in this file
+
+The opening section says *"Our `uv.lock` resolves transformers 5.9.0 (verified)"* and concludes
+our lenses were fitted with YaRN on 24 wrong layers. The lockfile does resolve to 5.9.0. The
+lenses were fitted on Modal (`modal_olmo_ladder.py`, 2026-07-22 → 08-02), whose image is built
+from `pip_install("transformers>=5.5,<6")` at build time and never reads `uv.lock`. The
+`pip_install` line was last edited on 2026-07-21 (commit `e62e50d`), the day before the first fit,
+so the image was built in the window 21 Jul – 9 Aug, when `>=5.5,<6` resolved to **5.14.1**
+(5.13.0 shipped the fix on 3 Jul; 5.15.0 appeared 10 Aug). Confirmed by running a one-line
+`env_report` inside the cached image (same definition → same build; Modal does not rebuild
+unchanged definitions):
+
+```
+OLD-IMAGE ENV {'transformers': '5.14.1', 'torch': '2.13.0+cu130', 'python': '3.11.12', 'jlens_dist': '0.1.0'}
+```
+
+The Spark venv used by `jobs/jlens.sbatch` is transformers 5.13.1 (dist-info dated 2026-07-12),
+also fixed. No forward pass in this project's OLMo-3 results ran the buggy RoPE. Every results
+file carrying the banner *"computed from lenses fitted under transformers 5.9.0"* was wrong about
+that; the banners now say so.
+
+### What the 8 Oct "refit under the fix" actually measured
+
+Both fits were on the corrected forward. `cos(ours_July, ours_Oct)` = 0.9978 at L0 → 1.0000 from
+L12 is the numerical drift between transformers 5.14.1 / torch 2.13 and 5.19.0 / torch 2.14 (the
+rotary code was refactored twice in between: #47598 "Simplify all Rotary modules", #49265 "Do
+RoPE with mul instead of matmul"). It is a useful number — it is the version-noise floor — but it
+is not the bug's damage, and `rope_damage_bound.md`'s 2.3%-at-L0 bound was a bound on the wrong
+quantity for our lenses.
+
+### The four lenses side by side (float64, `results/rope_refit_tf513/fourway_f64.json`)
+
+| layer | cos(ours-Jul, NP-Jun) | cos(ours-Jul, NP-Sep) | cos(NP-Jun, NP-Sep) | id. dist: ours-Jul / ours-Oct / NP-Jun / NP-Sep |
+|---|---|---|---|---|
+| 0 | 0.8844 | 0.8968 | 0.9537 | 1.1696 / 1.1695 / 1.1643 / 1.1837 |
+| 3 | 0.8993 | 0.9063 | 0.9663 | 1.0995 / 1.0993 / 1.0884 / 1.1069 |
+| 6 | 0.9439 | 0.9398 | 0.9695 | 0.9946 / 0.9946 / 0.9878 / 1.0095 |
+| 9 | 0.9563 | 0.9544 | 0.9757 | 0.9754 / 0.9754 / 0.9591 / 0.9945 |
+| 12 | 0.9763 | 0.9773 | 0.9868 | 0.9042 / 0.9042 / 0.8906 / 0.9335 |
+| 18 | 0.9928 | 0.9906 | 0.9958 | 0.6743 / 0.6743 / 0.6830 / 0.7277 |
+| 24 | 0.9972 | 0.9957 | 0.9981 | 0.5343 / 0.5343 / 0.5429 / 0.5822 |
+| 30 | 0.9998 | 0.9996 | 0.99985 | 0.2201 / 0.2202 / 0.2211 / 0.2322 |
+
+Reading: our two (fixed) fits sit within ~1% of Neuronpedia's **June** lens in identity distance
+at every layer, and are closer to it than to the September one from L6 down. Neuronpedia's
+September lens is 1.5–5% *larger* than both at every layer.
+
+### The bug's actual effect, measured by emulating it (`modal_rope_emulation_test.py`, ~$1)
+
+Same image (transformers 5.19.0), same 8 prompts, same code path as the fits; one model loaded
+stock, one with YaRN forced onto the 24 sliding-window layers (`rope_parameters["sliding_attention"]
+= rope_parameters["full_attention"]`, verified on the module: `attention_scaling` 1.0 → 1.208,
+`inv_freq` equal). Result in `results/rope_refit_tf513/rope_emulation.json`:
+
+| | fixed | emulated bug | fixed vs bug |
+|---|---|---|---|
+| final hidden state, prompt 0 | | | rel. diff **0.226**, cos 0.974 |
+| J₀ (n = 8) | id 1.647 | id 1.659 | cos **0.886**, rel 0.48 |
+| J₉ | id 1.094 | id 1.067 | cos 0.962, rel 0.28 |
+| J₃₀ | id **0.2368** | id **0.2279** | cos 0.99984, rel 0.018 |
+
+The fix *raises* the layer-30 identity distance by ~4% (7 of 8 prompts individually), and moves
+the early-layer transports a lot (n = 8, so the L0 number is noisy; Neuronpedia's converged
+June-vs-September cosine at L0 is 0.954). **That is the bug's damage, and it is not "≤ 0.2%".** It
+simply never applied to our lenses.
+
+A second test (`modal_loadpath_test.py`) confirms the ladder's real loading path (`_load_lm`,
+no explicit config) builds the same rotary embeddings and the same Jacobian as the explicit-config
+path: prompt-0 identity distances identical to 15 digits, final hidden state bit-identical.
+
+### So Neuronpedia's refit is right, and the "5% discrepancy" was ours to explain
+
+Prompt 0 of our loader is prompt 0 of theirs (same wikitext stream). Single-prompt layer-30
+identity distance:
+
+| | ours, stock (5.19) | ours, emulated bug | Neuronpedia Sept (row 1) | Neuronpedia June (row 1) |
+|---|---|---|---|---|
+| prompt 0 | **0.24290** | **0.23380** | 0.24264 | 0.23365 |
+
+Our fixed forward reproduces their **September** lens on the shared prompt to 0.1%; our emulated
+bug reproduces their **June** lens to 0.1%. Their refit is on the corrected forward; so are both
+of ours. The September-vs-June gap (+0.011 from prompt 1, constant to n = 568) *is* the RoPE fix,
+as the reporter said. The thing I called "unexplained" on 8 Oct — our fixed lens agreeing with
+their June (buggy) lens to 0.5% — is a coincidence: the prompt sets differ after prompt 0 (their
+loader keeps records ours filters out), and the prompt-set effect on identity distance happens to
+be about the size of the bug's effect and opposite in sign at every layer we fit (ours vs their
+September, both fixed: −1.2% at L0, −1.9% at L9, −5.2% at L30). The old per-layer floor already
+told us prompt sampling moves the off-identity part of J₃₀ by ~9%; I did not connect the two.
+
+Consequence for the anchor gate: `jlens_lab.artifacts.validate_fit`'s identity-distance check
+(±5%) has no power to tell a wrong-RoPE fit from a different-prompt-set fit of the same model.
+Our July gate passed against the June lens *because* two ~5% effects cancelled. It is documented
+as such in jlens-lab now; a gate that can catch this needs matched prompts on both sides.
+
+Minor and real: their September run stopped at 568 of 1,000 prompts on `stop_at_delta 0.002`
+with the identity distance still drifting (−1e-4 per prompt over the last rows). Not an error,
+but their June lens had 616.
+
+### What stands from the earlier updates
+
+- The float32 cosine artifact (PITFALLS #28) and the per-layer floor (ours vs Neuronpedia,
+  0.884 → 0.9998) are unaffected; the floor is protocol/sampling.
+- Neuronpedia's artifact-format lesson (environment in the file) stands and we had not adopted
+  it, which is exactly why this took six weeks to notice. Their refit is correct. `modal_rope_emulation_test.py` and
+  future fits write a `provenance` dict.
+- The 2.3% damage bound is withdrawn as a statement about our lenses; `rope_damage_bound.md` is
+  marked.
+
+### Checklist (replaces the one above)
+
+- [x] Determine the environment the lenses were actually fitted in — **5.14.1, fixed**
+- [x] Re-examine the 8 Oct refit null as a test of the premise, not a bound — it was the premise
+- [x] Correct the thirteen results banners
+- [x] The September discrepancy is explained (it is the fix); nothing to raise. A short
+  confirmation note is drafted in `notes/neuronpedia_refit_discrepancy_draft.md` — your call
+- [ ] Our `.pt` lenses still carry no provenance; add it on the next fit (the R-lens control)
+
+Lesson recorded as PITFALLS #30 and in memory. The honest summary for the README: *we filed an
+erratum against ourselves on the strength of a lockfile, spent $12 refitting a lens that was
+already right, and found out by probing the image. The erratum was correct about Neuronpedia's
+June lens and about the floor; it was wrong about us — and the bug it described was worse than our 8 Oct number said.*

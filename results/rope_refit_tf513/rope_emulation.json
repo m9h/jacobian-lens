@@ -1,0 +1,155 @@
+{
+ "transformers": "5.19.0",
+ "torch": "2.14.1+cu130",
+ "n_prompts": 8,
+ "layers": [
+  0,
+  9,
+  30
+ ],
+ "dim_batch": 128,
+ "max_seq_len": 128,
+ "skip_first": 16,
+ "conds": {
+  "fixed": {
+   "rotary": {
+    "rope_parameters_before": {
+     "sliding_attention": {
+      "rope_type": "default",
+      "rope_theta": 500000.0
+     },
+     "full_attention": {
+      "rope_type": "yarn",
+      "attention_factor": 1.2079441541679836,
+      "beta_fast": 32,
+      "beta_slow": 1,
+      "factor": 8.0,
+      "original_max_position_embeddings": 8192,
+      "rope_theta": 500000
+     }
+    },
+    "rope_parameters_used": {
+     "sliding_attention": {
+      "rope_type": "default",
+      "rope_theta": 500000.0
+     },
+     "full_attention": {
+      "rope_type": "yarn",
+      "attention_factor": 1.2079441541679836,
+      "beta_fast": 32,
+      "beta_slow": 1,
+      "factor": 8.0,
+      "original_max_position_embeddings": 8192,
+      "rope_theta": 500000
+     }
+    },
+    "rope_type": {
+     "full_attention": "yarn",
+     "sliding_attention": "default"
+    },
+    "attention_scaling": {
+     "full_attention": 1.2079441541679836,
+     "sliding_attention": 1.0
+    },
+    "inv_freq_full_eq_sliding": false
+   },
+   "per_prompt_id30": [
+    0.24290379623893954,
+    0.2733539805890551,
+    0.20956571823891001,
+    0.2445562283002496,
+    0.252299182071528,
+    0.2113213752860813,
+    0.439494767687334,
+    0.21625537626891495
+   ],
+   "identity_distance": {
+    "0": 1.6474403607176165,
+    "9": 1.09373085774464,
+    "30": 0.23680169017513555
+   }
+  },
+  "emulated_bug": {
+   "rotary": {
+    "rope_parameters_before": {
+     "sliding_attention": {
+      "rope_type": "default",
+      "rope_theta": 500000.0
+     },
+     "full_attention": {
+      "rope_type": "yarn",
+      "attention_factor": 1.2079441541679836,
+      "beta_fast": 32,
+      "beta_slow": 1,
+      "factor": 8.0,
+      "original_max_position_embeddings": 8192,
+      "rope_theta": 500000
+     }
+    },
+    "rope_parameters_used": {
+     "sliding_attention": {
+      "rope_type": "yarn",
+      "attention_factor": 1.2079441541679836,
+      "beta_fast": 32,
+      "beta_slow": 1,
+      "factor": 8.0,
+      "original_max_position_embeddings": 8192,
+      "rope_theta": 500000
+     },
+     "full_attention": {
+      "rope_type": "yarn",
+      "attention_factor": 1.2079441541679836,
+      "beta_fast": 32,
+      "beta_slow": 1,
+      "factor": 8.0,
+      "original_max_position_embeddings": 8192,
+      "rope_theta": 500000
+     }
+    },
+    "rope_type": {
+     "full_attention": "yarn",
+     "sliding_attention": "yarn"
+    },
+    "attention_scaling": {
+     "full_attention": 1.2079441541679836,
+     "sliding_attention": 1.2079441541679836
+    },
+    "inv_freq_full_eq_sliding": true
+   },
+   "per_prompt_id30": [
+    0.23379333945948186,
+    0.26713582978912037,
+    0.20869732639777755,
+    0.2389497031642454,
+    0.24040551496551432,
+    0.20815688039924826,
+    0.3806097890774585,
+    0.21747887905515756
+   ],
+   "identity_distance": {
+    "0": 1.6594813301478355,
+    "9": 1.0672605851645067,
+    "30": 0.22785573429287173
+   }
+  }
+ },
+ "per_layer": {
+  "0": {
+   "cos64": 0.8864857615555126,
+   "rel64": 0.48124234757639794,
+   "cos_offidentity": 0.9200781649654309
+  },
+  "9": {
+   "cos64": 0.9617277862420729,
+   "rel64": 0.27600633787518636,
+   "cos_offidentity": 0.9811774265962668
+  },
+  "30": {
+   "cos64": 0.9998376679113115,
+   "rel64": 0.018100479860713132,
+   "cos_offidentity": 0.9976656479528725
+  }
+ },
+ "final_hidden_rel_diff_prompt0": 0.2264457643032074,
+ "final_hidden_cos_prompt0": 0.9744047522544861
+}

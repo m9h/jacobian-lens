@@ -1,3 +1,8 @@
+> **Withdrawn as a statement about our lenses, 2026-10-15.** Our lenses were fitted under transformers
+> 5.14.1 (fixed), so there was no damage to bound. The bug's real effect, measured by emulation, is
+> cos 0.886 at layer 0 and +4% identity distance at layer 30 — larger than the bound argued here.
+> See ROPE_ERRATUM.md §"Retraction, 2026-10-15".
+>
 > **Superseded 2026-10-08.** This file *bounded* the damage by comparing our buggy lens with
 > Neuronpedia's corrected one and arguing the difference sat inside the refit floor. The base lens
 > has since been refit under the fix with the protocol held fixed, which *measures* it: cos

@@ -170,16 +170,17 @@ All S2 (abstracts), all bearing on `results/posttrain/metacognition_result.md`:
   controls-first; worth a look as a candidate indicator implementation.
 - Martian's $1M prize round closed 1 Feb 2026; no new round found.
 
-## 3. Roadmap, re-ranked (8 Oct)
+## 3. Roadmap, re-ranked (8 Oct; item 0 added and item 6 retracted 15 Oct)
 
 | # | item | why now | cost |
 |---|---|---|---|
+| **0** | ★ **Estimator control on the ladder (NEW 15 Oct)**: refit `Olmo-3-1025-7B` and `Olmo-3-7B-Instruct` with the **R-lens** (LRP pooled Jacobian via `safety-research/jpp_lens`: `fit-shard --lrp-mode rlens` → `merge-experts --pooled-lens-out`; no labelled items), same 616 prompts and layers; recompute cos(base, Instruct) and the per-layer movement profile. Three outcomes, all publishable (`notes/jpp_lens_2026-10.md` §5). First do the free check: Neuronpedia's J-lens vs J++ for `olmo-3-1125-32b` | Neuronpedia's J-lens vs J++ for the *same* Qwen3-4B have cos **0.26 at L0**, <0.8 at all but two layers — the estimator moves the lens more than post-training does, and most where our effect is | ~$25–30; `jpp_lens` pins transformers 5.14.1 (fixed RoPE) |
 | 1 | ★ **Huginn developmental J-lens**: fit the lens on a log-spaced subsample of the 46 checkpoints; ask *when* the workspace signature (write/ablate along lens directions, the 2-recurrence window) appears. Controls: shuffled-weights null at each checkpoint, final-checkpoint positive. **Write the design *after* reading Blayney et al. and Luo & Yu in full** | Wang & Reid's stated open problem; public substrate; weight-tying makes it cheap; nobody found doing it | ~140 GB download; adapter must be rebuilt (no code release); est. 10–20 GPU-h |
 | 2 | **Submit Foresight by 31 Oct 23:59 PDT**, Coordination & Accountability call; read the Airtable form first | deadline now known | 1 form |
 | 3 | **Re-run the metacognition unanswerable control with mixed fitting** (2609.10739) and add OC/SJ conflict items (2607.16799) | our exposed control has a published fix; our clean result has a published alternative explanation | ~$5 |
 | 4 | `looped_architectures.md` reframed — **done 8 Oct** | | |
 | 5 | **SF-OSMI**: offer the crit methodology; one session with the salmon opener | your call on the relationship | — |
-| 6 | RoPE refit, base lens — **done 8 Oct**: bug effect ≤0.2% cos (L0), 0 at L≥12; floor restored; **new open item: Neuronpedia's own refit moved 5% at L30, ours 0.003%** — raise with them | | ~$12 spent |
+| 6 | RoPE erratum — **retracted for our lenses 15 Oct**: the July Modal image was transformers **5.14.1** (fixed); the 8 Oct "refit" measured version drift (0.2% at L0). The bug's real effect, by emulation in our pipeline: L0 cos 0.886, L30 identity +4% — the reporter's number. Neuronpedia's Sept refit is correct (our prompt-0 reproduces their row 1 to 0.1%); the "5% discrepancy" was two effects cancelling. Nothing to raise; a confirmation note is drafted (`notes/neuronpedia_refit_discrepancy_draft.md`) — **your call** | `ROPE_ERRATUM.md` §Retraction; PITFALLS #30 | ~$12 + ~$2 spent |
 | 7 | `self-report-validity` revived + remote — **done 8 Oct** | | |
 | 8 | **Revoke the HF token** | outstanding since the thread began | you, 1 min |
 

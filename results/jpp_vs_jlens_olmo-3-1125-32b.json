@@ -1,0 +1,506 @@
+[
+ {
+  "layer": 0,
+  "cos_jlens__jpp": 0.6120792148453785,
+  "rel_jlens__jpp": 1.441007303562791,
+  "cos_offidentity_jlens__jpp": 0.8212043668066509,
+  "id_jlens": 1.0555886844039042,
+  "id_jpp": 1.1287823137452697
+ },
+ {
+  "layer": 1,
+  "cos_jlens__jpp": -0.3979557709012591,
+  "rel_jlens__jpp": 2.266144301837598,
+  "cos_offidentity_jlens__jpp": 0.6696859858398909,
+  "id_jlens": 1.0412684749795857,
+  "id_jpp": 1.2620476386045554
+ },
+ {
+  "layer": 2,
+  "cos_jlens__jpp": -0.47507264513017156,
+  "rel_jlens__jpp": 3.7841515190742587,
+  "cos_offidentity_jlens__jpp": 0.4531275330526741,
+  "id_jlens": 1.032952035623921,
+  "id_jpp": 1.6836129336566066
+ },
+ {
+  "layer": 3,
+  "cos_jlens__jpp": -0.1358929182019948,
+  "rel_jlens__jpp": 1.9958350532786373,
+  "cos_offidentity_jlens__jpp": 0.7675905753384362,
+  "id_jlens": 1.0249191705115959,
+  "id_jpp": 1.1890871416804616
+ },
+ {
+  "layer": 4,
+  "cos_jlens__jpp": 0.03731646334883719,
+  "rel_jlens__jpp": 1.4186481582192152,
+  "cos_offidentity_jlens__jpp": 0.8720009265728395,
+  "id_jlens": 1.017629721823526,
+  "id_jpp": 1.055230712738716
+ },
+ {
+  "layer": 5,
+  "cos_jlens__jpp": 0.2833311316743568,
+  "rel_jlens__jpp": 1.2948747484304028,
+  "cos_offidentity_jlens__jpp": 0.8917244808772083,
+  "id_jlens": 1.0118963382005437,
+  "id_jpp": 1.00394591552811
+ },
+ {
+  "layer": 6,
+  "cos_jlens__jpp": 0.3967133796365406,
+  "rel_jlens__jpp": 1.130828116277652,
+  "cos_offidentity_jlens__jpp": 0.9177152418303542,
+  "id_jlens": 1.0081716857650522,
+  "id_jpp": 0.9923870543610462
+ },
+ {
+  "layer": 7,
+  "cos_jlens__jpp": 0.3296469602890659,
+  "rel_jlens__jpp": 1.2226372156969876,
+  "cos_offidentity_jlens__jpp": 0.9053931107829389,
+  "id_jlens": 1.0046954599443765,
+  "id_jpp": 1.016730562771314
+ },
+ {
+  "layer": 8,
+  "cos_jlens__jpp": 0.29237733912827246,
+  "rel_jlens__jpp": 1.206737436817748,
+  "cos_offidentity_jlens__jpp": 0.9054583313612082,
+  "id_jlens": 1.0019572065317828,
+  "id_jpp": 1.0214967082804245
+ },
+ {
+  "layer": 9,
+  "cos_jlens__jpp": 0.35774729518875814,
+  "rel_jlens__jpp": 1.2794839354433643,
+  "cos_offidentity_jlens__jpp": 0.8897226527497621,
+  "id_jlens": 0.9982176683042854,
+  "id_jpp": 1.007261190458567
+ },
+ {
+  "layer": 10,
+  "cos_jlens__jpp": 0.19891217771916558,
+  "rel_jlens__jpp": 1.2403744916307142,
+  "cos_offidentity_jlens__jpp": 0.901056915264435,
+  "id_jlens": 0.9928750675181187,
+  "id_jpp": 1.0490327560725055
+ },
+ {
+  "layer": 11,
+  "cos_jlens__jpp": 0.26175568030653973,
+  "rel_jlens__jpp": 1.1896197419823387,
+  "cos_offidentity_jlens__jpp": 0.9023629162489676,
+  "id_jlens": 0.9898548073415886,
+  "id_jpp": 1.037584794755138
+ },
+ {
+  "layer": 12,
+  "cos_jlens__jpp": 0.3903762124673387,
+  "rel_jlens__jpp": 1.1415478841835869,
+  "cos_offidentity_jlens__jpp": 0.9033860211216812,
+  "id_jlens": 0.9855833882538092,
+  "id_jpp": 1.0151445774332513
+ },
+ {
+  "layer": 13,
+  "cos_jlens__jpp": 0.43268863519244216,
+  "rel_jlens__jpp": 1.2500400771257252,
+  "cos_offidentity_jlens__jpp": 0.8870487944292997,
+  "id_jlens": 0.9760898824000078,
+  "id_jpp": 1.0387078969913963
+ },
+ {
+  "layer": 14,
+  "cos_jlens__jpp": 0.5362946231811244,
+  "rel_jlens__jpp": 1.3912193267940094,
+  "cos_offidentity_jlens__jpp": 0.8527890215726233,
+  "id_jlens": 0.9647518146164387,
+  "id_jpp": 1.0278577034501992
+ },
+ {
+  "layer": 15,
+  "cos_jlens__jpp": 0.3373320399541542,
+  "rel_jlens__jpp": 1.1302511497486833,
+  "cos_offidentity_jlens__jpp": 0.8932697481856412,
+  "id_jlens": 0.9519507086500634,
+  "id_jpp": 0.9883119540660888
+ },
+ {
+  "layer": 16,
+  "cos_jlens__jpp": 0.5565401710834587,
+  "rel_jlens__jpp": 1.1501150815982855,
+  "cos_offidentity_jlens__jpp": 0.8719801864467791,
+  "id_jlens": 0.9370296997727051,
+  "id_jpp": 0.9041613081534156
+ },
+ {
+  "layer": 17,
+  "cos_jlens__jpp": 0.6974453878979643,
+  "rel_jlens__jpp": 1.3560553585863806,
+  "cos_offidentity_jlens__jpp": 0.8065590765398725,
+  "id_jlens": 0.9134939281770815,
+  "id_jpp": 0.8504169683326596
+ },
+ {
+  "layer": 18,
+  "cos_jlens__jpp": 0.6015568828036746,
+  "rel_jlens__jpp": 1.3929798154502235,
+  "cos_offidentity_jlens__jpp": 0.807755612142889,
+  "id_jlens": 0.8882091003618221,
+  "id_jpp": 0.9547410139566155
+ },
+ {
+  "layer": 19,
+  "cos_jlens__jpp": 0.5779523329969615,
+  "rel_jlens__jpp": 0.9653174250879422,
+  "cos_offidentity_jlens__jpp": 0.8896789397979076,
+  "id_jlens": 0.8583413264271922,
+  "id_jpp": 0.8920305767482029
+ },
+ {
+  "layer": 20,
+  "cos_jlens__jpp": 0.6990913219439188,
+  "rel_jlens__jpp": 1.4731724430848223,
+  "cos_offidentity_jlens__jpp": 0.7020517113959128,
+  "id_jlens": 0.8295990718217141,
+  "id_jpp": 0.8935255519422695
+ },
+ {
+  "layer": 21,
+  "cos_jlens__jpp": 0.7892375232480572,
+  "rel_jlens__jpp": 1.367490895518244,
+  "cos_offidentity_jlens__jpp": 0.6632319122396483,
+  "id_jlens": 0.7968480443898629,
+  "id_jpp": 0.7846733120888121
+ },
+ {
+  "layer": 22,
+  "cos_jlens__jpp": 0.7461301644983958,
+  "rel_jlens__jpp": 1.1424863334138595,
+  "cos_offidentity_jlens__jpp": 0.7505100937095065,
+  "id_jlens": 0.7618273552099442,
+  "id_jpp": 0.8393377400930075
+ },
+ {
+  "layer": 23,
+  "cos_jlens__jpp": 0.817020175244891,
+  "rel_jlens__jpp": 0.829233577485852,
+  "cos_offidentity_jlens__jpp": 0.8216272898150256,
+  "id_jlens": 0.7204207651795768,
+  "id_jpp": 0.7127458855882838
+ },
+ {
+  "layer": 24,
+  "cos_jlens__jpp": 0.8346869345366428,
+  "rel_jlens__jpp": 0.7376888031420458,
+  "cos_offidentity_jlens__jpp": 0.8312439874760935,
+  "id_jlens": 0.6861558910592461,
+  "id_jpp": 0.6940030543146591
+ },
+ {
+  "layer": 25,
+  "cos_jlens__jpp": 0.7371042922539932,
+  "rel_jlens__jpp": 0.6758188001937748,
+  "cos_offidentity_jlens__jpp": 0.8761776587656251,
+  "id_jlens": 0.6509750616055695,
+  "id_jpp": 0.7836291642962986
+ },
+ {
+  "layer": 26,
+  "cos_jlens__jpp": 0.852027925748941,
+  "rel_jlens__jpp": 0.5691333030090797,
+  "cos_offidentity_jlens__jpp": 0.8900326317276221,
+  "id_jlens": 0.6313804237528899,
+  "id_jpp": 0.709016616692139
+ },
+ {
+  "layer": 27,
+  "cos_jlens__jpp": 0.7863109300128287,
+  "rel_jlens__jpp": 0.6208409058199228,
+  "cos_offidentity_jlens__jpp": 0.8947352493716527,
+  "id_jlens": 0.6120650783684868,
+  "id_jpp": 0.7861489275331475
+ },
+ {
+  "layer": 28,
+  "cos_jlens__jpp": 0.8505646085419285,
+  "rel_jlens__jpp": 0.5372962363631961,
+  "cos_offidentity_jlens__jpp": 0.9070007615995647,
+  "id_jlens": 0.599434825606398,
+  "id_jpp": 0.7337384908644727
+ },
+ {
+  "layer": 29,
+  "cos_jlens__jpp": 0.8437564060691237,
+  "rel_jlens__jpp": 0.557169622610033,
+  "cos_offidentity_jlens__jpp": 0.8917110344294887,
+  "id_jlens": 0.5859996768692701,
+  "id_jpp": 0.724099643347214
+ },
+ {
+  "layer": 30,
+  "cos_jlens__jpp": 0.9082842457905199,
+  "rel_jlens__jpp": 0.4225385854017272,
+  "cos_offidentity_jlens__jpp": 0.92003689970593,
+  "id_jlens": 0.5748189522090005,
+  "id_jpp": 0.6480778108251194
+ },
+ {
+  "layer": 31,
+  "cos_jlens__jpp": 0.8757784144894527,
+  "rel_jlens__jpp": 0.5061534252564831,
+  "cos_offidentity_jlens__jpp": 0.8934475067355101,
+  "id_jlens": 0.5663210262806355,
+  "id_jpp": 0.6835278956603698
+ },
+ {
+  "layer": 32,
+  "cos_jlens__jpp": 0.794226760906821,
+  "rel_jlens__jpp": 0.7022368226790225,
+  "cos_offidentity_jlens__jpp": 0.8805881115106405,
+  "id_jlens": 0.5576087172047929,
+  "id_jpp": 0.8416028398553159
+ },
+ {
+  "layer": 33,
+  "cos_jlens__jpp": 0.8700076585971498,
+  "rel_jlens__jpp": 0.5860196184927905,
+  "cos_offidentity_jlens__jpp": 0.896604320720855,
+  "id_jlens": 0.549714325639926,
+  "id_jpp": 0.7751430339181942
+ },
+ {
+  "layer": 34,
+  "cos_jlens__jpp": 0.8447852486890237,
+  "rel_jlens__jpp": 0.7215190618413918,
+  "cos_offidentity_jlens__jpp": 0.867405632390718,
+  "id_jlens": 0.542401533474439,
+  "id_jpp": 0.8528246774048672
+ },
+ {
+  "layer": 35,
+  "cos_jlens__jpp": 0.8911671021393714,
+  "rel_jlens__jpp": 0.4547929563324099,
+  "cos_offidentity_jlens__jpp": 0.9016372187242568,
+  "id_jlens": 0.5359795063957021,
+  "id_jpp": 0.6722228667788053
+ },
+ {
+  "layer": 36,
+  "cos_jlens__jpp": 0.8778956025604344,
+  "rel_jlens__jpp": 0.5542919360234212,
+  "cos_offidentity_jlens__jpp": 0.8899569534406883,
+  "id_jlens": 0.52987564108018,
+  "id_jpp": 0.7544649551484515
+ },
+ {
+  "layer": 37,
+  "cos_jlens__jpp": 0.8707068776852862,
+  "rel_jlens__jpp": 0.6157569537079757,
+  "cos_offidentity_jlens__jpp": 0.8677280115133309,
+  "id_jlens": 0.5218077094388974,
+  "id_jpp": 0.7849693715392202
+ },
+ {
+  "layer": 38,
+  "cos_jlens__jpp": 0.9164402374592671,
+  "rel_jlens__jpp": 0.49317556450336286,
+  "cos_offidentity_jlens__jpp": 0.746513910751504,
+  "id_jlens": 0.5147297464169097,
+  "id_jpp": 0.41464163094766404
+ },
+ {
+  "layer": 39,
+  "cos_jlens__jpp": 0.8940299261157242,
+  "rel_jlens__jpp": 0.49593642434457125,
+  "cos_offidentity_jlens__jpp": 0.8675592698580581,
+  "id_jlens": 0.5070365527636516,
+  "id_jpp": 0.6850543093354401
+ },
+ {
+  "layer": 40,
+  "cos_jlens__jpp": 0.9163027483078521,
+  "rel_jlens__jpp": 0.4072936757961136,
+  "cos_offidentity_jlens__jpp": 0.8846576629161619,
+  "id_jlens": 0.5016562594538134,
+  "id_jpp": 0.6219166781496226
+ },
+ {
+  "layer": 41,
+  "cos_jlens__jpp": 0.9507992951442827,
+  "rel_jlens__jpp": 0.3624688241350397,
+  "cos_offidentity_jlens__jpp": 0.9072045362629716,
+  "id_jlens": 0.4912807521333375,
+  "id_jpp": 0.6108572450874625
+ },
+ {
+  "layer": 42,
+  "cos_jlens__jpp": 0.8390871920504508,
+  "rel_jlens__jpp": 0.6095094460452681,
+  "cos_offidentity_jlens__jpp": 0.8491053658412461,
+  "id_jlens": 0.4844930327794425,
+  "id_jpp": 0.7838285153829331
+ },
+ {
+  "layer": 43,
+  "cos_jlens__jpp": 0.841789463523749,
+  "rel_jlens__jpp": 0.6321408239816978,
+  "cos_offidentity_jlens__jpp": 0.8496600840192016,
+  "id_jlens": 0.4773401410172919,
+  "id_jpp": 0.8101760831218058
+ },
+ {
+  "layer": 44,
+  "cos_jlens__jpp": 0.7110754229629239,
+  "rel_jlens__jpp": 0.750435110648811,
+  "cos_offidentity_jlens__jpp": 0.8091187796447437,
+  "id_jlens": 0.47314738413481766,
+  "id_jpp": 0.8887571356508617
+ },
+ {
+  "layer": 45,
+  "cos_jlens__jpp": 0.806110902105955,
+  "rel_jlens__jpp": 0.6352622757236416,
+  "cos_offidentity_jlens__jpp": 0.8543275625430586,
+  "id_jlens": 0.463476053622498,
+  "id_jpp": 0.8292633981792694
+ },
+ {
+  "layer": 46,
+  "cos_jlens__jpp": 0.7453872622000036,
+  "rel_jlens__jpp": 0.688532069067274,
+  "cos_offidentity_jlens__jpp": 0.844060983762612,
+  "id_jlens": 0.4548824808308279,
+  "id_jpp": 0.8742148753116634
+ },
+ {
+  "layer": 47,
+  "cos_jlens__jpp": 0.9440364984226542,
+  "rel_jlens__jpp": 0.3457993252344337,
+  "cos_offidentity_jlens__jpp": 0.8333343319846717,
+  "id_jlens": 0.4470853487260033,
+  "id_jpp": 0.5042152824064436
+ },
+ {
+  "layer": 48,
+  "cos_jlens__jpp": 0.929537028978638,
+  "rel_jlens__jpp": 0.39782339449409215,
+  "cos_offidentity_jlens__jpp": 0.848144699836612,
+  "id_jlens": 0.4399910082744897,
+  "id_jpp": 0.6027200985766079
+ },
+ {
+  "layer": 49,
+  "cos_jlens__jpp": 0.950319625381678,
+  "rel_jlens__jpp": 0.5180845126111746,
+  "cos_offidentity_jlens__jpp": 0.704089299497615,
+  "id_jlens": 0.42768512286408666,
+  "id_jpp": 0.6098490597989734
+ },
+ {
+  "layer": 50,
+  "cos_jlens__jpp": 0.7478181422352429,
+  "rel_jlens__jpp": 1.1700300033674491,
+  "cos_offidentity_jlens__jpp": 0.7215789070671367,
+  "id_jlens": 0.41750382115208995,
+  "id_jpp": 1.2504183427951505
+ },
+ {
+  "layer": 51,
+  "cos_jlens__jpp": 0.9176881137642903,
+  "rel_jlens__jpp": 0.9608803109630998,
+  "cos_offidentity_jlens__jpp": -0.1742476772512991,
+  "id_jlens": 0.40610942433200775,
+  "id_jpp": 0.6505000930462365
+ },
+ {
+  "layer": 52,
+  "cos_jlens__jpp": 0.9730442179624753,
+  "rel_jlens__jpp": 1.1507038731536376,
+  "cos_offidentity_jlens__jpp": 0.28488203179476723,
+  "id_jlens": 0.3976072061276041,
+  "id_jpp": 1.0428697425757123
+ },
+ {
+  "layer": 53,
+  "cos_jlens__jpp": 0.9371007232226061,
+  "rel_jlens__jpp": 0.49298735686999867,
+  "cos_offidentity_jlens__jpp": 0.718850013956298,
+  "id_jlens": 0.3865420882957347,
+  "id_jpp": 0.6229154862377162
+ },
+ {
+  "layer": 54,
+  "cos_jlens__jpp": 0.9628095953971827,
+  "rel_jlens__jpp": 0.3672758878548637,
+  "cos_offidentity_jlens__jpp": 0.6190521934270978,
+  "id_jlens": 0.3760262599896097,
+  "id_jpp": 0.3830122998891286
+ },
+ {
+  "layer": 55,
+  "cos_jlens__jpp": 0.7855238657881441,
+  "rel_jlens__jpp": 0.6608636183164904,
+  "cos_offidentity_jlens__jpp": 0.6328034828636024,
+  "id_jlens": 0.36502623743230833,
+  "id_jpp": 0.762090482882646
+ },
+ {
+  "layer": 56,
+  "cos_jlens__jpp": 0.8596214856158101,
+  "rel_jlens__jpp": 0.5948126782752531,
+  "cos_offidentity_jlens__jpp": 0.5802455335947169,
+  "id_jlens": 0.35506637303367383,
+  "id_jpp": 0.6746571118095297
+ },
+ {
+  "layer": 57,
+  "cos_jlens__jpp": 0.9595902785298517,
+  "rel_jlens__jpp": 0.3322713033191155,
+  "cos_offidentity_jlens__jpp": 0.661587766218603,
+  "id_jlens": 0.3350869152942856,
+  "id_jpp": 0.4100710852426709
+ },
+ {
+  "layer": 58,
+  "cos_jlens__jpp": 0.9803639148273231,
+  "rel_jlens__jpp": 0.19738398280498456,
+  "cos_offidentity_jlens__jpp": 0.8015703232163341,
+  "id_jlens": 0.31578313958171916,
+  "id_jpp": 0.2549530998774445
+ },
+ {
+  "layer": 59,
+  "cos_jlens__jpp": 0.7848131254813931,
+  "rel_jlens__jpp": 0.7660485903986144,
+  "cos_offidentity_jlens__jpp": 0.41834546748428214,
+  "id_jlens": 0.28362554271029006,
+  "id_jpp": 0.8112264614374647
+ },
+ {
+  "layer": 60,
+  "cos_jlens__jpp": 0.8346415898050035,
+  "rel_jlens__jpp": 0.589250138095347,
+  "cos_offidentity_jlens__jpp": -0.1473297393299836,
+  "id_jlens": 0.23541130778514371,
+  "id_jpp": 0.4923436506357087
+ },
+ {
+  "layer": 61,
+  "cos_jlens__jpp": 0.8461820239932872,
+  "rel_jlens__jpp": 0.812629702053186,
+  "cos_offidentity_jlens__jpp": 0.1598289951024717,
+  "id_jlens": 0.18716658553557522,
+  "id_jpp": 0.8071050053689001
+ },
+ {
+  "layer": 62,
+  "cos_jlens__jpp": 0.5544443065227974,
+  "rel_jlens__jpp": 0.9283161958847351,
+  "cos_offidentity_jlens__jpp": 0.10873900260472884,
+  "id_jlens": 0.1300467568575599,
+  "id_jpp": 0.9257973388914725
+ }
+]

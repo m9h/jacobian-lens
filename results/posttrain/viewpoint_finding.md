@@ -1,3 +1,10 @@
+> ## ✅ ERRATUM RETRACTED FOR THESE LENSES (2026-10-15)
+> The banner below was wrong about **our** lenses. They were fitted on Modal under transformers
+> **5.14.1**, which already has the per-layer RoPE fix; the 5.9.0 figure came from `uv.lock`, which the
+> Modal image never used (verified by probing the cached image). The numbers here were never affected
+> by the bug. Neuronpedia's June lens was. See ROPE_ERRATUM.md §"Retraction, 2026-10-15". The
+> original banner is kept for the record:
+>
 > ## ⚠️ ERRATUM (2026-09-05)
 > These results were computed from lenses fitted under **transformers 5.9.0**, which applied YaRN
 > `rope_scaling` to **all 32 OLMo-3 layers** instead of the 8 full-attention ones — so **24 of 32
