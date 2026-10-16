@@ -1,3 +1,10 @@
+> ## ⚠️ ESTIMATOR CAVEAT (2026-10-15)
+> The numbers below are J-lens numbers. Refit under the R-lens (LRP backward pass, same prompts, same
+> protocol) gives cos(base, Instruct) **0.784** instead of 0.689, and the early-layer concentration
+> drops from 4.9× to 3.5× (early/late mean 1−cos); the J-lens is noisier on the Instruct model than on
+> base at layer 0 (cross-estimator cos 0.34 vs 0.66). The claim survives, smaller and flatter. See
+> `estimator_control_rlens.md`.
+>
 > ## ✅ ERRATUM RETRACTED FOR THESE LENSES (2026-10-15)
 > The banner below was wrong about **our** lenses. They were fitted on Modal under transformers
 > **5.14.1**, which already has the per-layer RoPE fix; the 5.9.0 figure came from `uv.lock`, which the

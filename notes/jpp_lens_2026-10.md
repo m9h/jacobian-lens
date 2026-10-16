@@ -157,6 +157,15 @@ exactly the one the §5 control uses. The −0.40 at layer 1 is not a typo.
 
 ## 5. What this means for the roadmap
 
+**Done the same evening** — see
+`results/posttrain/estimator_control_rlens.md`. Outcome: the second of the three below. cos(base,
+Instruct) 0.689 → **0.784** under the R-lens; early/late contrast 4.9× → 3.5×; the J-lens's extra
+early-layer movement was partly the standard backward pass being noisier on the post-trained model
+(cross-estimator cos at L0: base 0.66, Instruct 0.34). ≈ $35.
+
+*Original plan, kept for the record:*
+
+
 **New control, ranked above the Huginn experiment:** refit the two endpoints of the ladder —
 `Olmo-3-1025-7B` and `Olmo-3-7B-Instruct` — with the **R-lens estimator** (LRP pooled Jacobian,
 `jpp_cli.py fit-shard --lrp-mode rlens` then `merge-experts --pooled-lens-out`; no labelled
