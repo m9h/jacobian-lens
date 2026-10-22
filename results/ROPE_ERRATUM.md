@@ -330,6 +330,25 @@ Minor and real: their September run stopped at 568 of 1,000 prompts on `stop_at_
 with the identity distance still drifting (−1e-4 per prompt over the last rows). Not an error,
 but their June lens had 616.
 
+### Addendum, 2026-10-22 — the report's own numbers, and the thread that is still open
+
+The same report was filed the same day as [anthropics/jacobian-lens#15](https://github.com/anthropics/jacobian-lens/issues/15)
+(by `dthinkr`; closed by Neuronpedia on 21 Sep with "bumped transformers to 5.15 ... re-fitted
+the olmo lens"). It is what triggered Neuronpedia's refit, and it carries the reporter's own
+emulation: single-prompt L30 identity distance **0.2426** (fixed, transformers 5.16.1) vs
+**0.23366** (YaRN forced onto sliding layers), against Neuronpedia's convergence.csv row 1. Our
+pipeline gives 0.24290 / 0.23380 on the same prompt — agreement to 0.1% from a different
+implementation on different hardware. The reporter also quotes a "refit-noise floor two
+independent fits of the same model reach with different prompts (0.88, 0.976, 0.9998)", which
+is our per-layer floor; they were reading our Hub repo.
+
+**Still open:** the reporter's discussion on our Hub repo
+([mhough/olmo3-jacobian-lenses#1](https://huggingface.co/mhough/olmo3-jacobian-lenses/discussions/1),
+5 Sep) has no reply. Its premise (our lenses encode the old forward) is wrong for the reason this
+retraction gives, and its measurements are right. A reply is drafted at
+`notes/hf_discussion_1_reply_draft.md`; posting is Morgan's call. The Hub README now states the
+fit environment so the next reader does not have to infer it from the lock.
+
 ### What stands from the earlier updates
 
 - The float32 cosine artifact (PITFALLS #28) and the per-layer floor (ours vs Neuronpedia,

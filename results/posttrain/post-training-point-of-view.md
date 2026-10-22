@@ -1,3 +1,12 @@
+> ## ⚠️ DEPTH-PROFILE CAVEAT (2026-10-22)
+> "Early layers move most" is an absolute-movement statement (‖ΔJ‖² is largest at L0–9 because
+> ‖J − I‖ is largest there). Relative to the off-identity part of the transport, the base→Instruct
+> change is *smallest* at L0 (off-identity cos 0.84 R-lens / 0.67 J-lens) and *largest* at L18–24
+> (0.72–0.74 under both estimators), and the Instruct lens sits 15–40% further from the identity
+> than the base lens at L15–27. Brauer's final-block objection was also checked: 16–23% of the L0
+> movement lies in the last block's top output directions; projecting them out leaves cos 0.29.
+> See `results/final_block_control/final_block_control.md`.
+
 > ## ✅ ERRATUM RETRACTED FOR THESE LENSES (2026-10-15)
 > The banner below was wrong about **our** lenses. They were fitted on Modal under transformers
 > **5.14.1**, which already has the per-layer RoPE fix; the 5.9.0 figure came from `uv.lock`, which the

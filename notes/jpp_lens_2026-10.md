@@ -220,7 +220,12 @@ every validity problem of the probe behind it, and this one has the aliasing pro
 construction. Good citation for the Foresight proposal's "who consumes an unvalidated probe"
 paragraph.
 
-## 7. Read next (found via this pass, not yet read)
+## 7. Read next (found via this pass) — read 22 Oct; see `lit_review_roadmap_2026-10.md` §4
+
+Both LessWrong posts below were read on 22 Oct. Brauer's post produced a control we had not run
+(final-block inherited direction on a post-training pair; `experiments/final_block_control.py`,
+`results/final_block_control/`). WorkspaceBench is summarised in ECOSYSTEM.md.
+
 
 - *WorkspaceBench: Evaluating Interpretability Methods for the Global Workspace* (LessWrong
   `Zeg2JztbdhguL48uH`) — multi-token readout evals; the J++ post cites it as the alternative eval.

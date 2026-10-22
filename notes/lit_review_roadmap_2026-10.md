@@ -188,3 +188,74 @@ All S2 (abstracts), all bearing on `results/posttrain/metacognition_result.md`:
 second instance this quarter. This pass added a third failure mode: a failed grep declared a
 sourced claim unsourced. The rule generalises — *provenance unknown* is itself a claim that needs
 a second look before it is written down.
+
+## 4. Upstream check, 22 Oct 2026
+
+What moved since 15 Oct, in order of consequence for the ladder.
+
+**Brauer, *J-lens shouldn't target the final layer by default*** (LessWrong `Adb55vLqt33LEyBfz`,
+25 Sep; S1). On DeepSeek-V3 one output direction written by the last block (Chinese-vs-Latin
+tokens) is the top Jacobian direction at every earlier layer under a final-layer target; 46% of
+mid-depth readouts on English text go majority-Chinese, 3% with a penultimate target. 81% of 78
+public lenses target the final layer; ours do. **This is a control we had not run on the
+flagship pair**: if post-training rewrites the last block's dominant output direction, every
+earlier layer inherits the change and "early layers move most" is partly a target-side artifact.
+Lens-only, no GPU: `experiments/final_block_control.py` measures per layer the share of
+‖ΔJ_l‖² lying in the top-k output directions of J₃₀ (both arms), whether u₁(J_l) is u₁(J₃₀), and
+the cos(base, Instruct) that remains after projecting those directions out. Result:
+`results/final_block_control/final_block_control.md`. **Result: survives.** The base lens has
+the Brauer structure (47% of J₀'s energy in one direction, cos 0.81 to the last block's top
+direction; it unembeds to the unigram-frequency axis), Instruct does not, but only 16–23% of the
+L0 movement lies in those directions and projecting them out moves the cosine 0.25 → 0.29.
+**Side finding, bigger than the control:** the depth profile is statistic-dependent — the
+off-identity cosine is highest at L0 (0.84 R-lens) and lowest at L18–24 (0.72) under both
+estimators, and Instruct's late transports sit 15–40% further from the identity than base's.
+Absolute movement is early; relative restructuring is late. The write-ups carry a banner; the
+Foresight text should use the two-clause version.
+
+**anthropics/jacobian-lens#15** (dthinkr, 5 Sep; S1) is the RoPE report in its original form; it
+triggered Neuronpedia's refit and its emulation numbers match ours to 0.1% (ROPE_ERRATUM.md
+§Addendum 22 Oct). The reporter's Hub discussion on *our* repo is still unanswered; reply drafted
+(`notes/hf_discussion_1_reply_draft.md`). Other open issues there worth knowing: #5 (input-copying
+ceiling; `apply()` below the fitting floor of 16 positions), #6 (`save()` fp16 overflow → `inf` on
+badly conditioned fits — ours are O(1), max |J| 1.14 at L30, checked), #4 (content digest for
+lens files). The repo has had no commit since the 1 Jul release.
+
+**WorkspaceBench** (Blank, Bhatia, Ong & Nanda, 23 Sep; S1 of the post). Method-agnostic reader
+eval on Qwen3.6-27B, 3,356 items, ground truth by construction, LLM judges, no interventions.
+Relevant to the Scorecard as the nearest existing adjudication instrument for this method
+family; tailored to one model; MATS project.
+
+**Foreword** (Kim, Feldt & Yoo, [2610.28187](https://arxiv.org/abs/2610.28187), 20 Oct; S2 +
+partial S1). Software-testing paper that uses published J-lens readouts (Llama-3.1-8B,
+Gemma-2-9B, Qwen3-8B, layers at 45–90% depth) as features to rank test inputs by failure risk
+before generation; +0.14 ROC-AUC over Clotho. No lens-validity control; sensitivity to corpus,
+vocab and layer range listed as untested. A downstream consumer of lens files, two hops from
+anyone who could check them — the Foresight "who consumes an unvalidated probe" paragraph has a
+second example beside Drift Calibrator.
+
+**The post-training axis now has company.** `vincentoh/olmo-3-7b-jlens` (placeholder, nothing
+uploaded) plans Instruct + SFT lenses with per-layer validated/provisional labels and a
+known-answer test from `bigsnarfdude/jlens-toolkit` (Apache-2.0, Aug), whose README already
+points readers at `mhough/olmo3-jacobian-lenses`. Our Hub repo is the reference artifact for
+this axis and was last touched 2 Aug: it carries the 0.69 number without the estimator caveat,
+no fit-environment statement, and an unanswered RoPE thread. **Refreshing it is the cheapest
+high-value item on this list** (README + the eleven results files with banners + the R-lens
+write-up; the R-lens `.pt` files follow when the Spark/Modal path is back — the SSH agent on
+Legion refused the key after the 21 Oct reboot).
+
+**No change:** jpp_lens and koayon/jpp-lenses only gained a citation block (17 Oct);
+Neuronpedia's HF repo gained J++ files (15 Oct) and the monorepo only UI work on the lens
+pages; the OLMo-3 model repos are unchanged (the Instruct repo's 25 Jun commit is README-only);
+no new arXiv paper on the lens besides Foreword and *JLD* (2610.05967, unrelated: perceptual
+distance).
+
+### Roadmap deltas
+
+| # | item | status 22 Oct |
+|---|---|---|
+| 0a | **Final-block inherited-direction control** on the J-lens pair | **done**, $0; survives; depth-profile caveat added to four write-ups |
+| 0b | Same control on the R-lens pair; penultimate-target refit of base + Instruct if 0a flags inheritance | needs Modal (blocked on SSH agent); ~$35 if the refit is needed |
+| 0c | RL-Zero arms under the R-lens before quoting the ~10× ratio | unchanged, ~$70, not approved |
+| 9 | **Refresh the Hub repo** (README, banners, R-lens write-up, fit environment) | doing now |
+| 10 | Reply to Hub discussion #1 | drafted; your call |

@@ -1,0 +1,470 @@
+{
+ "label": "jlens",
+ "base": "/home/mhough/Workspace/.scratch/hub_lenses/olmo-3-1025-7b.pt",
+ "instruct": "/home/mhough/Workspace/.scratch/hub_lenses/olmo-3-7b-instruct.pt",
+ "layers": [
+  0,
+  3,
+  6,
+  9,
+  12,
+  15,
+  18,
+  21,
+  24,
+  27,
+  30
+ ],
+ "k": 16,
+ "reference": {
+  "layer": 30,
+  "top_sv_share_base": [
+   0.004390162087296725,
+   0.008888944990263211,
+   0.019237001371563922
+  ],
+  "top_sv_share_instruct": [
+   0.0020319301619143994,
+   0.005648646326522231,
+   0.015497605465684525
+  ],
+  "cos_u1_base_instruct": 0.11149516831547379,
+  "offidentity_top_sv_share_base": [
+   0.0832599703943115,
+   0.15300562863029765,
+   0.27862566022991414
+  ]
+ },
+ "per_layer": {
+  "0": {
+   "cos_base_instruct": 0.2496908477461753,
+   "cos_offidentity": 0.6659043377433003,
+   "sv_share_base": [
+    0.46583257987055404,
+    0.5983936473239082,
+    0.6979883135107958
+   ],
+   "sv_share_instruct": [
+    0.20706215082105175,
+    0.43512832132620904,
+    0.6459989465988086
+   ],
+   "dJ_sv_share": [
+    0.19515218320638028,
+    0.5078972538667139,
+    0.7140437274208102
+   ],
+   "inherit_u1_base": 0.8104239745266993,
+   "inherit_u1_instruct": 0.07145927205996945,
+   "dJ_u1_vs_dref_u1": 0.72018091426292,
+   "dJ_u1_vs_ref_u1_base": 0.8489932091599168,
+   "dJ_u1_vs_ref_u1_instruct": 0.022629235426875585,
+   "dJ_share_in_ref_top1": 0.15467375205054992,
+   "cos_projected_out_ref_top1": 0.2810100081224096,
+   "cos_offidentity_projected_out_ref_top1": 0.7069471526936439,
+   "cos_projected_out_dref_top1": 0.28143159133250184,
+   "dJ_share_in_dref_top1": 0.10538368137251136,
+   "dJ_share_in_ref_top4": 0.1946791036032159,
+   "cos_projected_out_ref_top4": 0.2893773541208489,
+   "cos_offidentity_projected_out_ref_top4": 0.7180570399676534,
+   "cos_projected_out_dref_top4": 0.28958633694229036,
+   "dJ_share_in_dref_top4": 0.17380595262716542,
+   "dJ_share_in_ref_top16": 0.23345174170044347,
+   "cos_projected_out_ref_top16": 0.29026847956827173,
+   "cos_offidentity_projected_out_ref_top16": 0.7265361608762468,
+   "cos_projected_out_dref_top16": 0.29505313762772256,
+   "dJ_share_in_dref_top16": 0.20295977330420778
+  },
+  "3": {
+   "cos_base_instruct": 0.41590324923327776,
+   "cos_offidentity": 0.8295821231995824,
+   "sv_share_base": [
+    0.44978680187066306,
+    0.573477776355204,
+    0.6688109360989393
+   ],
+   "sv_share_instruct": [
+    0.12723834668650755,
+    0.2953513946811553,
+    0.4310344359516889
+   ],
+   "dJ_sv_share": [
+    0.363910963310552,
+    0.5232728139204125,
+    0.672728923679429
+   ],
+   "inherit_u1_base": 0.8143552408677724,
+   "inherit_u1_instruct": 0.3709174224160417,
+   "dJ_u1_vs_dref_u1": 0.7303489824144644,
+   "dJ_u1_vs_ref_u1_base": 0.8558468326451901,
+   "dJ_u1_vs_ref_u1_instruct": 0.008410662490902845,
+   "dJ_share_in_ref_top1": 0.2874718606127493,
+   "cos_projected_out_ref_top1": 0.47148655508478,
+   "cos_offidentity_projected_out_ref_top1": 0.8714156529675474,
+   "cos_projected_out_dref_top1": 0.4667937688438544,
+   "dJ_share_in_dref_top1": 0.19986769596531806,
+   "dJ_share_in_ref_top4": 0.3559714015566467,
+   "cos_projected_out_ref_top4": 0.4870993394567554,
+   "cos_offidentity_projected_out_ref_top4": 0.8821700843524429,
+   "cos_projected_out_dref_top4": 0.484880135683358,
+   "dJ_share_in_dref_top4": 0.3207672611914659,
+   "dJ_share_in_ref_top16": 0.4063029862447132,
+   "cos_projected_out_ref_top16": 0.4921716273006193,
+   "cos_offidentity_projected_out_ref_top16": 0.8894669745709881,
+   "cos_projected_out_dref_top16": 0.4959886311207915,
+   "dJ_share_in_dref_top16": 0.36790840868234076
+  },
+  "6": {
+   "cos_base_instruct": 0.5577191443278325,
+   "cos_offidentity": 0.9057530781563716,
+   "sv_share_base": [
+    0.26407801092284827,
+    0.3682194494379721,
+    0.4762658871442027
+   ],
+   "sv_share_instruct": [
+    0.11119027941112271,
+    0.20932391325942684,
+    0.31497004287244007
+   ],
+   "dJ_sv_share": [
+    0.27446294000039556,
+    0.4410253556369024,
+    0.5634022117128383
+   ],
+   "inherit_u1_base": 0.8238298889382679,
+   "inherit_u1_instruct": 0.22839600099437932,
+   "dJ_u1_vs_dref_u1": 0.7363558038458042,
+   "dJ_u1_vs_ref_u1_base": 0.866914596518749,
+   "dJ_u1_vs_ref_u1_instruct": 0.02266223847189347,
+   "dJ_share_in_ref_top1": 0.22763875857978355,
+   "cos_projected_out_ref_top1": 0.6053339859589544,
+   "cos_offidentity_projected_out_ref_top1": 0.9259245260475493,
+   "cos_projected_out_dref_top1": 0.5951636599230599,
+   "dJ_share_in_dref_top1": 0.15498196068389078,
+   "dJ_share_in_ref_top4": 0.2930857196815307,
+   "cos_projected_out_ref_top4": 0.6190959619986974,
+   "cos_offidentity_projected_out_ref_top4": 0.9318449291962241,
+   "cos_projected_out_dref_top4": 0.615803157344291,
+   "dJ_share_in_dref_top4": 0.2614473554350264,
+   "dJ_share_in_ref_top16": 0.35081915375564704,
+   "cos_projected_out_ref_top16": 0.627737984758728,
+   "cos_offidentity_projected_out_ref_top16": 0.9367450559472167,
+   "cos_projected_out_dref_top16": 0.6282993973063566,
+   "dJ_share_in_dref_top16": 0.31448034906335054
+  },
+  "9": {
+   "cos_base_instruct": 0.6408983458966704,
+   "cos_offidentity": 0.8940540788863858,
+   "sv_share_base": [
+    0.22677680792619295,
+    0.3239749959549919,
+    0.4246767564950402
+   ],
+   "sv_share_instruct": [
+    0.05368645754671842,
+    0.10940145831069908,
+    0.2095354298651877
+   ],
+   "dJ_sv_share": [
+    0.2870517568293717,
+    0.3899764716221383,
+    0.49980725958632033
+   ],
+   "inherit_u1_base": 0.8195154967303182,
+   "inherit_u1_instruct": 0.4597373203238042,
+   "dJ_u1_vs_dref_u1": 0.7457389477031943,
+   "dJ_u1_vs_ref_u1_base": 0.8681990908245713,
+   "dJ_u1_vs_ref_u1_instruct": 0.010059413941962877,
+   "dJ_share_in_ref_top1": 0.2357094945430255,
+   "cos_projected_out_ref_top1": 0.6851329493751694,
+   "cos_offidentity_projected_out_ref_top1": 0.9171690151450592,
+   "cos_projected_out_dref_top1": 0.6761786515215626,
+   "dJ_share_in_dref_top1": 0.16556786598884413,
+   "dJ_share_in_ref_top4": 0.3049934966870354,
+   "cos_projected_out_ref_top4": 0.6982001107324404,
+   "cos_offidentity_projected_out_ref_top4": 0.9241782060763901,
+   "cos_projected_out_dref_top4": 0.6946332791387244,
+   "dJ_share_in_dref_top4": 0.2711861603338773,
+   "dJ_share_in_ref_top16": 0.3652294525216505,
+   "cos_projected_out_ref_top16": 0.7070368878443806,
+   "cos_offidentity_projected_out_ref_top16": 0.9299601616770861,
+   "cos_projected_out_dref_top16": 0.7073824068468321,
+   "dJ_share_in_dref_top16": 0.3311491785167484
+  },
+  "12": {
+   "cos_base_instruct": 0.674874137044395,
+   "cos_offidentity": 0.8649356935312168,
+   "sv_share_base": [
+    0.15397456105073437,
+    0.20605083486768902,
+    0.29043989745315674
+   ],
+   "sv_share_instruct": [
+    0.033232876325691725,
+    0.06924594856835659,
+    0.13849754403355796
+   ],
+   "dJ_sv_share": [
+    0.20359161892359431,
+    0.2713438250609248,
+    0.3665907518725755
+   ],
+   "inherit_u1_base": 0.8185708737459754,
+   "inherit_u1_instruct": 0.4570362063459469,
+   "dJ_u1_vs_dref_u1": 0.7425524668494066,
+   "dJ_u1_vs_ref_u1_base": 0.8662128829872008,
+   "dJ_u1_vs_ref_u1_instruct": 0.010618942094719834,
+   "dJ_share_in_ref_top1": 0.17260798606618688,
+   "cos_projected_out_ref_top1": 0.7057047430378187,
+   "cos_offidentity_projected_out_ref_top1": 0.8869897370773554,
+   "cos_projected_out_dref_top1": 0.6985797709237875,
+   "dJ_share_in_dref_top1": 0.11846929519805405,
+   "dJ_share_in_ref_top4": 0.2302728842888547,
+   "cos_projected_out_ref_top4": 0.7155095983865586,
+   "cos_offidentity_projected_out_ref_top4": 0.8945496405678155,
+   "cos_projected_out_dref_top4": 0.7129312643529305,
+   "dJ_share_in_dref_top4": 0.20344072243001954,
+   "dJ_share_in_ref_top16": 0.28724500810912573,
+   "cos_projected_out_ref_top16": 0.7234258102319676,
+   "cos_offidentity_projected_out_ref_top16": 0.9015387943996583,
+   "cos_projected_out_dref_top16": 0.7235135276846235,
+   "dJ_share_in_dref_top16": 0.25779313600207887
+  },
+  "15": {
+   "cos_base_instruct": 0.7202356600843447,
+   "cos_offidentity": 0.8226278310250797,
+   "sv_share_base": [
+    0.06140730598660837,
+    0.096931856606234,
+    0.14744538523097273
+   ],
+   "sv_share_instruct": [
+    0.014930884593316048,
+    0.032064955587382794,
+    0.06854833695195928
+   ],
+   "dJ_sv_share": [
+    0.08747739001490815,
+    0.138462624031867,
+    0.2038715837883502
+   ],
+   "inherit_u1_base": 0.8283112739134219,
+   "inherit_u1_instruct": 0.4819947178342616,
+   "dJ_u1_vs_dref_u1": 0.7542861827108116,
+   "dJ_u1_vs_ref_u1_base": 0.8780175062495431,
+   "dJ_u1_vs_ref_u1_instruct": 0.00366072562617457,
+   "dJ_share_in_ref_top1": 0.08312271322458976,
+   "cos_projected_out_ref_top1": 0.7341526287219792,
+   "cos_offidentity_projected_out_ref_top1": 0.8374667045523053,
+   "cos_projected_out_dref_top1": 0.730550361284237,
+   "dJ_share_in_dref_top1": 0.05516862566839009,
+   "dJ_share_in_ref_top4": 0.12176379486530828,
+   "cos_projected_out_ref_top4": 0.740081548756195,
+   "cos_offidentity_projected_out_ref_top4": 0.8443691424776777,
+   "cos_projected_out_dref_top4": 0.7385337620863225,
+   "dJ_share_in_dref_top4": 0.1049631505973146,
+   "dJ_share_in_ref_top16": 0.1704620493022164,
+   "cos_projected_out_ref_top16": 0.7463759920264259,
+   "cos_offidentity_projected_out_ref_top16": 0.8522212799707544,
+   "cos_projected_out_dref_top16": 0.7458738128719322,
+   "dJ_share_in_dref_top16": 0.14739210669213715
+  },
+  "18": {
+   "cos_base_instruct": 0.7530969824379588,
+   "cos_offidentity": 0.7652013505318391,
+   "sv_share_base": [
+    0.023146120185659612,
+    0.04227701774917757,
+    0.07549989484531594
+   ],
+   "sv_share_instruct": [
+    0.006167419086543576,
+    0.015727749589074115,
+    0.04243642373875434
+   ],
+   "dJ_sv_share": [
+    0.037765263935411006,
+    0.07242391504008393,
+    0.12144666432017015
+   ],
+   "inherit_u1_base": 0.8282052364688456,
+   "inherit_u1_instruct": 0.616336428733474,
+   "dJ_u1_vs_dref_u1": 0.7447988701696032,
+   "dJ_u1_vs_ref_u1_base": 0.8830920378958157,
+   "dJ_u1_vs_ref_u1_instruct": 0.04458271631039836,
+   "dJ_share_in_ref_top1": 0.040679227685704616,
+   "cos_projected_out_ref_top1": 0.7596674349646922,
+   "cos_offidentity_projected_out_ref_top1": 0.7759859343889793,
+   "cos_projected_out_dref_top1": 0.7576109728961473,
+   "dJ_share_in_dref_top1": 0.025201258494344944,
+   "dJ_share_in_ref_top4": 0.06639124473471023,
+   "cos_projected_out_ref_top4": 0.7633268703696784,
+   "cos_offidentity_projected_out_ref_top4": 0.7826283947054462,
+   "cos_projected_out_dref_top4": 0.762272313452785,
+   "dJ_share_in_dref_top4": 0.05512296561467158,
+   "dJ_share_in_ref_top16": 0.10710076203473264,
+   "cos_projected_out_ref_top16": 0.7682347008450253,
+   "cos_offidentity_projected_out_ref_top16": 0.7917720992645885,
+   "cos_projected_out_dref_top16": 0.7675421133275342,
+   "dJ_share_in_dref_top16": 0.08811102748058443
+  },
+  "21": {
+   "cos_base_instruct": 0.8037886630735241,
+   "cos_offidentity": 0.7247623451542833,
+   "sv_share_base": [
+    0.013730832922310155,
+    0.027116218411519986,
+    0.052638496432390366
+   ],
+   "sv_share_instruct": [
+    0.0037828119736433886,
+    0.010360160065872193,
+    0.030863522782356267
+   ],
+   "dJ_sv_share": [
+    0.029211508300653156,
+    0.061380888032976165,
+    0.10791323766254977
+   ],
+   "inherit_u1_base": 0.8295449122442677,
+   "inherit_u1_instruct": 0.6826854318072103,
+   "dJ_u1_vs_dref_u1": 0.7609748102549948,
+   "dJ_u1_vs_ref_u1_base": 0.896254697369949,
+   "dJ_u1_vs_ref_u1_instruct": 0.028872485592283316,
+   "dJ_share_in_ref_top1": 0.03391896765556322,
+   "cos_projected_out_ref_top1": 0.8086322550915485,
+   "cos_offidentity_projected_out_ref_top1": 0.7352739967097643,
+   "cos_projected_out_dref_top1": 0.8070057532448865,
+   "dJ_share_in_dref_top1": 0.020952167756498986,
+   "dJ_share_in_ref_top4": 0.05770888038532757,
+   "cos_projected_out_ref_top4": 0.811649513730115,
+   "cos_offidentity_projected_out_ref_top4": 0.7423153845970233,
+   "cos_projected_out_dref_top4": 0.810618235089481,
+   "dJ_share_in_dref_top4": 0.046939522188812685,
+   "dJ_share_in_ref_top16": 0.09959122396558769,
+   "cos_projected_out_ref_top16": 0.8162785335375077,
+   "cos_offidentity_projected_out_ref_top16": 0.7532042521230646,
+   "cos_projected_out_dref_top16": 0.8153166467772592,
+   "dJ_share_in_dref_top16": 0.08078395192609059
+  },
+  "24": {
+   "cos_base_instruct": 0.8617635266949466,
+   "cos_offidentity": 0.7186741253993228,
+   "sv_share_base": [
+    0.010396100272457038,
+    0.02152318461300805,
+    0.043443040992005987
+   ],
+   "sv_share_instruct": [
+    0.0029438995343862343,
+    0.008328348714875306,
+    0.024818694607891177
+   ],
+   "dJ_sv_share": [
+    0.03198696603518598,
+    0.0704417405253976,
+    0.12421150501941254
+   ],
+   "inherit_u1_base": 0.8388419735618745,
+   "inherit_u1_instruct": 0.7371164621820376,
+   "dJ_u1_vs_dref_u1": 0.7795415314238375,
+   "dJ_u1_vs_ref_u1_base": 0.9089426436784523,
+   "dJ_u1_vs_ref_u1_instruct": 0.007996493867398449,
+   "dJ_share_in_ref_top1": 0.039232953531967346,
+   "cos_projected_out_ref_top1": 0.8661212103001528,
+   "cos_offidentity_projected_out_ref_top1": 0.7304629710570979,
+   "cos_projected_out_dref_top1": 0.8645744946031049,
+   "dJ_share_in_dref_top1": 0.024187238815068356,
+   "dJ_share_in_ref_top4": 0.06712809444131448,
+   "cos_projected_out_ref_top4": 0.8689568962278975,
+   "cos_offidentity_projected_out_ref_top4": 0.7384384335777432,
+   "cos_projected_out_dref_top4": 0.8679745107671434,
+   "dJ_share_in_dref_top4": 0.05512602003251093,
+   "dJ_share_in_ref_top16": 0.1158936121741548,
+   "cos_projected_out_ref_top16": 0.8733905481019676,
+   "cos_offidentity_projected_out_ref_top16": 0.7508444308456668,
+   "cos_projected_out_dref_top16": 0.8724497116906502,
+   "dJ_share_in_dref_top16": 0.09645612253087084
+  },
+  "27": {
+   "cos_base_instruct": 0.9180406805580139,
+   "cos_offidentity": 0.745429878159304,
+   "sv_share_base": [
+    0.009723032174639037,
+    0.02055650322683774,
+    0.04158583723097744
+   ],
+   "sv_share_instruct": [
+    0.0026906933790119395,
+    0.007857240408534243,
+    0.022887530838218793
+   ],
+   "dJ_sv_share": [
+    0.04954675344607259,
+    0.10980726135566586,
+    0.1825631520858208
+   ],
+   "inherit_u1_base": 0.8736213939931459,
+   "inherit_u1_instruct": 0.8482302852506562,
+   "dJ_u1_vs_dref_u1": 0.8861402787717533,
+   "dJ_u1_vs_ref_u1_base": 0.9503279679371772,
+   "dJ_u1_vs_ref_u1_instruct": 0.16340538513006259,
+   "dJ_share_in_ref_top1": 0.0647618171276396,
+   "cos_projected_out_ref_top1": 0.9227081355393647,
+   "cos_offidentity_projected_out_ref_top1": 0.7626337078857556,
+   "cos_projected_out_dref_top1": 0.9212331426333635,
+   "dJ_share_in_dref_top1": 0.04300092268793972,
+   "dJ_share_in_ref_top4": 0.10501225763342768,
+   "cos_projected_out_ref_top4": 0.925391669665119,
+   "cos_offidentity_projected_out_ref_top4": 0.7730110677522197,
+   "cos_projected_out_dref_top4": 0.9245579546408779,
+   "dJ_share_in_dref_top4": 0.08949236379103676,
+   "dJ_share_in_ref_top16": 0.170973997487085,
+   "cos_projected_out_ref_top16": 0.9294683876683437,
+   "cos_offidentity_projected_out_ref_top16": 0.7887423921140398,
+   "cos_projected_out_dref_top16": 0.928969054340636,
+   "dJ_share_in_dref_top16": 0.15162145929057905
+  },
+  "30": {
+   "cos_base_instruct": 0.9833455592968233,
+   "cos_offidentity": 0.7850118726978818,
+   "sv_share_base": [
+    0.004390162087299293,
+    0.008888955021386334,
+    0.019229824065428024
+   ],
+   "sv_share_instruct": [
+    0.0020319300184807156,
+    0.005648463779596107,
+    0.01549031765354573
+   ],
+   "dJ_sv_share": [
+    0.10925148381527253,
+    0.18679834082849753,
+    0.28989727114077524
+   ],
+   "inherit_u1_base": 0.9999999999992026,
+   "inherit_u1_instruct": 0.9999997289990883,
+   "dJ_u1_vs_dref_u1": 1.0000000000000009,
+   "dJ_u1_vs_ref_u1_base": 0.8962484777917165,
+   "dJ_u1_vs_ref_u1_instruct": 0.47193117356067776,
+   "dJ_share_in_ref_top1": 0.12775652527233514,
+   "cos_projected_out_ref_top1": 0.9854096618351861,
+   "cos_offidentity_projected_out_ref_top1": 0.8139511815318993,
+   "cos_projected_out_dref_top1": 0.9851266128135582,
+   "dJ_share_in_dref_top1": 0.10925148381527294,
+   "dJ_share_in_ref_top4": 0.1888924137367756,
+   "cos_projected_out_ref_top4": 0.9863741488817516,
+   "cos_offidentity_projected_out_ref_top4": 0.8254765177650609,
+   "cos_projected_out_dref_top4": 0.986393846991223,
+   "dJ_share_in_dref_top4": 0.18679834082854857,
+   "dJ_share_in_ref_top16": 0.27004381241257047,
+   "cos_projected_out_ref_top16": 0.9875729076285524,
+   "cos_offidentity_projected_out_ref_top16": 0.8377304564643393,
+   "cos_projected_out_dref_top16": 0.9880645627521671,
+   "dJ_share_in_dref_top16": 0.2898978144750826
+  }
+ },
+ "seconds": 979.4562656879425
+}
