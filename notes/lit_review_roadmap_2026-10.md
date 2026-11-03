@@ -259,3 +259,14 @@ distance).
 | 0c | RL-Zero arms under the R-lens before quoting the ~10× ratio | unchanged, ~$70, not approved |
 | 9 | **Refresh the Hub repo** (README, banners, R-lens write-up, fit environment) | doing now |
 | 10 | Reply to Hub discussion #1 | drafted; your call |
+
+## 5. "Weight-space programming" (Takehi/Teoh/Zhang/Khattab, MIT CSAIL, posted 2 Nov 2026)
+
+Blog post, no paper; logs CC BY 4.0 at `RikiyaT/lm_understand-logs`; edited Qwen3.5-0.8B on the Hub (Apache-2.0).
+Lens-only check done the same day (`results/weight_space_programming/direction_identity.md`, $0): the experiment-8 edit
+is Arditi-style weight orthogonalisation with α = 6 on 64 neurons at L15/L19, direction from an activation contrast
+(productive vs repetitive contexts), cos(u₁₅,u₁₉) 0.85, not an unembedding/frequency artefact; reads as "close the
+thought" vs "keep going". Gain is loop termination (576/579 rescues were truncations). The agent ran its own random-direction
+control (+1.6 pp, SE 3.5) that the post does not report. Roadmap delta: item 0d, GPU controls 1–5 in the results file
+(~$40–60, Modal), ranked after 0b; item 5 (J-lens sensitivity to a rank-1 behaviour-changing edit) is the one that
+feeds our own Claim-6 interpretation.
