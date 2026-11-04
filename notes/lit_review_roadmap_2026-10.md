@@ -270,3 +270,11 @@ thought" vs "keep going". Gain is loop termination (576/579 rescues were truncat
 control (+1.6 pp, SE 3.5) that the post does not report. Roadmap delta: item 0d, GPU controls 1–5 in the results file
 (~$40–60, Modal), ranked after 0b; item 5 (J-lens sensitivity to a rank-1 behaviour-changing edit) is the one that
 feeds our own Claim-6 interpretation.
+
+**3 Nov addendum.** Simon Willison reproduced experiment 1 with Qwen 3.8 27B locally (3/4); Honnibal (framing conflates
+no-tools weight reading with Python-and-forward-pass work) and Goedecke (a human would do the same; first-layer norms
+give the game away) critiqued. Our readout of the four released networks (`results/weight_space_programming/exp1_firstlayer_maps.md`):
+agent-channel energy 97% in one row (Breakout) / 96% in one column (Pong), maze walls visible as zeros (Pac-Man), crossing
+lane + "up" bias (Freeway); the prompt supplies the channel legend. Proposed control: permute input and action indices
+and drop the legend (four prompts per model). Resume point if interrupted: GPU controls 1–5 in `direction_identity.md`
+once `ssh dgx` works; the permutation control needs only API access to any frontier model.
