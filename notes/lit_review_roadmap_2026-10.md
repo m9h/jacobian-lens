@@ -278,3 +278,44 @@ agent-channel energy 97% in one row (Breakout) / 96% in one column (Pong), maze 
 lane + "up" bias (Freeway); the prompt supplies the channel legend. Proposed control: permute input and action indices
 and drop the legend (four prompts per model). Resume point if interrupted: GPU controls 1–5 in `direction_identity.md`
 once `ssh dgx` works; the permutation control needs only API access to any frontier model.
+
+## 6. Marin / Open Athena as a second substrate (17 Nov 2026)
+
+Morgan attended "Scaling Marin's Open LLM Pretraining" (Open Athena; Liang, Hall, Konwinski, Held)
+and proposed Marin as an alternative to OLMo-3. Checked the same evening from the Hub API, the
+model cards and the `marin-community/marin` issue tracker. **Nothing was run.**
+
+What is public, by how it maps onto our axes:
+
+| our axis | OLMo-3 (what we used) | Marin (verified on the Hub, 17 Nov) |
+|---|---|---|
+| post-training stages, dense, stock `transformers` | 7B base → SFT → DPO → RLVR; RL-Zero domain arms | **Marin 8B: SFT only** (`marin-8b-instruct`, 5.3B tokens, Tülu-3 mixture among the sets). `marin-8b-dpo-lora-…` exists but is an empty repo |
+| post-training stages, any architecture | as above | **Snowball 67B-A2B** (Grug MoE: 26 layers, width 2560, 256 routed experts, 4 active + 1 shared; 134 GB bf16): base cooldown → chat SFT → thinking SFT → agentic SFT (`laion/snowball-67b-a2b-*`, Apache-2.0) → ~25 RLVR arms, merges, v0 / v0.1 / v0.1.1, identity-SFT arms (`open-athena/*`, OpenMDW-1.1). Far more arms than OLMo-3, negatives included |
+| same, small enough to iterate | — | **Snowflake** d512 / d768 / d1024 base (0.75B params, 1.5 GB at d512) with Datakit-SFT partners at d512 and d768; same Grug MoE code path |
+| pretraining trajectory | 1,487 checkpoint branches | Marin 8B: 44 `step-*` tags + 7 named milestones whose data mix and LR phase are documented (kestrel → deeper-starling, 2.7T → 12.7T tokens); 32B: 5 phase branches |
+| scale with architecture held fixed | none | **Delphi**: 89 Qwen3-architecture models, 157M → 25B, one tokenizer, one data recipe, final checkpoints only |
+| **seed replicates** | none | Delphi: 3 seeds at 3.4B and at 9.7B, 2 at 447M |
+| licence | Apache-2.0 | Apache-2.0 (8B, 32B, Delphi, laion stage checkpoints); OpenMDW-1.1 on `open-athena/*` (not read by us yet) |
+
+Assessment. Marin is **not a drop-in replacement** for the Claim 6 result: the clean dense
+SFT/DPO/RLVR ladder that stock `transformers` loads is still OLMo-3's. It is the better substrate
+for three things OLMo-3 cannot give:
+
+1. **A noise floor.** We quote base→Instruct cos 0.78 with no idea what two lenses of the *same*
+   recipe score. Delphi's seed triplets answer that. This is the control the result has always lacked.
+2. **A second family for the SFT step.** Marin 8B base vs instruct, same pipeline, unchanged code.
+3. **Many post-training arms on one base**, if J-lens is ported to Grug MoE. Open method question:
+   top-4 routing makes the Jacobian piecewise; a corpus-averaged lens averages over routes.
+
+They already do interpretability in the open, controls-first: issue #10696 (logit lens, direct
+logit attribution, patching on Snowball's identity; a steering vector rejected because control
+prompts moved as much as identity prompts). The Snowball SFT report lists "runaway thinking and
+looping after SFT" as an open problem; our decoded loop-termination direction (§5) is a concrete
+thing to offer. Marin trains in JAX (Levanter), so the unclaimed JAX J-lens port has a home.
+
+Roadmap items (none started, none approved for spend):
+
+- **M1** Delphi seed-pair lens noise floor at 447M, then 3.4B. Cheapest; gates how we quote 0.78.
+- **M2** Marin 8B base vs instruct, J-lens and R-lens. About the cost of one OLMo pair.
+- **M3** Port to Grug MoE on Snowflake d512 base vs Datakit-SFT; only then consider Snowball (B200-class, 134 GB per checkpoint).
+- **M4** Marin 8B trajectory across the documented phase boundaries (does the lens move at the cooldown onto higher-quality data?).
