@@ -319,3 +319,92 @@ Roadmap items (none started, none approved for spend):
 - **M2** Marin 8B base vs instruct, J-lens and R-lens. About the cost of one OLMo pair.
 - **M3** Port to Grug MoE on Snowflake d512 base vs Datakit-SFT; only then consider Snowball (B200-class, 134 GB per checkpoint).
 - **M4** Marin 8B trajectory across the documented phase boundaries (does the lens move at the cooldown onto higher-quality data?).
+
+## 7. Lambert's "open problems in post-training" deck and Trillium Labs (read 22 Nov 2026)
+
+Source: Nathan Lambert, "Pushing Frontiers in Open Language Model Post-Training", Cornell talk,
+slides dated 20 Nov 2026 (`natolambert.com/slides/2026/cornell-post-training/talk`, 51 slides + 3
+extra). Read via a fetch-and-summarise tool, so slide wording below is paraphrase, not quotation.
+The deck says it mainly states his goals at **Trillium Labs** (`trilliumlabs.org`, which today
+serves only the name). Funders, compute and legal form are not stated anywhere we could read. A
+third-party write-up calls him its executive director; the deck does not say what happened to
+his AI2 role and we have not checked.
+
+What the deck claims, in the parts that touch us:
+
+- **Six open problems**: harness specialisation and design; character training; open-source RL
+  environments; reasoning efficiency in RL; scaling laws for RL; multi-agent scaling laws.
+- **Base models are disappearing.** Slide 15: a matrix of 12 open-weight labs, 2023 to 19 Nov
+  2026; most moved from releasing base models to releasing post-trained weights only within the
+  last 12 months. Slide 13 puts doing post-training well at roughly $50M+ a year.
+- **Character training** is named as one of Trillium's first areas. The deck says open literature
+  has not kept up with industry, and that in Open Character Training (Maiya, Bartsch, Lambert,
+  Hubinger, arXiv 2511.01689) measuring performance was extremely hard. The measurement shown is
+  behavioural (trait-preference Elo on Llama 3.1 8B). **Representations, activations, probes,
+  steering and interpretability do not appear in the deck at all.**
+- **Scaling laws for RL**: asks what the equivalent of a pretraining ladder is for RL, and how to
+  predict a large post-training run from small ones (cites Khatri et al. 2025, ScaleRL).
+- Trillium's stated goals: establish an area of study (example given: empirical character
+  training in RL), establish shared language, build reusable datasets or models (example given:
+  ones that enable AI-safety non-profits), change how people think about a problem. Hiring MTS,
+  student researchers, interns. The LinkedIn post invites people working on these problems in
+  the open to get in touch.
+
+### How it bears on the program
+
+1. **Character training is the measurement gap our Claim 6 result already sits in.** We measured
+   what post-training does to the model's internal viewpoint on his own model family (OLMo-3):
+   base→Instruct lens cosine 0.69 (J-lens) / 0.78 (R-lens) with MMLU flat to down, SFT+DPO moving
+   the lens about 10× more than RLVR once the refit floor is removed (29.4% vs 2.9%; the README
+   still prints the uncorrected "~5×"). That is an internal, capability-decoupled measure of the
+   thing the deck says it cannot measure well. It is not a measure of *which* character; it says
+   how far the viewpoint moved, not where to.
+2. **The character-training artifacts are public and nobody has put a lens on them.** Verified
+   on the Hub today: `maius/{llama-3.1-8b-it,qwen-2.5-7b-it,gemma-3-4b-it}-personas` (ten
+   persona LoRAs each, rank 64, all attention + MLP projections), matching `-pt-distillation`
+   (stage one) and `-pt-introspection` repos, and a `llama-3.1-8b-it-personas-no-cons` variant
+   (name suggests a no-constitution control; card not read). The Qwen-2.5-7B set is Apache-2.0;
+   Llama is under the Llama 3.1 licence and its misalignment adapter is gated. Prior work on
+   these and their descendants, from abstracts and posts only:
+   - *Persona Cartography* (Baines et al., arXiv 2607.07916): OCEAN-trait LoRAs on six models,
+     behavioural evaluation; adapters scale monotonically and add roughly linearly.
+   - *Persona Geology* (Ratnam & Africa, LessWrong 30 Oct 2026): 134 trait LoRAs on Qwen3.5-4B,
+     **weight-space** factor analysis, released as `EternalRecursion/persona-lora-zoo-qwen35`
+     (Apache-2.0), second seed for 40 traits. Their own caveat matters to us: two seeds of the
+     same trait have weight cosine +0.018, and the signal only appears once directions are
+     activation-weighted (0.66 same-trait vs 0.09 different-trait). The authors call it an
+     orphaned direction and ask for collaborators.
+   - Mitrani (LessWrong, 25 May 2026): OCT persona classifier macro-F1 falls from 0.86–0.94 in
+     chat to 0.29–0.55 in an agentic email task; most of the drop traced to the scaffolding.
+   - Anthropic's persona vectors (2025) are activation directions per trait; not a lens.
+   None of these reports a logit-lens, tuned-lens or Jacobian-lens comparison. Not searched
+   exhaustively; a proper pass is owed before any spend (PITFALLS: literature before design).
+3. **"Base models are disappearing" raises the value of OLMo-3 and Marin and narrows our
+   method.** The base→post lens comparison needs a base. Slide 15 is the strongest outside
+   statement we have of why the fully open ladders are the only place this can be done. The
+   deck's "post-post-training" examples (Harvey's Tenet on Kimi K3, Mercor/SkyRL on
+   Qwen3.5-397B, TMax on Qwen 2B–27B) are post-trained→specialised pairs, which the lens can
+   also compare, at sizes from trivial to out of reach.
+4. **Scaling laws for RL.** Our numbers say RLVR barely moves the lens (2.9% beyond floor on
+   OLMo-3; 2.5% for the RL step alone on OpenThinkerAgent-8B). If that holds, lens movement is a
+   poor predictor of RL progress and a good detector of everything else a recipe does. The only
+   open thing resembling an "RL ladder" we know of is Marin's ~25 Snowball RLVR arms (§6, M3).
+5. **Reasoning efficiency in RL** (Never Give Up) touches §5 only loosely: the decoded edit's
+   gain was loop termination, a compute-allocation effect. No experiment follows from this yet.
+6. Harness design, open RL environments and multi-agent scaling laws are outside this program.
+
+### Roadmap items (none started, none approved for spend)
+
+- **C1** Lens on character adapters: Qwen-2.5-7B-Instruct vs each of the ten merged persona
+  LoRAs, R-lens first, with the refit floor. Questions: is the movement above floor; is it the
+  same size across personas (as RL-Zero domains were) or trait-dependent; where in depth.
+  Add the distillation stage and the no-constitution variant as the within-method controls.
+- **C2** Noise floor for C1 from *Persona Geology*'s 40 seed pairs on Qwen3.5-4B: lens cosine
+  between two seeds of one trait vs two traits. Their weight-space result (+0.018) predicts
+  weight geometry will not show it; does the lens.
+- **C3** Does lens distance per persona predict Mitrani's chat→agentic drop per persona? Only
+  worth doing if C1 shows trait-dependent movement.
+- Housekeeping: update the README headline ratio to the floor-corrected figure.
+
+Outreach to Lambert / Trillium is Morgan's call. The concrete thing to offer is the OLMo-3
+result plus C1 as an internal measurement for character training, both on fully open weights.
